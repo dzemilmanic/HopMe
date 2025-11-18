@@ -2,9 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pool from './src/config/database.js';
+
+// Routes
 import authRoutes from './src/routes/auth.routes.js';
 import adminRoutes from './src/routes/admin.routes.js';
 import userRoutes from './src/routes/user.routes.js';
+import rideRoutes from './src/routes/ride.routes.js';
+import bookingRoutes from './src/routes/booking.routes.js';
+import ratingRoutes from './src/routes/rating.routes.js';
+import notificationRoutes from './src/routes/notification.routes.js';
 
 dotenv.config();
 
@@ -16,28 +22,55 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
+// Request logging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
 });
 
-// Routes
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV 
+  });
+});
+
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/rides', rideRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/ratings', ratingRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Greška:', err);
+  console.error('Error:', err);
   
   if (err.code === 'LIMIT_FILE_SIZE') {
     return res.status(400).json({ 
       message: 'Fajl je prevelik. Maksimalna veličina je 5MB' 
     });
   }
+
+  if (err.code === '23505') {
+    return res.status(400).json({ 
+      message: 'Vrednost već postoji u bazi' 
+    });
+  }
+
+  if (err.code === '23503') {
+    return res.status(400).json({ 
+      message: 'Referencirani resurs ne postoji' 
+    });
+  }
   
   res.status(err.status || 500).json({
-    message: err.message || 'Interna greška servera'
+    message: err.message || 'Interna greška servera',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 });
 
@@ -46,19 +79,28 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Ruta nije pronađena' });
 });
 
-// Testiranje PostgreSQL konekcije
-pool.query('SELECT NOW()', (err, res) => {
+// PostgreSQL connection test
+pool.query('SELECT NOW()', (err, result) => {
   if (err) {
     console.error('❌ Greška u PostgreSQL konekciji:', err);
+    process.exit(1);
   } else {
-    console.log('✅ PostgreSQL povezan:', res.rows[0].now);
+    console.log('✅ PostgreSQL povezan:', result.rows[0].now);
   }
 });
 
-// Pokretanje servera
+// Server start
 app.listen(PORT, () => {
-  console.log(`🚀 Server pokrenut na portu ${PORT}`);
+  console.log(`🚀 HopMe Backend pokrenut na portu ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV}`);
+  console.log(`📊 Database: ${process.env.DB_HOST}`);
+});
+
+// Graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('\n🛑 Gašenje servera...');
+  await pool.end();
+  process.exit(0);
 });
 
 export default app;
