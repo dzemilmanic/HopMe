@@ -1,7 +1,28 @@
+// PRVO učitaj dotenv - pre svih ostalih importa!
+import dotenv from "dotenv";
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Eksplicitno učitaj .env fajl
+const result = dotenv.config({ path: join(__dirname, '.env') });
+
+if (result.error) {
+  console.error('❌ Greška pri učitavanju .env fajla:', result.error);
+  console.log('📁 Tražim .env na lokaciji:', join(__dirname, '.env'));
+} else {
+  console.log('✅ .env fajl uspešno učitan');
+  console.log('🔍 DB_HOST:', process.env.DB_HOST ? '✓ postoji' : '✗ ne postoji');
+  console.log('🔍 DB_PORT:', process.env.DB_PORT ? '✓ postoji' : '✗ ne postoji');
+}
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import pool from './src/config/database.js';
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./swagger.js";
 
 // Routes
 import authRoutes from './src/routes/auth.routes.js';
@@ -12,10 +33,10 @@ import bookingRoutes from './src/routes/booking.routes.js';
 import ratingRoutes from './src/routes/rating.routes.js';
 import notificationRoutes from './src/routes/notification.routes.js';
 
-dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware
 app.use(cors());
