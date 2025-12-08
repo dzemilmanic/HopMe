@@ -22,7 +22,7 @@ import express from 'express';
 import cors from 'cors';
 import pool from './src/config/database.js';
 import swaggerUi from "swagger-ui-express";
-import swaggerSpec from "./swagger.js";
+import swaggerSpec from './src/config/swagger.js';
 
 // Routes
 import authRoutes from './src/routes/auth.routes.js';
@@ -36,12 +36,23 @@ import notificationRoutes from './src/routes/notification.routes.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'HopMe API Docs',
+}));
+
+// Swagger JSON
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
 // Request logging
 app.use((req, res, next) => {
