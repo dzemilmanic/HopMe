@@ -38,7 +38,11 @@ const PORT = process.env.PORT || 5000;
 
 
 // Middleware
-app.use(cors());
+// Najjednostavniji CORS za development
+app.use(cors({
+  origin: '*', // Dozvoljava SVE (samo za development!)
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
