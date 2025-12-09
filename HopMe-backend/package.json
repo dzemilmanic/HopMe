@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "migrate": "node scripts/migrate.js",
+    "create-admin": "node scripts/create-admin.js"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.17.0",
