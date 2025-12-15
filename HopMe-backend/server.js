@@ -32,6 +32,7 @@ import rideRoutes from './src/routes/ride.routes.js';
 import bookingRoutes from './src/routes/booking.routes.js';
 import ratingRoutes from './src/routes/rating.routes.js';
 import notificationRoutes from './src/routes/notification.routes.js';
+import mapsRoutes from './src/routes/maps.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -81,7 +82,7 @@ app.use('/api/rides', rideRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/ratings', ratingRoutes);
 app.use('/api/notifications', notificationRoutes);
-
+app.use('/api/maps', mapsRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Error:', err);

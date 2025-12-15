@@ -101,6 +101,7 @@ const options = {
       { name: 'Notifications', description: 'Notifikacije' },
       { name: 'Admin', description: 'Admin operacije' },
       { name: 'User', description: 'Korisnički profil' },
+      { name: 'Maps', description: 'Mape, rute i geolokacija' },
     ],
   },
   apis: ['./src/routes/*.js'], // Path to the API routes
