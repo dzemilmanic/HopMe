@@ -12,3 +12,55 @@ yarn-error.log*
 # Build output
 dist/
 build/
+
+# Xcode
+#
+build/
+DerivedData/
+*.xcworkspace
+!default.xcworkspace
+*.xcuserdata
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Swift Package Manager
+#
+.build/
+Packages/
+.swiftpm/
+Package.resolved
+
+# CocoaPods
+#
+Pods/
+Podfile.lock
+
+# Carthage
+#
+Carthage/Build/
+
+# fastlane
+#
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output/
+
+# Xcode Playgrounds
+#
+timeline.xctimeline
+playground.xcworkspace
+
+# User-specific
+#
+*.swp
+*.DS_Store
+*.idea/
+*.vscode/
+
+# Logs
+#
+*.log
+.DS_Store
+*.xcuserstate
