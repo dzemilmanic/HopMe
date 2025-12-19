@@ -1,4 +1,7 @@
 import Foundation
+import SwiftUI
+import Combine
+
 @MainActor
 class NotificationViewModel: ObservableObject {
     @Published var notifications: [NotificationModel] = []
