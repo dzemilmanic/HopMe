@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RideBookingsListView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     let ride: Ride
     @StateObject private var viewModel: RideBookingsViewModel
     

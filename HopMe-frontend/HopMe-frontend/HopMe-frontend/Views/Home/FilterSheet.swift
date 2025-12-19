@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FilterSheet: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @Binding var filters: SearchFilters
     let onApply: () -> Void
     

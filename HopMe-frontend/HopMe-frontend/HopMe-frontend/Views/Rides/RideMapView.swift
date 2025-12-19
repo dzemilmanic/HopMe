@@ -2,7 +2,7 @@ import SwiftUI
 import MapKit
 
 struct RideMapView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     let ride: Ride
     
     @State private var region: MKCoordinateRegion
