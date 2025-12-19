@@ -233,3 +233,8 @@ struct NotificationsView: View {
         // }
     }
 }
+#Preview("Notifications View") {
+    NavigationView {
+        NotificationsView()
+    }
+}

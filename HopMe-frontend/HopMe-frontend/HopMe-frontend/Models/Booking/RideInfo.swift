@@ -1,3 +1,5 @@
+import SwiftUI
+
 struct RideInfo: Codable {
     let id: Int
     let departureLocation: String

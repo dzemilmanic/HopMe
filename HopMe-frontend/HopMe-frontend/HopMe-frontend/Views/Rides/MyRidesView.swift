@@ -123,3 +123,8 @@ struct MyRidesView: View {
         }
     }
 }
+#Preview("My Rides View") {
+    NavigationView {
+        MyRidesView()
+    }
+}

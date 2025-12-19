@@ -1,3 +1,5 @@
+import SwiftUI
+
 struct Waypoint: Codable, Identifiable {
     let id: Int
     let rideId: Int

@@ -489,3 +489,7 @@ struct RideDetailView: View {
         return "\(minutes)min"
     }
 }
+#Preview("Ride Detail View") {
+    // You'll need to create a mock Ride object for preview
+    Text("Preview - Add mock data")
+}

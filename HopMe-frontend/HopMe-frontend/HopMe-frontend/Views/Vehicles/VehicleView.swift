@@ -93,5 +93,7 @@ struct VehiclesView: View {
         }
     }
 }
-A
 
+#Preview("Vehicles View") {
+    VehiclesView()
+}

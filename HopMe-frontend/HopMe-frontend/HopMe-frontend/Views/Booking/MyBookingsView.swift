@@ -108,3 +108,8 @@ struct MyBookingsView: View {
         selectedSegment == 0 ? "Pretražite vožnje i rezervišite mesto" : "Završene rezervacije će se pojaviti ovde"
     }
 }
+#Preview("My Bookings View") {
+    NavigationView {
+        MyBookingsView()
+    }
+}

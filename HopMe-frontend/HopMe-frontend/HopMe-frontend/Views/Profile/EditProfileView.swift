@@ -87,3 +87,7 @@ struct EditProfileView: View {
         }
     }
 }
+#Preview("Edit Profile View") {
+    // Mock user needed
+    Text("Preview - Add mock user")
+}

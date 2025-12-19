@@ -241,3 +241,9 @@ struct HomeView: View {
         .padding(.bottom)
     }
 }
+#Preview("Home View") {
+    NavigationView {
+        HomeView()
+            .environmentObject(AuthViewModel())
+    }
+}

@@ -1,3 +1,5 @@
+import SwiftUI
+
 struct RatingStats: Codable {
     let totalRatings: Int
     let averageRating: Double

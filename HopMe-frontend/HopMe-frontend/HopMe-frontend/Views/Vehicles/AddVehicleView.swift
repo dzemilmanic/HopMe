@@ -133,4 +133,8 @@ struct AddVehicleView: View {
         }
     }
 }
-S
+#Preview("Add Vehicle View") {
+    AddVehicleView {
+        print("Vehicle added")
+    }
+}

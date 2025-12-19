@@ -498,3 +498,6 @@ struct CreateRideView: View {
         }
     }
 }
+#Preview("Create Ride View") {
+    CreateRideView()
+}

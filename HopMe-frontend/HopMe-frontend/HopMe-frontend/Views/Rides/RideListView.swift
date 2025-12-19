@@ -30,3 +30,12 @@ struct RideListView: View {
         .navigationBarTitleDisplayMode(.large)
     }
 }
+
+#Preview("Ride List View") {
+    NavigationView {
+        RideListView(
+            rides: [],
+            title: "Rezultati pretrage"
+        )
+    }
+}

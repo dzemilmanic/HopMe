@@ -270,3 +270,7 @@ struct BookingView: View {
         )
     }
 }
+#Preview("Booking View") {
+    // You'll need to create a mock Ride object for preview
+    Text("Preview - Add mock data")
+}

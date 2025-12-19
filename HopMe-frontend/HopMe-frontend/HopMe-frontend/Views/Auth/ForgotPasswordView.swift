@@ -95,3 +95,6 @@ struct ForgotPasswordView: View {
         showSuccess = true
     }
 }
+#Preview("Forgot Password View") {
+    ForgotPasswordView()
+}

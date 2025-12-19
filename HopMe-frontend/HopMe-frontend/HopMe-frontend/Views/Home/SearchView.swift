@@ -212,3 +212,8 @@ struct SearchView: View {
         await viewModel.search()
     }
 }
+#Preview("Search View") {
+    NavigationView {
+        SearchView()
+    }
+}

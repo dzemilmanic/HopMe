@@ -431,3 +431,9 @@ struct ProfileView: View {
             .padding(.top, 8)
     }
 }
+#Preview("Profile View") {
+    NavigationView {
+        ProfileView()
+            .environmentObject(AuthViewModel())
+    }
+}
