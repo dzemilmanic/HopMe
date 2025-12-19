@@ -7,7 +7,7 @@ struct TestimonialCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            RatingStars(rating: Double(rating), size: 14)
+            RatingStars(rating: Double(rating))
             
             Text(text)
                 .font(.subheadline)

@@ -26,7 +26,7 @@ class AuthService {
         firstName: String,
         lastName: String,
         phone: String
-    ) async throws -> [String: Any] {
+    ) async throws -> RegisterResponse {
         
         let request = RegisterRequest(
             email: email,
@@ -56,7 +56,7 @@ class AuthService {
         brand: String?,
         model: String?,
         vehicleImages: [Data]
-    ) async throws -> [String: Any] {
+    ) async throws -> RegisterResponse {
         
         let parameters: [String: Any] = [
             "email": email,

@@ -22,7 +22,7 @@ class CreateRideViewModel: ObservableObject {
     @Published var selectedLuggage = "Srednji"
     
     // Waypoints
-    @Published var waypoints: [WaypointInput] = []
+    @Published var waypoints: [WaypointData] = []
     
     @Published var isLoading = false
     @Published var errorMessage: String?
@@ -109,7 +109,7 @@ class CreateRideViewModel: ObservableObject {
     }
     
     func addWaypoint() {
-        waypoints.append(WaypointInput(location: "", estimatedTime: nil))
+        waypoints.append(WaypointData(location: "", estimatedTime: nil))
     }
     
     func removeWaypoint(at index: Int) {
