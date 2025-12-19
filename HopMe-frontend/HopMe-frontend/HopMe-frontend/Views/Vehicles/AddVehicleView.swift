@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 
 struct AddVehicleView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @StateObject private var viewModel = AddVehicleViewModel()
     let onComplete: () -> Void
     

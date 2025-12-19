@@ -5,7 +5,7 @@ import UIKit
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var images: [UIImage]
     let maxImages: Int
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var config = PHPickerConfiguration()

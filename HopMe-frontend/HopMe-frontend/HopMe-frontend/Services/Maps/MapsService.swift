@@ -27,13 +27,15 @@ class MapsService {
         waypoints: [Coordinate]? = nil
     ) async throws -> Route {
         
-        let body: [String: Any] = [
-            "startLat": startLat,
-            "startLng": startLng,
-            "endLat": endLat,
-            "endLng": endLng,
-            "waypoints": waypoints?.map { ["lat": $0.lat, "lng": $0.lng] } ?? []
-        ]
+        let body = RouteRequest(
+            startLat: startLat,
+            startLng: startLng,
+            endLat: endLat,
+            endLng: endLng,
+            waypoints: waypoints?.map {
+                RouteWaypoint(lat: $0.lat, lng: $0.lng)
+            } ?? []
+        )
         
         return try await api.request(
             endpoint: .route,
@@ -41,6 +43,8 @@ class MapsService {
             body: body
         )
     }
+
+
     
     func calculateDistance(
         lat1: Double,
@@ -70,3 +74,17 @@ struct DistanceResponse: Codable {
     let distance: String
     let distanceKm: Double
 }
+
+struct RouteRequest: Encodable {
+    let startLat: Double
+    let startLng: Double
+    let endLat: Double
+    let endLng: Double
+    let waypoints: [RouteWaypoint]
+}
+
+struct RouteWaypoint: Encodable {
+    let lat: Double
+    let lng: Double
+}
+

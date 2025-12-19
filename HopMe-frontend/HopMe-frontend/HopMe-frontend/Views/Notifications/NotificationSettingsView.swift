@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NotificationSettingsView: View {
     
-    @Environment(\.dismiss) private var dismiss
+    @SwiftUI.Environment(\.dismiss) private var dismiss
     
     @AppStorage("notifications_new_booking") private var newBooking = true
     @AppStorage("notifications_booking_accepted") private var bookingAccepted = true

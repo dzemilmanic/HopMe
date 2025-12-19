@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct EditProfileView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: EditProfileViewModel
     let onUpdate: () -> Void
     

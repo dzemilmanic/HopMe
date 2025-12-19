@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @AppStorage("notifications_enabled") private var notificationsEnabled = true
     @AppStorage("email_notifications") private var emailNotifications = true
     @AppStorage("push_notifications") private var pushNotifications = true

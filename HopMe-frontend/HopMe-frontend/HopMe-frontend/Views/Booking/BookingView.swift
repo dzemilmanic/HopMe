@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BookingView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: BookingViewModel
     @State private var showSuccess = false
     

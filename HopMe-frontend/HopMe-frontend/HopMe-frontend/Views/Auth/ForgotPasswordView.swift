@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ForgotPasswordView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @State private var email = ""
     @State private var isLoading = false
     @State private var showSuccess = false

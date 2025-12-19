@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @StateObject private var viewModel = SearchViewModel()
     @State private var showFilters = false
     

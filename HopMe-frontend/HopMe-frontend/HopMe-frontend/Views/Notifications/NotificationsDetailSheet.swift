@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct NotificationDetailSheet: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     let notification: NotificationModel
     
     var body: some View {

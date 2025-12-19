@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct CreateRideView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @StateObject private var viewModel = CreateRideViewModel()
     @StateObject private var vehicleViewModel = VehicleListViewModel()
     @State private var currentStep = 1

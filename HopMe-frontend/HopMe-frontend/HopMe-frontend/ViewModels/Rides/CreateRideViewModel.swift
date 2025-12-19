@@ -117,8 +117,3 @@ class CreateRideViewModel: ObservableObject {
     }
 }
 
-struct WaypointInput: Identifiable {
-    let id = UUID()
-    var location: String
-    var estimatedTime: Date?
-}

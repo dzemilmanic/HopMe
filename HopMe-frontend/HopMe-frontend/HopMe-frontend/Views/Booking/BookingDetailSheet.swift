@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BookingDetailSheet: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: BookingDetailViewModel
     let onUpdate: () -> Void
     

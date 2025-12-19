@@ -4,7 +4,7 @@ import SwiftUI
 import Combine
 
 struct RegisterView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @StateObject private var viewModel = RegisterViewModel()
     @State private var currentStep = 1
     @State private var showImagePicker = false

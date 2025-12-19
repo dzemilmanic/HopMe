@@ -33,7 +33,7 @@ struct WaypointRow: View {
                     .fontWeight(.medium)
                 
                 if let estimatedTime = waypoint.estimatedTime {
-                    Text(estimatedTime.formatted(time: .shortened))
+                    Text(estimatedTime.formatted(date: .omitted, time: .shortened))
                         .font(.caption)
                         .foregroundColor(.gray)
                 }

@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftUI
 
 struct VehiclesView: View {
-    @Environment(\.dismiss) private var dismiss
+    @SwiftUI.Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = VehicleListViewModel()
     @State private var showAddVehicle = false
     @State private var vehicleToDelete: Vehicle?
