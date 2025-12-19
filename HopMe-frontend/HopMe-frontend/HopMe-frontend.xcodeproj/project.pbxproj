@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		8B0A2B172EF596FB00104518 /* HopMe-frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HopMe-frontend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B0A2B172EF596FB00104518 /* HopMe-frontend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "HopMe-frontend.app"; path = "/Users/user290734/Documents/HopMe/HopMe-frontend/HopMe-frontend/build/Debug-iphoneos/HopMe-frontend.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,16 +33,7 @@
 			isa = PBXGroup;
 			children = (
 				8B0A2B192EF596FB00104518 /* HopMe-frontend */,
-				8B0A2B182EF596FB00104518 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		8B0A2B182EF596FB00104518 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				8B0A2B172EF596FB00104518 /* HopMe-frontend.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -95,7 +86,7 @@
 			mainGroup = 8B0A2B0E2EF596FB00104518;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 8B0A2B182EF596FB00104518 /* Products */;
+			productRefGroup = 8B0A2B0E2EF596FB00104518;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
