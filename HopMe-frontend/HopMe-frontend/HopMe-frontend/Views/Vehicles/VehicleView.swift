@@ -1,14 +1,15 @@
 import SwiftUI
+import SwiftUI
 
 struct VehiclesView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = VehicleListViewModel()
     @State private var showAddVehicle = false
     @State private var vehicleToDelete: Vehicle?
     @State private var showDeleteAlert = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 if viewModel.isLoading {
                     LoadingView(message: "Učitavanje vozila...")
@@ -36,13 +37,13 @@ struct VehiclesView: View {
             .navigationTitle("Moja vozila")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button("Zatvori") {
                         dismiss()
                     }
                 }
                 
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { showAddVehicle = true }) {
                         Image(systemName: "plus")
                     }
@@ -94,6 +95,6 @@ struct VehiclesView: View {
     }
 }
 
-#Preview("Vehicles View") {
+#Preview {
     VehiclesView()
 }

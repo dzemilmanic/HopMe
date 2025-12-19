@@ -1,5 +1,7 @@
 import SwiftUI
 import PhotosUI
+import SwiftUI
+import Combine
 
 struct RegisterView: View {
     @Environment(\.dismiss) var dismiss
