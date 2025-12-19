@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct NotificationSettingsView: View {
-    @Environment(\.dismiss) var dismiss
+    
+    @Environment(\.dismiss) private var dismiss
+    
     @AppStorage("notifications_new_booking") private var newBooking = true
     @AppStorage("notifications_booking_accepted") private var bookingAccepted = true
     @AppStorage("notifications_booking_rejected") private var bookingRejected = true
@@ -43,12 +45,15 @@ struct NotificationSettingsView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Gotovo") {
                         dismiss()
+
                     }
                 }
             }
         }
     }
 }
-#Preview("Notification Settings") {
-    NotificationSettingsView()
+struct NotificationSettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        NotificationSettingsView()
+    }
 }
