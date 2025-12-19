@@ -1,24 +1,37 @@
-//
-//  ContentView.swift
-//  HopMe-frontend
-//
-//  Created by user290734 on 12/19/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @State private var showSplash = true
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            if showSplash {
+                SplashView()
+                    .transition(.opacity)
+            } else {
+                if authViewModel.isAuthenticated {
+                    MainTabView()
+                        .transition(.opacity)
+                } else {
+                    NavigationView {
+                        LoginView()
+                    }
+                    .transition(.opacity)
+                }
+            }
         }
-        .padding()
+        .onAppear {
+            // Show splash for 2 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    showSplash = false
+                }
+            }
+        }
     }
 }
-
-#Preview {
+#Preview("Content View") {
     ContentView()
+        .environmentObject(AuthViewModel())
 }
