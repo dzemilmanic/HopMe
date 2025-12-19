@@ -64,3 +64,4 @@ playground.xcworkspace
 *.log
 .DS_Store
 *.xcuserstate
+.DS_Store
