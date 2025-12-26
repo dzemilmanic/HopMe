@@ -55,7 +55,8 @@ class Ride {
         ) as driver,
         json_build_object(
           'id', v.id,
-          'type', v.vehicle_type,
+          'userId', v.user_id,
+          'vehicleType', v.vehicle_type,
           'brand', v.brand,
           'model', v.model,
           'year', v.year,
@@ -107,10 +108,13 @@ class Ride {
         ) as driver,
         json_build_object(
           'id', v.id,
-          'type', v.vehicle_type,
+          'userId', v.user_id,
+          'vehicleType', v.vehicle_type,
           'brand', v.brand,
           'model', v.model,
-          'color', v.color
+          'year', v.year,
+          'color', v.color,
+          'seats', v.seats
         ) as vehicle,
         (r.available_seats - COALESCE(
           (SELECT SUM(seats_booked) 
@@ -172,9 +176,13 @@ class Ride {
         r.*,
         json_build_object(
           'id', v.id,
-          'type', v.vehicle_type,
+          'userId', v.user_id,
+          'vehicleType', v.vehicle_type,
           'brand', v.brand,
-          'model', v.model
+          'model', v.model,
+          'year', v.year,
+          'color', v.color,
+          'seats', v.seats
         ) as vehicle,
         (r.available_seats - COALESCE(
           (SELECT SUM(seats_booked) 
