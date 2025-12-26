@@ -90,7 +90,7 @@ class VehicleService {
     
     func deleteVehicleImage(vehicleId: Int, imageId: Int) async throws {
         let _: EmptyResponse = try await api.request(
-            endpoint: .vehicleImage(vehicleId: vehicleId, imageId: imageId),
+            endpoint: .deleteVehicleImage(vehicleId: vehicleId, imageId: imageId),
             method: .delete,
             requiresAuth: true
         )
