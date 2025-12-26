@@ -52,9 +52,11 @@ class RegisterViewModel: ObservableObject {
         
         do {
             if isDriver {
+                print("🚗 Registering driver...")
                 let imageData = vehicleImages.compactMap { $0.jpegData(compressionQuality: 0.7) }
+                print("📸 Images count: \(imageData.count)")
                 
-                _ = try await AuthService.shared.registerDriver(
+                let response = try await AuthService.shared.registerDriver(
                     email: email,
                     password: password,
                     firstName: firstName,
@@ -65,14 +67,21 @@ class RegisterViewModel: ObservableObject {
                     model: model.isEmpty ? nil : model,
                     vehicleImages: imageData
                 )
+                
+                print("✅ Driver registration successful: \(response.message)")
+                
             } else {
-                _ = try await AuthService.shared.registerPassenger(
+                print("👤 Registering passenger...")
+                
+                let response = try await AuthService.shared.registerPassenger(
                     email: email,
                     password: password,
                     firstName: firstName,
                     lastName: lastName,
                     phone: phone
                 )
+                
+                print("✅ Passenger registration successful: \(response.message)")
             }
             
             successMessage = "Registracija uspešna! Proverite email."
@@ -80,11 +89,17 @@ class RegisterViewModel: ObservableObject {
             return true
             
         } catch let error as APIError {
-            errorMessage = error.errorDescription
+            print("❌ APIError occurred: \(error)")
+            print("❌ Error description: \(error.errorDescription ?? "No description")")
+            errorMessage = error.errorDescription ?? "Greška pri registraciji"
             isLoading = false
             return false
+            
         } catch {
-            errorMessage = "Greška pri registraciji"
+            print("❌ Unknown error occurred: \(error)")
+            print("❌ Error type: \(type(of: error))")
+            print("❌ Error localized: \(error.localizedDescription)")
+            errorMessage = "Greška pri registraciji: \(error.localizedDescription)"
             isLoading = false
             return false
         }
