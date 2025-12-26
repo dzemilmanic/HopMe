@@ -1,5 +1,14 @@
 import nodemailer from 'nodemailer';
 
+// Log email configuration status on startup
+console.log('📧 Email Service Configuration:');
+console.log('   HOST:', process.env.EMAIL_HOST || '❌ NOT SET');
+console.log('   PORT:', process.env.EMAIL_PORT || '❌ NOT SET');
+console.log('   USER:', process.env.EMAIL_USER ? '✅ SET' : '❌ NOT SET');
+console.log('   PASS:', process.env.EMAIL_PASS ? '✅ SET' : '❌ NOT SET');
+console.log('   FROM:', process.env.EMAIL_FROM || '❌ NOT SET');
+console.log('   FRONTEND_URL:', process.env.FRONTEND_URL || '❌ NOT SET');
+
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: process.env.EMAIL_PORT,
@@ -10,8 +19,19 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+// Verify transporter connection on startup
+transporter.verify((error, success) => {
+  if (error) {
+    console.error('❌ Email transporter verification failed:', error.message);
+  } else {
+    console.log('✅ Email transporter is ready to send emails');
+  }
+});
+
 class EmailService {
   static async sendVerificationEmail(email, token, firstName) {
+    console.log(`📧 Attempting to send verification email to: ${email}`);
+    
     const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
     
     const mailOptions = {
@@ -35,10 +55,22 @@ class EmailService {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      const result = await transporter.sendMail(mailOptions);
+      console.log(`✅ Verification email sent successfully to: ${email}`);
+      console.log(`   Message ID: ${result.messageId}`);
+      return result;
+    } catch (error) {
+      console.error(`❌ Failed to send verification email to: ${email}`);
+      console.error(`   Error: ${error.message}`);
+      console.error(`   Code: ${error.code}`);
+      throw error;
+    }
   }
 
   static async sendApprovalEmail(email, firstName, isApproved) {
+    console.log(`📧 Attempting to send approval email to: ${email} (approved: ${isApproved})`);
+    
     const subject = isApproved 
       ? 'HopMe - Vaš nalog je odobren!' 
       : 'HopMe - Status vašeg naloga';
@@ -67,10 +99,20 @@ class EmailService {
       html: message + '<br><p>Srdačan pozdrav,<br>HopMe Tim</p>'
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      const result = await transporter.sendMail(mailOptions);
+      console.log(`✅ Approval email sent successfully to: ${email}`);
+      return result;
+    } catch (error) {
+      console.error(`❌ Failed to send approval email to: ${email}`);
+      console.error(`   Error: ${error.message}`);
+      throw error;
+    }
   }
 
   static async sendPasswordResetEmail(email, token, firstName) {
+    console.log(`📧 Attempting to send password reset email to: ${email}`);
+    
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
     
     const mailOptions = {
@@ -93,7 +135,15 @@ class EmailService {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    try {
+      const result = await transporter.sendMail(mailOptions);
+      console.log(`✅ Password reset email sent successfully to: ${email}`);
+      return result;
+    } catch (error) {
+      console.error(`❌ Failed to send password reset email to: ${email}`);
+      console.error(`   Error: ${error.message}`);
+      throw error;
+    }
   }
 }
 
