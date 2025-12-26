@@ -173,6 +173,17 @@ class AuthController {
         user.roles
       );
 
+      // Parse PostgreSQL array string to proper array
+      // PostgreSQL returns "{putnik}" but iOS expects ["putnik"]
+      const parseRoles = (roles) => {
+        if (Array.isArray(roles)) return roles;
+        if (typeof roles === 'string') {
+          // Remove curly braces and split by comma
+          return roles.replace(/[{}]/g, '').split(',').filter(r => r.trim());
+        }
+        return [];
+      };
+
       res.json({
         token,
         user: {
@@ -181,7 +192,7 @@ class AuthController {
           firstName: user.first_name,
           lastName: user.last_name,
           phone: user.phone,
-          roles: user.roles
+          roles: parseRoles(user.roles)
         }
       });
     } catch (error) {
