@@ -114,4 +114,32 @@ struct NotificationModel: Codable, Identifiable {
             data = nil
         }
     }
+    
+    // Manual encoding implementation
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(id, forKey: .id)
+        try container.encode(userId, forKey: .userId)
+        try container.encode(type, forKey: .type)
+        try container.encode(title, forKey: .title)
+        try container.encode(message, forKey: .message)
+        try container.encode(isRead, forKey: .isRead)
+        
+        // Encode Date as ISO8601 string
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let dateString = formatter.string(from: createdAt)
+        try container.encode(dateString, forKey: .createdAt)
+        
+        // Encode data dictionary if present
+        if let data = data {
+             var dataContainer = container.nestedContainer(keyedBy: DynamicCodingKeys.self, forKey: .data)
+             for (key, value) in data {
+                 if let dynamicKey = DynamicCodingKeys(stringValue: key) {
+                     try dataContainer.encode(value, forKey: dynamicKey)
+                 }
+             }
+        }
+    }
 }
