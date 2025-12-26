@@ -130,6 +130,15 @@ class Booking {
       SELECT 
         b.*,
         json_build_object(
+          'id', p.id,
+          'firstName', p.first_name,
+          'lastName', p.last_name,
+          'phone', p.phone,
+          'profileImage', p.profile_image_url,
+          'averageRating', COALESCE(pr.average_rating, 0),
+          'totalRatings', COALESCE(pr.total_ratings, 0)
+        ) as passenger,
+        json_build_object(
           'id', r.id,
           'departureLocation', r.departure_location,
           'arrivalLocation', r.arrival_location,
@@ -151,9 +160,11 @@ class Booking {
           )
         ) as ride
       FROM bookings b
+      JOIN users p ON b.passenger_id = p.id
       JOIN rides r ON b.ride_id = r.id
       JOIN users d ON r.driver_id = d.id
       LEFT JOIN vehicles v ON r.vehicle_id = v.id
+      LEFT JOIN user_ratings pr ON p.id = pr.user_id
       LEFT JOIN user_ratings dr ON d.id = dr.user_id
       WHERE b.passenger_id = $1
       ORDER BY r.departure_time DESC
