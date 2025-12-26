@@ -53,7 +53,7 @@ struct VehicleCard: View {
                     
                     Spacer()
                     
-                    if vehicle.isActive {
+                    if vehicle.isActive == true {
                         HStack(spacing: 4) {
                             Circle()
                                 .fill(Color.green)
@@ -91,7 +91,7 @@ struct VehicleCard: View {
                     Image(systemName: "person.fill")
                         .foregroundColor(.blue)
                         .font(.caption)
-                    Text("\(vehicle.seats) sedišta")
+                    Text("\(vehicle.seats ?? 4) sedišta")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
