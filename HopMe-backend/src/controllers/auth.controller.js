@@ -33,11 +33,9 @@ class AuthController {
         'email_verification'
       );
 
-      await EmailService.sendVerificationEmail(
-        email, 
-        verificationToken.token, 
-        firstName
-      );
+      // Fire-and-forget email sending - don't block response
+      EmailService.sendVerificationEmail(email, verificationToken.token, firstName)
+        .catch(err => console.error('Failed to send verification email:', err));
 
       res.status(201).json({
         message: 'Registracija uspešna. Proverite email za verifikaciju.',
@@ -97,11 +95,9 @@ class AuthController {
         'email_verification'
       );
 
-      await EmailService.sendVerificationEmail(
-        email, 
-        verificationToken.token, 
-        firstName
-      );
+      // Fire-and-forget email sending - don't block response
+      EmailService.sendVerificationEmail(email, verificationToken.token, firstName)
+        .catch(err => console.error('Failed to send verification email:', err));
 
       res.status(201).json({
         message: 'Registracija vozača uspešna. Proverite email za verifikaciju.',

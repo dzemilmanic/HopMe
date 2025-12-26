@@ -67,10 +67,30 @@ class APIService {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            return try decoder.decode(T.self, from: data)
+            do {
+                return try decoder.decode(T.self, from: data)
+            } catch {
+                #if DEBUG
+                print("❌ Decoding error: \(error)")
+                #endif
+                throw APIError.decodingError
+            }
             
         case 401:
             TokenManager.shared.clearToken()
+            throw APIError.unauthorized
+            
+        case 403:
+            // Check for specific 403 messages
+            if let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
+                let message = errorResponse.message.lowercased()
+                if message.contains("email") && message.contains("verifikovan") {
+                    throw APIError.emailNotVerified
+                } else if message.contains("odobrenje") || message.contains("čeka") {
+                    throw APIError.accountPending
+                }
+                throw APIError.clientError(errorResponse.message)
+            }
             throw APIError.unauthorized
             
         case 400...499:
@@ -185,6 +205,10 @@ enum APIError: LocalizedError {
     case serverError
     case uploadFailed
     case decodingError
+    case timeout
+    case networkError
+    case emailNotVerified
+    case accountPending
     case unknown
     
     var errorDescription: String? {
@@ -205,6 +229,14 @@ enum APIError: LocalizedError {
             return "Upload nije uspeo"
         case .decodingError:
             return "Greška pri parsiranju podataka"
+        case .timeout:
+            return "Zahtev je istekao. Proverite internet konekciju."
+        case .networkError:
+            return "Greška mreže. Proverite internet konekciju."
+        case .emailNotVerified:
+            return "Email nije verifikovan. Proverite vaš inbox."
+        case .accountPending:
+            return "Vaš nalog čeka odobrenje administratora."
         case .unknown:
             return "Nepoznata greška"
         }
