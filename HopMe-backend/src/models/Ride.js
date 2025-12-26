@@ -175,6 +175,14 @@ class Ride {
       SELECT 
         r.*,
         json_build_object(
+          'id', d.id,
+          'firstName', d.first_name,
+          'lastName', d.last_name,
+          'profileImage', d.profile_image_url,
+          'averageRating', COALESCE(ds.average_rating, 0),
+          'totalRatings', COALESCE(ds.total_ratings, 0)
+        ) as driver,
+        json_build_object(
           'id', v.id,
           'userId', v.user_id,
           'vehicleType', v.vehicle_type,
@@ -191,7 +199,9 @@ class Ride {
         )) as remaining_seats,
         (SELECT COUNT(*) FROM bookings WHERE ride_id = r.id AND status = 'pending') as pending_bookings
       FROM rides r
+      JOIN users d ON r.driver_id = d.id
       LEFT JOIN vehicles v ON r.vehicle_id = v.id
+      LEFT JOIN driver_stats ds ON d.id = ds.driver_id
       WHERE r.driver_id = $1
       ORDER BY r.departure_time DESC
     `;
