@@ -3,6 +3,7 @@ import SwiftUI
 struct VehicleCard: View {
     let vehicle: Vehicle
     let onDelete: () -> Void
+    @State private var showEditSheet = false
     
     var body: some View {
         VStack(spacing: 12) {
@@ -100,7 +101,7 @@ struct VehicleCard: View {
             // Actions
             HStack(spacing: 12) {
                 Button(action: {
-                    // TODO: Edit vehicle
+                    showEditSheet = true
                 }) {
                     HStack {
                         Image(systemName: "pencil")
@@ -132,5 +133,10 @@ struct VehicleCard: View {
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+        .sheet(isPresented: $showEditSheet) {
+            EditVehicleView(vehicle: vehicle, onComplete: {
+                // Refresh list if needed, usually handled by parent view model
+            })
+        }
     }
 }

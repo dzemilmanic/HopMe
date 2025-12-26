@@ -97,3 +97,17 @@ struct VehicleResponse: Codable {
     let message: String?
 }
 
+struct VehicleImagesResponse: Codable {
+    let images: [VehicleImage]
+    let message: String?
+}
+
+struct VehicleUpdateRequest: Encodable {
+    let vehicleType: String
+    let brand: String
+    let model: String
+    let year: Int
+    let color: String
+    let licensePlate: String
+}
+

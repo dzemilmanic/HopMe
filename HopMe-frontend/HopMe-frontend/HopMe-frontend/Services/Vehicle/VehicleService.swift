@@ -50,4 +50,49 @@ class VehicleService {
             requiresAuth: true
         )
     }
+    
+    func updateVehicle(
+        id: Int,
+        vehicleType: String,
+        brand: String?,
+        model: String?,
+        year: Int?,
+        color: String?,
+        licensePlate: String?
+    ) async throws -> Vehicle {
+        let body = VehicleUpdateRequest(
+            vehicleType: vehicleType,
+            brand: brand ?? "",
+            model: model ?? "",
+            year: year ?? 0,
+            color: color ?? "",
+            licensePlate: licensePlate ?? ""
+        )
+        
+        let response: VehicleResponse = try await api.request(
+            endpoint: .vehicle(id: id),
+            method: .put,
+            body: body,
+            requiresAuth: true
+        )
+        
+        return response.vehicle
+    }
+    
+    func addVehicleImages(vehicleId: Int, images: [Data]) async throws -> [VehicleImage] {
+        let response: VehicleImagesResponse = try await api.uploadImage(
+            endpoint: .vehicleImages(vehicleId: vehicleId),
+            images: images,
+            requiresAuth: true
+        )
+        return response.images
+    }
+    
+    func deleteVehicleImage(vehicleId: Int, imageId: Int) async throws {
+        let _: EmptyResponse = try await api.request(
+            endpoint: .vehicleImage(vehicleId: vehicleId, imageId: imageId),
+            method: .delete,
+            requiresAuth: true
+        )
+    }
 }
