@@ -57,10 +57,7 @@ class RideController {
         ride: rideWithDetails
       });
     } catch (error) {
-      console.error('❌ Greška pri kreiranju vožnje:', error);
-      console.error('   Error message:', error.message);
-      console.error('   Error code:', error.code);
-      console.error('   Error detail:', error.detail);
+      console.error('Greška pri kreiranju vožnje:', error);
       res.status(500).json({ message: 'Greška pri kreiranju vožnje' });
     }
   }
