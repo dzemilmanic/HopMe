@@ -31,6 +31,18 @@ struct NotificationModel: Codable, Identifiable {
         init?(intValue: Int) { return nil }
     }
 
+    // Manual memberwise initializer
+    init(id: Int, userId: Int, type: NotificationType, title: String, message: String, data: [String: String]? = nil, isRead: Bool, createdAt: Date) {
+        self.id = id
+        self.userId = userId
+        self.type = type
+        self.title = title
+        self.message = message
+        self.data = data
+        self.isRead = isRead
+        self.createdAt = createdAt
+    }
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
