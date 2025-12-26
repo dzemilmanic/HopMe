@@ -177,12 +177,12 @@ class Booking {
     }
 
     if (driverResponse) {
-      query += `, driver_response = ${paramIndex}`;
+      query += `, driver_response = $${paramIndex}`;
       values.push(driverResponse);
       paramIndex++;
     }
 
-    query += ` WHERE id = ${paramIndex} RETURNING *`;
+    query += ` WHERE id = $${paramIndex} RETURNING *`;
     values.push(bookingId);
 
     const result = await pool.query(query, values);
