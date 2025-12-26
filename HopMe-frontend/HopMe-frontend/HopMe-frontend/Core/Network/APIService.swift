@@ -12,6 +12,8 @@ class APIService {
         self.baseURL = Environment.current.baseURL
         
         let configuration = URLSessionConfiguration.default
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        configuration.urlCache = nil
         configuration.timeoutIntervalForRequest = 30
         configuration.timeoutIntervalForResource = 300
         self.session = URLSession(configuration: configuration)
