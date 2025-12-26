@@ -15,8 +15,18 @@ class RideController {
         allowSmoking, allowPets, maxTwoInBack, luggageSize, waypoints
       } = req.body;
 
+      console.log('📝 Create Ride Request:');
+      console.log('   driverId:', driverId);
+      console.log('   vehicleId:', vehicleId);
+      console.log('   departureTime:', departureTime);
+      console.log('   departureLocation:', departureLocation);
+      console.log('   arrivalLocation:', arrivalLocation);
+
       // Provera da li vozilo pripada vozaču
       const vehicle = await Vehicle.findById(vehicleId);
+      console.log('   vehicle found:', vehicle ? 'YES' : 'NO');
+      console.log('   vehicle.user_id:', vehicle?.user_id);
+      
       if (!vehicle || vehicle.user_id !== driverId) {
         return res.status(403).json({ message: 'Nemate pristup ovom vozilu' });
       }
@@ -27,6 +37,8 @@ class RideController {
         availableSeats, pricePerSeat, description, autoAcceptBookings,
         allowSmoking, allowPets, maxTwoInBack, luggageSize
       });
+
+      console.log('   ride created:', ride?.id);
 
       // Dodavanje međupostaja ako postoje
       if (waypoints && waypoints.length > 0) {
@@ -45,7 +57,10 @@ class RideController {
         ride: rideWithDetails
       });
     } catch (error) {
-      console.error('Greška pri kreiranju vožnje:', error);
+      console.error('❌ Greška pri kreiranju vožnje:', error);
+      console.error('   Error message:', error.message);
+      console.error('   Error code:', error.code);
+      console.error('   Error detail:', error.detail);
       res.status(500).json({ message: 'Greška pri kreiranju vožnje' });
     }
   }
