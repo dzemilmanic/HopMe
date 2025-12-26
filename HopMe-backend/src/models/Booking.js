@@ -86,10 +86,37 @@ class Booking {
           'profileImage', p.profile_image_url,
           'averageRating', COALESCE(pr.average_rating, 0),
           'totalRatings', COALESCE(pr.total_ratings, 0)
-        ) as passenger
+        ) as passenger,
+        json_build_object(
+          'id', r.id,
+          'departureLocation', r.departure_location,
+          'arrivalLocation', r.arrival_location,
+          'departureTime', r.departure_time,
+          'pricePerSeat', r.price_per_seat,
+          'driverId', r.driver_id,
+          'status', r.status,
+          'driver', json_build_object(
+            'id', d.id,
+            'firstName', d.first_name,
+            'lastName', d.last_name,
+            'phone', d.phone,
+            'profileImage', d.profile_image_url,
+            'averageRating', COALESCE(dr.average_rating, 0)
+          ),
+          'vehicle', json_build_object(
+            'type', v.vehicle_type,
+            'brand', v.brand,
+            'model', v.model,
+            'color', v.color
+          )
+        ) as ride
       FROM bookings b
       JOIN users p ON b.passenger_id = p.id
+      JOIN rides r ON b.ride_id = r.id
+      JOIN users d ON r.driver_id = d.id
+      LEFT JOIN vehicles v ON r.vehicle_id = v.id
       LEFT JOIN user_ratings pr ON p.id = pr.user_id
+      LEFT JOIN user_ratings dr ON d.id = dr.user_id
       WHERE b.ride_id = $1
       ORDER BY b.created_at DESC
     `;
