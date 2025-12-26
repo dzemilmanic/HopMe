@@ -192,7 +192,7 @@ class RideController {
           type: 'ride_cancelled',
           title: 'Vožnja otkazana',
           message: `Vožnja ${ride.departure_location} → ${ride.arrival_location} je otkazana od strane vozača`,
-          data: { rideId: ride.id, bookingId: booking.id }
+          data: { rideId: String(ride.id), bookingId: String(booking.id) }
         });
       }
 
@@ -295,7 +295,7 @@ class RideController {
           type: 'ride_completed',
           title: 'Vožnja završena',
           message: 'Vožnja je uspešno završena. Molimo ocenite vozača.',
-          data: { rideId }
+          data: { rideId: String(rideId) }
         });
       }
 

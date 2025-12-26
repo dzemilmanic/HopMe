@@ -55,7 +55,7 @@ class BookingController {
           type: 'booking_accepted',
           title: 'Rezervacija prihvaćena',
           message: `Vaša rezervacija za vožnju ${ride.departure_location} → ${ride.arrival_location} je automatski prihvaćena`,
-          data: { bookingId: booking.id, rideId }
+          data: { bookingId: String(booking.id), rideId: String(rideId) }
         });
       } else {
         // Notifikacija vozaču
@@ -64,7 +64,7 @@ class BookingController {
           type: 'new_booking',
           title: 'Nova rezervacija',
           message: `Imate novu rezervaciju za vožnju ${ride.departure_location} → ${ride.arrival_location}`,
-          data: { bookingId: booking.id, rideId }
+          data: { bookingId: String(booking.id), rideId: String(rideId) }
         });
       }
 
@@ -163,7 +163,7 @@ class BookingController {
         type: 'booking_accepted',
         title: 'Rezervacija prihvaćena',
         message: `Vaša rezervacija je prihvaćena za vožnju ${booking.ride.departureLocation} → ${booking.ride.arrivalLocation}`,
-        data: { bookingId, rideId: booking.ride.id }
+        data: { bookingId: String(bookingId), rideId: String(booking.ride.id) }
       });
 
       res.json({ message: 'Rezervacija prihvaćena' });
@@ -205,7 +205,7 @@ class BookingController {
         type: 'booking_rejected',
         title: 'Rezervacija odbijena',
         message: `Vaša rezervacija za vožnju ${booking.ride.departureLocation} → ${booking.ride.arrivalLocation} je odbijena`,
-        data: { bookingId, rideId: booking.ride_id }
+        data: { bookingId: String(bookingId), rideId: String(booking.ride_id) }
       });
 
       res.json({ message: 'Rezervacija odbijena' });
@@ -247,7 +247,7 @@ class BookingController {
         type: 'booking_cancelled',
         title: 'Rezervacija otkazana',
         message: `Putnik je otkazao rezervaciju za vožnju ${ride.departure_location} → ${ride.arrival_location}`,
-        data: { bookingId, rideId: booking.ride_id }
+        data: { bookingId: String(bookingId), rideId: String(booking.ride_id) }
       });
 
       res.json({ message: 'Rezervacija otkazana' });
