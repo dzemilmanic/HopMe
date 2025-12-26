@@ -148,7 +148,7 @@ struct BookingDetailSheet: View {
                 DetailRow(
                     icon: "clock",
                     title: "Vreme polaska",
-                    value: viewModel.booking.ride.departureTime.formatted(time: .shortened)
+                    value: viewModel.booking.ride.departureTime.formatted(date: .long, time: .shortened)
                 )
                 
                 // Seats

@@ -87,7 +87,7 @@ struct RideBookingsListView: View {
                     Text(ride.arrivalLocation)
                         .font(.headline)
                     if let arrivalTime = ride.arrivalTime {
-                        Text(arrivalTime.formatted(time: .shortened))
+                        Text(arrivalTime.formatted(date: .abbreviated, time: .shortened))
                             .font(.caption)
                             .foregroundColor(.gray)
                     }

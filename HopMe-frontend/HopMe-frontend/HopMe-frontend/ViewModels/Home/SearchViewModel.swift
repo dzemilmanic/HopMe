@@ -13,7 +13,15 @@ class SearchViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     
-    @Published var filters = SearchFilters()
+    @Published var filters = SearchFilters(
+        maxPrice: nil,
+        minRating: nil,
+        autoAcceptOnly: false,
+        allowSmoking: false,
+        allowPets: false,
+        luggageSize: nil,
+        vehicleTypes: []
+    )
     @Published var showFilters = false
     
     private let rideService = RideService.shared
@@ -66,11 +74,11 @@ class SearchViewModel: ObservableObject {
             filtered = filtered.filter { $0.autoAcceptBookings }
         }
         
-        if filters.allowPetsOnly {
-            filtered = filtered.filter { $0.allowPets }
+        if !filters.allowPets {
+            filtered = filtered.filter { !$0.allowPets }
         }
         
-        if filters.noSmokingOnly {
+        if !filters.allowSmoking {
             filtered = filtered.filter { !$0.allowSmoking }
         }
         
@@ -86,7 +94,8 @@ struct SearchFilters {
     var maxPrice: Int?
     var minRating: Int?
     var autoAcceptOnly = false
-    var allowPetsOnly = false
-    var noSmokingOnly = false
+    var allowSmoking = false     // Koristi ovo
+    var allowPets = false         // Koristi ovo
+    var luggageSize: String?
     var vehicleTypes: Set<String> = []
 }

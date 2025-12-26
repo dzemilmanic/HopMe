@@ -48,8 +48,7 @@ struct MainTabView: View {
             .tabItem {
                 Label("Poruke", systemImage: "bell.fill")
             }
-            .badge(notificationViewModel.unreadCount > 0 ? notificationViewModel.unreadCount : nil)
-            .tag(3)
+            .badge(notificationViewModel.unreadCount > 0 ? "\(notificationViewModel.unreadCount)" : "")            .tag(3)
             
             // Profile Tab
             NavigationView {

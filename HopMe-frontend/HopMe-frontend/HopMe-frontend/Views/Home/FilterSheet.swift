@@ -139,11 +139,11 @@ struct FilterSheet: View {
 }
 
 // SearchFilters model (if not already defined)
-struct SearchFilters {
-    var maxPrice: Int?
-    var minRating: Int?
-    var autoAcceptOnly: Bool = false
-    var allowSmoking: Bool = false
-    var allowPets: Bool = false
-    var luggageSize: String?
-}
+//struct SearchFilters {
+//    var maxPrice: Int?
+//    var minRating: Int?
+//   var autoAcceptOnly: Bool = false
+//   var allowSmoking: Bool = false
+//    var allowPets: Bool = false
+//    var luggageSize: String?
+//}

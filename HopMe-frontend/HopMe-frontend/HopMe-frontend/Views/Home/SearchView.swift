@@ -12,7 +12,7 @@ struct SearchView: View {
     var passengers: Int = 1
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 0) {	
             // Search Header
             searchHeader
             
@@ -168,24 +168,45 @@ struct SearchView: View {
                 }
                 
                 if viewModel.filters.maxPrice != nil {
-                    FilterChip(title: "Max \(viewModel.filters.maxPrice!)din") {
+                    Button(action: {
                         viewModel.filters.maxPrice = nil
                         viewModel.applyFilters()
+                    }) {
+                        HStack(spacing: 4) {
+                            Text("Max \(viewModel.filters.maxPrice!)din")
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.caption)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.blue.opacity(0.1))
+                        .foregroundColor(.blue)
+                        .cornerRadius(16)
                     }
                 }
                 
                 if viewModel.filters.minRating != nil {
-                    FilterChip(title: "\(viewModel.filters.minRating!)★+") {
-                        viewModel.filters.minRating = nil
-                        viewModel.applyFilters()
-                    }
+                    FilterChip(
+                        title: "\(viewModel.filters.minRating!)★+",
+                        icon: "star.fill",
+                        isSelected: true,
+                        action: {
+                            viewModel.filters.minRating = nil
+                            viewModel.applyFilters()
+                        }
+                    )
                 }
-                
+
                 if viewModel.filters.autoAcceptOnly {
-                    FilterChip(title: "Auto prihvat") {
-                        viewModel.filters.autoAcceptOnly = false
-                        viewModel.applyFilters()
-                    }
+                    FilterChip(
+                        title: "Auto prihvat",
+                        icon: "checkmark.circle.fill",  
+                        isSelected: true,
+                        action: {
+                            viewModel.filters.autoAcceptOnly = false
+                            viewModel.applyFilters()
+                        }
+                    )
                 }
             }
             .padding(.horizontal)

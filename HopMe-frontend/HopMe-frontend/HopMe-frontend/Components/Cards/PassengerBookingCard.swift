@@ -20,7 +20,7 @@ struct PassengerBookingCard: View {
                     
                     Spacer()
                     
-                    Text(booking.ride.departureTime.formatted(date: .abbreviated, time: .omitted))
+                    Text(booking.ride.departureTime.formattedDate())
                         .font(.caption)
                         .foregroundColor(.gray)
                 }
@@ -51,7 +51,7 @@ struct PassengerBookingCard: View {
                     
                     Spacer()
                     
-                    Text(booking.ride.departureTime.formatted(time: .shortened))
+                    Text(booking.ride.departureTime.formattedTime())
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.blue)

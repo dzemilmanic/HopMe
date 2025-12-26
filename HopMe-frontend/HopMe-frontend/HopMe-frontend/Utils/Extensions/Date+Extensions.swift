@@ -9,6 +9,13 @@ extension Date {
         formatter.locale = Locale(identifier: "sr_RS")
         return formatter.string(from: self)
     }
+    	
+    func formattedDate() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy"
+        formatter.locale = Locale(identifier: "sr_RS")
+        return formatter.string(from: self)
+    }
     
     func formattedTime() -> String {
         let formatter = DateFormatter()

@@ -89,7 +89,7 @@ struct RideDetailView: View {
                         .font(.title3)
                         .fontWeight(.bold)
                     
-                    Text(viewModel.ride.departureTime.formatted(time: .shortened))
+                    Text(viewModel.ride.departureTime.formatted(date: .long, time: .omitted))
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
@@ -118,7 +118,7 @@ struct RideDetailView: View {
                         .fontWeight(.bold)
                     
                     if let arrivalTime = viewModel.ride.arrivalTime {
-                        Text(arrivalTime.formatted(time: .shortened))
+                        Text(arrivalTime.formatted(date: .long, time: .shortened))
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }

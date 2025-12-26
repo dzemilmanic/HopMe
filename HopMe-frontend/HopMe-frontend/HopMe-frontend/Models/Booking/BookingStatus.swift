@@ -4,6 +4,7 @@ enum BookingStatus: String, Codable {
     case rejected
     case cancelled
     case completed
+    case all
     
     var displayName: String {
         switch self {
@@ -12,6 +13,7 @@ enum BookingStatus: String, Codable {
         case .rejected: return "Odbijeno"
         case .cancelled: return "Otkazano"
         case .completed: return "Završeno"
+        case .all: return "Sve"
         }
     }
     
@@ -22,6 +24,7 @@ enum BookingStatus: String, Codable {
         case .rejected: return "red"
         case .cancelled: return "gray"
         case .completed: return "blue"
+        case .all: return "blue"
         }
     }
     
@@ -32,6 +35,7 @@ enum BookingStatus: String, Codable {
         case .rejected: return "xmark.circle.fill"
         case .cancelled: return "xmark.octagon.fill"
         case .completed: return "flag.checkered"
+        case .all: return ""
         }
     }
 }

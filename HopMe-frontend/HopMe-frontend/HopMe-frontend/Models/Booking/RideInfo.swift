@@ -28,6 +28,13 @@ struct DriverInfo: Codable {
     var fullName: String {
         "\(firstName) \(lastName)"
     }
+    
+    // Dodaj ovo:
+    var initials: String {
+        let first = String(firstName.prefix(1))
+        let last = String(lastName.prefix(1))
+        return "\(first)\(last)".uppercased()
+    }
 }
 
 struct VehicleInfo: Codable {

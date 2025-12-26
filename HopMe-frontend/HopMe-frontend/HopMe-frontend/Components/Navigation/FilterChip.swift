@@ -2,21 +2,24 @@ import SwiftUI
 
 struct FilterChip: View {
     let title: String
+    let icon: String
+    let isSelected: Bool
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 4) {
-                Text(title)
+            HStack(spacing: 6) {
+                Image(systemName: icon)
                     .font(.caption)
                 
-                Image(systemName: "xmark.circle.fill")
-                    .font(.caption2)
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(Color.blue)
-            .foregroundColor(.white)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(isSelected ? Color.blue : Color(.systemGray6))
+            .foregroundColor(isSelected ? .white : .primary)
             .cornerRadius(20)
         }
     }

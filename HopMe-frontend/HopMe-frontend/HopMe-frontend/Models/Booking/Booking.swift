@@ -11,6 +11,7 @@ struct Booking: Codable, Identifiable {
     let dropoffLocation: String?
     let message: String?
     let driverResponse: String?
+    let passenger: PassengerInfo
     let ride: RideInfo
     let createdAt: Date
     let acceptedAt: Date?
@@ -33,7 +34,7 @@ struct Booking: Codable, Identifiable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case id, status, message, ride
+        case id, status, message, ride, passenger
         case rideId = "ride_id"
         case passengerId = "passenger_id"
         case seatsBooked = "seats_booked"
@@ -44,5 +45,18 @@ struct Booking: Codable, Identifiable {
         case createdAt = "created_at"
         case acceptedAt = "accepted_at"
         case completedAt = "completed_at"
+    }
+}
+
+struct PassengerInfo: Codable {
+    let id: Int
+    let firstName: String
+    let lastName: String
+    let phone: String
+    let profileImage: String?
+    let averageRating: Double
+    
+    var fullName: String {
+        "\(firstName) \(lastName)"
     }
 }

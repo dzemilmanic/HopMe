@@ -115,7 +115,7 @@ struct RideMapView: View {
                             
                             if let time = waypoint.estimatedTime {
                                 Spacer()
-                                Text(time.formatted(time: .shortened))
+                                Text(time.formatted(date: .omitted, time: .shortened))
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }

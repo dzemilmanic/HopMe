@@ -111,12 +111,12 @@ struct NotificationsView: View {
                         title: filter.rawValue,
                         icon: filter.icon,
                         isSelected: selectedFilter == filter,
-                        count: countForFilter(filter)
-                    ) {
-                        withAnimation {
-                            selectedFilter = filter
+                        action: {
+                            withAnimation {
+                                selectedFilter = filter
+                            }
                         }
-                    }
+                    )
                 }
             }
             .padding(.horizontal)

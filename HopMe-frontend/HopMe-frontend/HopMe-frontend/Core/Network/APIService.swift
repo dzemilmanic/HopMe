@@ -88,12 +88,12 @@ class APIService {
     }
     
     // MARK: - Upload Image
-    func uploadImage(
+    func uploadImage<T: Decodable>(
         endpoint: APIEndpoint,
         images: [Data],
         parameters: [String: Any] = [:],
         requiresAuth: Bool = true
-    ) async throws -> [String: Any] {
+    ) async throws -> T {
         
         let url = URL(string: baseURL + endpoint.path)!
         var request = URLRequest(url: url)
@@ -129,12 +129,40 @@ class APIService {
         
         let (data, response) = try await session.data(for: request)
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            throw APIError.uploadFailed
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.invalidResponse
         }
         
-        return try JSONSerialization.jsonObject(with: data) as? [String: Any] ?? [:]
+        #if DEBUG
+        print("📥 Upload Response: \(httpResponse.statusCode)")
+        if let responseString = String(data: data, encoding: .utf8) {
+            print("📦 Data: \(responseString)")
+        }
+        #endif
+        
+        switch httpResponse.statusCode {
+        case 200...299:
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return try decoder.decode(T.self, from: data)
+            
+        case 401:
+            TokenManager.shared.clearToken()
+            throw APIError.unauthorized
+            
+        case 400...499:
+            if let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
+                throw APIError.clientError(errorResponse.message)
+            }
+            throw APIError.badRequest
+            
+        case 500...599:
+            throw APIError.serverError
+            
+        default:
+            throw APIError.uploadFailed
+        }
     }
 }
 
