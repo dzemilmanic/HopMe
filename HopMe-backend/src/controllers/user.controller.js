@@ -15,7 +15,35 @@ class UserController {
 
       delete user.password;
 
-      res.json(user);
+      // Parse PostgreSQL array string to proper array
+      const parseRoles = (roles) => {
+        if (Array.isArray(roles)) return roles;
+        if (typeof roles === 'string') {
+          return roles.replace(/[{}]/g, '').split(',').filter(r => r.trim());
+        }
+        return [];
+      };
+
+      // Format response for iOS - wrap in user object and convert to camelCase
+      res.json({
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          phone: user.phone,
+          dateOfBirth: user.date_of_birth,
+          bio: user.bio,
+          profileImageUrl: user.profile_image_url,
+          roles: parseRoles(user.roles),
+          accountStatus: user.account_status,
+          isEmailVerified: user.is_email_verified,
+          isPhoneVerified: user.is_phone_verified,
+          createdAt: user.created_at,
+          updatedAt: user.updated_at,
+          vehicles: user.vehicles || []
+        }
+      });
     } catch (error) {
       console.error('Greška pri učitavanju profila:', error);
       res.status(500).json({ message: 'Greška pri učitavanju profila' });
