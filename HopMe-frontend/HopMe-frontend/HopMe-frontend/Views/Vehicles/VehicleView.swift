@@ -86,6 +86,11 @@ struct VehiclesView: View {
                         onDelete: {
                             vehicleToDelete = vehicle
                             showDeleteAlert = true
+                        },
+                        onUpdate: {
+                            Task {
+                                await viewModel.loadVehicles()
+                            }
                         }
                     )
                 }
