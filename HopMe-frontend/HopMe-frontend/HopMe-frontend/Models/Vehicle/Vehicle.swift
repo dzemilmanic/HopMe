@@ -43,3 +43,8 @@ struct Vehicle: Codable, Identifiable {
         case isActive = "is_active"
     }
 }
+
+struct VehicleResponse: Codable {
+    let vehicle: Vehicle
+    let message: String?
+}

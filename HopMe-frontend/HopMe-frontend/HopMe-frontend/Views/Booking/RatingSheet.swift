@@ -130,11 +130,14 @@ struct RatingSheet: View {
     }
     
     private func submitRating() {
+        // PRVO postavi rating i comment u viewModel
+        viewModel.rating = rating
+        viewModel.comment = comment
+        
         Task {
             let success = await viewModel.submitRating(
                 bookingId: booking.id,
-                rating: rating,
-                comment: comment.isEmpty ? nil : comment
+                rideId: booking.rideId
             )
             
             if success {

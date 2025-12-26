@@ -23,8 +23,8 @@ class RatingViewModel: ObservableObject {
         let request = RatingRequest(
             bookingId: bookingId,
             rideId: rideId,
-            rating: rating,
-            comment: comment.isEmpty ? nil : comment
+            rating: self.rating,        // ← Koristi self.rating iz @Published
+            comment: self.comment.isEmpty ? nil : self.comment  // ← Koristi self.comment
         )
         
         do {

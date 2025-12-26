@@ -16,11 +16,11 @@ enum Environment {
     var baseURL: String {
         switch self {
         case .development:
-            return "http://localhost:3000/api"
+            return "https://hopme-backend.up.railway.app/api"
         case .staging:
             return "https://staging-api.hopme.rs/api"
         case .production:
-            return "https://api.hopme.rs/api"
+            return "https://hopme-backend.up.railway.app/api"
         }
     }
     

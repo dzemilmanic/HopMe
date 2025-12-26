@@ -120,12 +120,12 @@ struct RideBookingsListView: View {
                         booking: booking,
                         onAccept: {
                             Task {
-                                await viewModel.acceptBooking(id: booking.id)
+                                await viewModel.acceptBooking(id: booking.id, response: nil)  // ← Dodaj response: nil
                             }
                         },
                         onReject: {
                             Task {
-                                await viewModel.rejectBooking(id: booking.id)
+                                await viewModel.rejectBooking(id: booking.id, response: nil)  // ← Dodaj response: nil
                             }
                         }
                     )
