@@ -23,6 +23,7 @@ import cors from 'cors';
 import pool from './src/config/database.js';
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from './src/config/swagger.js';
+import responseTransformer from './src/middleware/responseTransformer.js';
 
 // Routes
 import authRoutes from './src/routes/auth.routes.js';
@@ -46,6 +47,9 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Response Transformer - converts all responses to camelCase and parses PostgreSQL arrays
+app.use('/api', responseTransformer);
 
 // Swagger Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {

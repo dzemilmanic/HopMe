@@ -5,6 +5,7 @@ import VerificationToken from '../models/VerificationToken.js';
 import EmailService from '../services/email.service.js';
 import TokenService from '../services/token.service.js';
 import AzureService from '../services/azure.service.js';
+import { formatUserResponse } from '../utils/responseFormatter.js';
 
 class AuthController {
   // Registracija putnika
@@ -173,27 +174,9 @@ class AuthController {
         user.roles
       );
 
-      // Parse PostgreSQL array string to proper array
-      // PostgreSQL returns "{putnik}" but iOS expects ["putnik"]
-      const parseRoles = (roles) => {
-        if (Array.isArray(roles)) return roles;
-        if (typeof roles === 'string') {
-          // Remove curly braces and split by comma
-          return roles.replace(/[{}]/g, '').split(',').filter(r => r.trim());
-        }
-        return [];
-      };
-
       res.json({
         token,
-        user: {
-          id: user.id,
-          email: user.email,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          phone: user.phone,
-          roles: parseRoles(user.roles)
-        }
+        user: formatUserResponse(user)
       });
     } catch (error) {
       console.error('Greška pri prijavi:', error);

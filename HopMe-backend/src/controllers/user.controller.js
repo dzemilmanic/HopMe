@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import Vehicle from '../models/Vehicle.js';
 import AzureService from '../services/azure.service.js';
 import pool from '../config/database.js';
+import { formatUserResponse, formatVehicleResponse } from '../utils/responseFormatter.js';
 
 class UserController {
   // Dobijanje profila trenutnog korisnika
@@ -15,35 +16,7 @@ class UserController {
 
       delete user.password;
 
-      // Parse PostgreSQL array string to proper array
-      const parseRoles = (roles) => {
-        if (Array.isArray(roles)) return roles;
-        if (typeof roles === 'string') {
-          return roles.replace(/[{}]/g, '').split(',').filter(r => r.trim());
-        }
-        return [];
-      };
-
-      // Format response for iOS - wrap in user object and convert to camelCase
-      res.json({
-        user: {
-          id: user.id,
-          email: user.email,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          phone: user.phone,
-          dateOfBirth: user.date_of_birth,
-          bio: user.bio,
-          profileImageUrl: user.profile_image_url,
-          roles: parseRoles(user.roles),
-          accountStatus: user.account_status,
-          isEmailVerified: user.is_email_verified,
-          isPhoneVerified: user.is_phone_verified,
-          createdAt: user.created_at,
-          updatedAt: user.updated_at,
-          vehicles: user.vehicles || []
-        }
-      });
+      res.json({ user: formatUserResponse(user) });
     } catch (error) {
       console.error('Greška pri učitavanju profila:', error);
       res.status(500).json({ message: 'Greška pri učitavanju profila' });
@@ -60,14 +33,14 @@ class UserController {
         UPDATE users 
         SET first_name = $1, last_name = $2, phone = $3, updated_at = CURRENT_TIMESTAMP
         WHERE id = $4
-        RETURNING id, email, first_name, last_name, phone, roles
+        RETURNING *
       `;
 
       const result = await pool.query(query, [firstName, lastName, phone, userId]);
 
       res.json({
         message: 'Profil uspešno ažuriran',
-        user: result.rows[0]
+        user: formatUserResponse(result.rows[0])
       });
     } catch (error) {
       console.error('Greška pri ažuriranju profila:', error);
