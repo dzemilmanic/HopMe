@@ -163,12 +163,15 @@ class BookingController {
         type: 'booking_accepted',
         title: 'Rezervacija prihvaćena',
         message: `Vaša rezervacija je prihvaćena za vožnju ${booking.ride.departureLocation} → ${booking.ride.arrivalLocation}`,
-        data: { bookingId, rideId: booking.ride_id }
+        data: { bookingId, rideId: booking.ride.id }
       });
 
       res.json({ message: 'Rezervacija prihvaćena' });
     } catch (error) {
-      console.error('Greška pri prihvatanju:', error);
+      console.error('❌ Greška pri prihvatanju rezervacije:', error);
+      console.error('   Error message:', error.message);
+      console.error('   Error code:', error.code);
+      console.error('   Error detail:', error.detail);
       res.status(500).json({ message: 'Greška pri prihvatanju' });
     }
   }
