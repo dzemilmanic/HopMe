@@ -157,7 +157,7 @@ class Ride {
     }
 
     query += ` 
-      HAVING (r.available_seats - COALESCE(
+      AND (r.available_seats - COALESCE(
         (SELECT SUM(seats_booked) 
          FROM bookings 
          WHERE ride_id = r.id AND status IN ('accepted', 'completed')), 0

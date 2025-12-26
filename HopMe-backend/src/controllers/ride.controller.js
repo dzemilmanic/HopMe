@@ -67,6 +67,9 @@ class RideController {
     try {
       const { from, to, date, seats, maxPrice, page, limit } = req.query;
 
+      console.log('🔍 Search Rides Request:');
+      console.log('   Params:', { from, to, date, seats, maxPrice, page, limit });
+
       const rides = await Ride.searchRides({
         from, to, date, 
         seats: seats ? parseInt(seats) : 1,
@@ -81,7 +84,11 @@ class RideController {
         page: parseInt(page) || 1
       });
     } catch (error) {
-      console.error('Greška pri pretrazi vožnji:', error);
+      console.error('❌ Greška pri pretrazi vožnji:', error);
+      console.error('   Error message:', error.message);
+      console.error('   Error code:', error.code);
+      console.error('   Error detail:', error.detail);
+      console.error('   Error hint:', error.hint);
       res.status(500).json({ message: 'Greška pri pretrazi' });
     }
   }
