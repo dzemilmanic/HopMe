@@ -3,7 +3,7 @@ import PhotosUI
 
 struct EditVehicleView: View {
     @StateObject private var viewModel: EditVehicleViewModel
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     let onComplete: () -> Void
     
     @State private var showImagePicker = false
