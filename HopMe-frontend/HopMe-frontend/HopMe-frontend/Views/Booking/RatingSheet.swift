@@ -36,116 +36,133 @@ struct RatingSheet: View {
     }
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 24) {
-                    // User Info (Driver or Passenger being rated)
-                    VStack(spacing: 12) {
-                        // Avatar
-                        if let profileImage = ratedUserProfileImage {
-                            AsyncImage(url: URL(string: profileImage)) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFill()
-                            } placeholder: {
-                                Circle()
-                                    .fill(Color.blue.opacity(0.3))
-                                    .overlay(
-                                        Text(ratedUserInitials)
-                                            .font(.title)
-                                            .foregroundColor(.blue)
-                                    )
-                            }
-                            .frame(width: 80, height: 80)
-                            .clipShape(Circle())
-                        } else {
+        ScrollView {
+            VStack(spacing: 24) {
+                // User Info (Driver or Passenger being rated)
+                VStack(spacing: 12) {
+                    // Avatar
+                    if let profileImage = ratedUserProfileImage {
+                        AsyncImage(url: URL(string: profileImage)) { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        } placeholder: {
                             Circle()
                                 .fill(Color.blue.opacity(0.3))
-                                .frame(width: 80, height: 80)
                                 .overlay(
                                     Text(ratedUserInitials)
                                         .font(.title)
                                         .foregroundColor(.blue)
                                 )
                         }
-                        
-                        Text(ratedUserName)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                        
-                        Text("\(booking.ride.departureLocation) → \(booking.ride.arrivalLocation)")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-                    
-                    Divider()
-                    
-                    // Rating Section
-                    VStack(spacing: 16) {
-                        Text(questionText)
-                            .font(.headline)
-                        
-                        HStack(spacing: 12) {
-                            ForEach(1...5, id: \.self) { star in
-                                Button(action: {
-                                    rating = star
-                                }) {
-                                    Image(systemName: star <= rating ? "star.fill" : "star")
-                                        .font(.system(size: 36))
-                                        .foregroundColor(star <= rating ? .orange : .gray.opacity(0.3))
-                                }
-                            }
-                        }
-                        .padding(.vertical)
-                        
-                        Text(ratingText)
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-                    
-                    // Comment Section
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Komentar (opciono)")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                        
-                        TextEditor(text: $comment)
-                            .frame(height: 120)
-                            .padding(8)
-                            .background(Color(.systemGray6))
-                            .cornerRadius(8)
+                        .frame(width: 80, height: 80)
+                        .clipShape(Circle())
+                    } else {
+                        Circle()
+                            .fill(Color.blue.opacity(0.3))
+                            .frame(width: 80, height: 80)
                             .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                                Text(ratedUserInitials)
+                                    .font(.title)
+                                    .foregroundColor(.blue)
                             )
                     }
                     
-                    // Submit Button
-                    CustomButton(
-                        title: "Oceni",
-                        action: submitRating,
-                        style: .primary,
-                        isLoading: viewModel.isLoading
-                    )
-                    .padding(.top)
+                    Text(ratedUserName)
+                        .font(.title3)
+                        .fontWeight(.bold)
+                    
+                    Text("\(booking.ride.departureLocation) → \(booking.ride.arrivalLocation)")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                 }
-                .padding()
-            }
-            .navigationTitle(navigationTitle)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
-                        dismiss()
+                
+                Divider()
+                
+                // Rating Section
+                VStack(spacing: 16) {
+                    Text(questionText)
+                        .font(.headline)
+                    
+                    HStack(spacing: 12) {
+                        ForEach(1...5, id: \.self) { star in
+                            Button(action: {
+                                rating = star
+                            }) {
+                                Image(systemName: star <= rating ? "star.fill" : "star")
+                                    .font(.system(size: 36))
+                                    .foregroundColor(star <= rating ? .orange : .gray.opacity(0.3))
+                            }
+                        }
+                    }
+                    .padding(.vertical)
+                    
+                    Text(ratingText)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                
+                // Comment Section
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Komentar (opciono)")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    
+                    TextEditor(text: $comment)
+                        .frame(height: 120)
+                        .padding(8)
+                        .background(Color(.systemGray6))
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
+                }
+                
+                // Submit Button
+                Button(action: submitRating) {
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    } else {
+                        Text("Oceni")
+                            .fontWeight(.semibold)
                     }
                 }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(12)
+                .disabled(viewModel.isLoading)
+                .padding(.top)
+                
+                // Error message
+                if let error = viewModel.errorMessage {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(8)
+                }
             }
-            .errorAlert(errorMessage: $viewModel.errorMessage)
-            .onAppear {
-                print("✅ RatingSheet appeared")
-                print("   isDriverRatingPassenger: \(isDriverRatingPassenger)")
-                print("   Rated user: \(ratedUserName)")
+            .padding()
+        }
+        .navigationTitle(navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Otkaži") {
+                    dismiss()
+                }
             }
+        }
+        .onAppear {
+            print("✅ RatingSheet appeared")
+            print("   isDriverRatingPassenger: \(isDriverRatingPassenger)")
+            print("   Rated user: \(ratedUserName)")
         }
     }
     
