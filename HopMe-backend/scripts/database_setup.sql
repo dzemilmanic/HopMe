@@ -3,6 +3,7 @@
 -- ============================================
 
 -- Brisanje postojećih enum tipova i tabela (ako postoje)
+DROP TABLE IF EXISTS testimonials CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS ratings CASCADE;
 DROP TABLE IF EXISTS bookings CASCADE;
@@ -163,6 +164,18 @@ CREATE TABLE notifications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Tabela recenzija platforme
+CREATE TABLE testimonials (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    text TEXT NOT NULL CHECK (char_length(text) >= 10 AND char_length(text) <= 500),
+    is_approved BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id)  -- One testimonial per user
+);
+
 -- View za prosečne ocene korisnika
 CREATE VIEW user_ratings AS
 SELECT 
@@ -205,6 +218,9 @@ CREATE INDEX idx_bookings_status ON bookings(status);
 CREATE INDEX idx_ratings_rated ON ratings(rated_id);
 CREATE INDEX idx_notifications_user ON notifications(user_id);
 CREATE INDEX idx_notifications_read ON notifications(is_read);
+CREATE INDEX idx_testimonials_user ON testimonials(user_id);
+CREATE INDEX idx_testimonials_approved ON testimonials(is_approved);
+CREATE INDEX idx_testimonials_created ON testimonials(created_at);
 
 -- Trigger za ažuriranje updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -225,6 +241,9 @@ CREATE TRIGGER update_rides_updated_at BEFORE UPDATE ON rides
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_bookings_updated_at BEFORE UPDATE ON bookings
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_testimonials_updated_at BEFORE UPDATE ON testimonials
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- Za kreiranje prvog admin korisnika, pokrenite:

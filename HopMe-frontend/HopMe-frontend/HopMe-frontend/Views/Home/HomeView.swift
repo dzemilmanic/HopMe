@@ -8,6 +8,7 @@ struct HomeView: View {
     @State private var searchTo = ""
     @State private var selectedDate = Date()
     @State private var passengers = 1
+    @State private var showAddTestimonial = false
     
     var body: some View {
         ScrollView {
@@ -32,6 +33,9 @@ struct HomeView: View {
             }
             .padding(.vertical)
         }
+        .refreshable {
+            await viewModel.loadData()
+        }
         .navigationTitle("HopMe")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showSearch) {
@@ -42,6 +46,13 @@ struct HomeView: View {
                     selectedDate: selectedDate,
                     passengers: passengers
                 )
+            }
+        }
+        .sheet(isPresented: $showAddTestimonial) {
+            CreateTestimonialView {
+                Task {
+                    await viewModel.loadTestimonials()
+                }
             }
         }
     }
@@ -220,22 +231,49 @@ struct HomeView: View {
     // MARK: - Testimonials
     private var testimonialsSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Šta korisnici kažu")
-                .font(.title3)
-                .fontWeight(.bold)
-                .padding(.horizontal)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(viewModel.testimonials, id: \.name) { testimonial in
-                        TestimonialCard(
-                            name: testimonial.name,
-                            text: testimonial.text,
-                            rating: testimonial.rating
-                        )
+            HStack {
+                Text("Šta korisnici kažu")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                
+                Spacer()
+                
+                Button(action: {
+                    showAddTestimonial = true
+                }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "plus.circle.fill")
+                        Text("Dodaj utisak")
                     }
+                    .font(.subheadline)
+                    .foregroundColor(.blue)
                 }
-                .padding(.horizontal)
+            }
+            .padding(.horizontal)
+            
+            if viewModel.testimonials.isEmpty {
+                Text("Budite prvi koji će ostaviti utisak!")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding()
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 16) {
+                        ForEach(viewModel.testimonials) { testimonial in
+                            TestimonialCard(
+                                testimonial: testimonial,
+                                onDelete: authViewModel.currentUser?.roles.contains("admin") == true ? {
+                                    Task {
+                                        try? await TestimonialService.shared.deleteTestimonial(id: testimonial.id)
+                                        await viewModel.loadTestimonials()
+                                    }
+                                } : nil
+                            )
+                        }
+                    }
+                    .padding(.horizontal)
+                }
             }
         }
         .padding(.bottom)

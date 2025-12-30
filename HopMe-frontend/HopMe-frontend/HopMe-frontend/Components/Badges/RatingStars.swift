@@ -3,7 +3,8 @@ import SwiftUI
 struct RatingStars: View {
     let rating: Double
     let maxRating: Int = 5
-    let size: CGFloat = 16
+    var size: CGFloat = 16
+    var onRatingChanged: ((Double) -> Void)? = nil
     
     var body: some View {
         HStack(spacing: 2) {
@@ -11,6 +12,11 @@ struct RatingStars: View {
                 Image(systemName: starType(for: index))
                     .foregroundColor(.orange)
                     .font(.system(size: size))
+                    .onTapGesture {
+                        if let onChanged = onRatingChanged {
+                            onChanged(Double(index + 1))
+                        }
+                    }
             }
         }
     }

@@ -18,9 +18,28 @@ class HomeViewModel: ObservableObject {
         rating: "4.8★"
     )
     
-    @Published var testimonials = [
-        (name: "Marko P.", text: "Odlična aplikacija! Uštedio sam puno novca.", rating: 5),
-        (name: "Ana M.", text: "Sigurno i brzo. Preporučujem!", rating: 5),
-        (name: "Stefan J.", text: "Upoznao sam divne ljude.", rating: 4),
-    ]
+    @Published var testimonials: [Testimonial] = []
+    
+    private let testimonialService = TestimonialService.shared
+    
+    override init() {
+        super.init()
+        Task {
+            await loadData()
+        }
+    }
+    
+    func loadData() async {
+        await loadTestimonials()
+        // Other data loading logic...
+    }
+    
+    func loadTestimonials() async {
+        do {
+            let items = try await testimonialService.getAllTestimonials()
+            testimonials = items
+        } catch {
+            print("Error loading testimonials: \(error)")
+        }
+    }
 }

@@ -47,6 +47,11 @@ enum APIEndpoint {
     case markAllAsRead
     case deleteNotification(id: Int)
     
+    // Testimonials
+    case testimonials
+    case myTestimonial
+    case deleteTestimonial(id: Int)
+    
     // Maps
     case geocode(address: String)
     case reverseGeocode(lat: Double, lng: Double)
@@ -112,6 +117,11 @@ enum APIEndpoint {
         case .markAsRead(let id): return "/notifications/\(id)/read"
         case .markAllAsRead: return "/notifications/mark-all-read"
         case .deleteNotification(let id): return "/notifications/\(id)"
+        
+        // Testimonials
+        case .testimonials: return "/testimonials"
+        case .myTestimonial: return "/testimonials/my"
+        case .deleteTestimonial(let id): return "/testimonials/\(id)"
         
         // Maps
         case .geocode(let address): return "/maps/geocode?address=\(address)"
