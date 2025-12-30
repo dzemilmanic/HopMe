@@ -36,9 +36,24 @@ class HomeViewModel: ObservableObject {
     func loadTestimonials() async {
         do {
             let items = try await testimonialService.getAllTestimonials()
+            print("✅ Successfully loaded \(items.count) testimonials")
             testimonials = items
+        } catch let error as DecodingError {
+            print("❌ Decoding error loading testimonials: \(error)")
+            switch error {
+            case .keyNotFound(let key, let context):
+                print("Missing key: \(key.stringValue), context: \(context.debugDescription)")
+            case .typeMismatch(let type, let context):
+                print("Type mismatch for type: \(type), context: \(context.debugDescription)")
+            case .valueNotFound(let type, let context):
+                print("Value not found for type: \(type), context: \(context.debugDescription)")
+            case .dataCorrupted(let context):
+                print("Data corrupted: \(context.debugDescription)")
+            @unknown default:
+                print("Unknown decoding error")
+            }
         } catch {
-            print("Error loading testimonials: \(error)")
+            print("❌ Error loading testimonials: \(error)")
         }
     }
 }

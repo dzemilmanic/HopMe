@@ -6,7 +6,8 @@ struct Testimonial: Codable, Identifiable {
     let rating: Int
     let text: String
     let isApproved: Bool
-    let createdAt: String // Backend šalje string timestamp
+    let createdAt: String? // Backend šalje string timestamp - made optional
+    let updatedAt: String? // Možda backend šalje i updated_at
     let firstName: String?
     let lastName: String?
     let userProfileImage: String?
@@ -20,6 +21,8 @@ struct Testimonial: Codable, Identifiable {
     }
     
     var formattedDate: String {
+        guard let createdAt = createdAt else { return "" }
+        
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
         
@@ -40,6 +43,7 @@ struct Testimonial: Codable, Identifiable {
         case text
         case isApproved = "is_approved"
         case createdAt = "created_at"
+        case updatedAt = "updated_at"
         case firstName = "first_name"
         case lastName = "last_name"
         case userProfileImage = "profile_image_url"
