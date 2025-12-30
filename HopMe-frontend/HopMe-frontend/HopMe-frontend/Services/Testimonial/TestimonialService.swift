@@ -14,12 +14,17 @@ class TestimonialService {
     }
     
     func createTestimonial(rating: Int, text: String) async throws -> Testimonial {
-        let textData = ["rating": rating, "text": text] as [String : Any]
+        struct CreateTestimonialRequest: Encodable {
+            let rating: Int
+            let text: String
+        }
+        
+        let requestBody = CreateTestimonialRequest(rating: rating, text: text)
         
         let response: TestimonialResponse = try await api.request(
             endpoint: .testimonials,
             method: .post,
-            body: textData,
+            body: requestBody,
             requiresAuth: true
         )
         

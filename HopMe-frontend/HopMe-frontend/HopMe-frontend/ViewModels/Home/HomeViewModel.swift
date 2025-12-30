@@ -22,8 +22,7 @@ class HomeViewModel: ObservableObject {
     
     private let testimonialService = TestimonialService.shared
     
-    override init() {
-        super.init()
+    init() {
         Task {
             await loadData()
         }
