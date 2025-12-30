@@ -34,6 +34,25 @@ class UserService {
         
         return response.user
     }
+    
+    func changePassword(currentPassword: String, newPassword: String) async throws {
+        struct ChangePasswordRequest: Encodable {
+            let currentPassword: String
+            let newPassword: String
+        }
+        
+        let requestBody = ChangePasswordRequest(
+            currentPassword: currentPassword,
+            newPassword: newPassword
+        )
+        
+        let _: EmptyResponse = try await api.request(
+            endpoint: .changePassword,
+            method: .post,
+            body: requestBody,
+            requiresAuth: true
+        )
+    }
 }
 
 struct UpdateProfileResponse: Codable {

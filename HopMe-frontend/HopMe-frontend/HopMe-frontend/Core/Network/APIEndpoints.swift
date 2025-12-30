@@ -11,6 +11,7 @@ enum APIEndpoint {
     // User
     case profile
     case updateProfile
+    case changePassword
     case vehicles
     case vehicle(id: Int)
     case vehicleImages(vehicleId: Int)
@@ -73,6 +74,7 @@ enum APIEndpoint {
         // User
         case .profile: return "/user/profile"
         case .updateProfile: return "/user/profile"
+        case .changePassword: return "/user/change-password"
         case .vehicles: return "/user/vehicles"
         case .vehicle(let id): return "/user/vehicles/\(id)"
         case .vehicleImages(let vehicleId): return "/user/vehicles/\(vehicleId)/images"

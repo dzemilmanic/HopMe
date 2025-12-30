@@ -239,6 +239,77 @@ class UserController {
       res.status(500).json({ message: 'Greška pri brisanju' });
     }
   }
+
+  // Promena lozinke
+  static async changePassword(req, res) {
+    try {
+      const { currentPassword, newPassword } = req.body;
+      const userId = req.user.id;
+
+      // Validacija
+      if (!currentPassword || !newPassword) {
+        return res.status(400).json({ 
+          success: false,
+          message: 'Trenutna i nova lozinka su obavezne' 
+        });
+      }
+
+      if (newPassword.length < 6) {
+        return res.status(400).json({ 
+          success: false,
+          message: 'Nova lozinka mora imati najmanje 6 karaktera' 
+        });
+      }
+
+      // Učitaj trenutnog korisnika sa lozinkom
+      const userQuery = 'SELECT * FROM users WHERE id = $1';
+      const userResult = await pool.query(userQuery, [userId]);
+      
+      if (userResult.rows.length === 0) {
+        return res.status(404).json({ 
+          success: false,
+          message: 'Korisnik nije pronađen' 
+        });
+      }
+
+      const user = userResult.rows[0];
+
+      // Provera trenutne lozinke
+      const bcrypt = await import('bcryptjs');
+      const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+      
+      if (!isPasswordValid) {
+        return res.status(401).json({ 
+          success: false,
+          message: 'Trenutna lozinka nije tačna' 
+        });
+      }
+
+      // Hash nove lozinke
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Ažuriraj lozinku
+      const updateQuery = `
+        UPDATE users 
+        SET password = $1, updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+        RETURNING id, email, first_name, last_name
+      `;
+      
+      await pool.query(updateQuery, [hashedPassword, userId]);
+
+      res.json({ 
+        success: true,
+        message: 'Lozinka uspešno promenjena' 
+      });
+    } catch (error) {
+      console.error('Greška pri promeni lozinke:', error);
+      res.status(500).json({ 
+        success: false,
+        message: 'Greška pri promeni lozinke' 
+      });
+    }
+  }
 }
 
 export default UserController;

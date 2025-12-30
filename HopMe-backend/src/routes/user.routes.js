@@ -345,4 +345,39 @@ router.delete(
   UserController.deleteVehicle
 );
 
+/**
+ * @swagger
+ * /user/change-password:
+ *   post:
+ *     tags: [User]
+ *     summary: Promena lozinke
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [currentPassword, newPassword]
+ *             properties:
+ *               currentPassword: { type: string, example: "stara123" }
+ *               newPassword: { type: string, example: "nova123456" }
+ *     responses:
+ *       200:
+ *         description: Lozinka promenjena
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success: { type: boolean, example: true }
+ *                 message: { type: string, example: "Lozinka uspešno promenjena" }
+ *       400:
+ *         description: Nevalidni podaci
+ *       401:
+ *         description: Netačna trenutna lozinka
+ */
+router.post('/change-password', UserController.changePassword);
+
 export default router;

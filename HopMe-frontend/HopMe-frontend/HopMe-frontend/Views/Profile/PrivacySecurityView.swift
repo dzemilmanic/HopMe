@@ -319,28 +319,116 @@ struct ChangePasswordView: View {
     @State private var currentPassword = ""
     @State private var newPassword = ""
     @State private var confirmPassword = ""
+    @State private var isLoading = false
+    @State private var errorMessage: String?
+    @State private var showSuccessAlert = false
     
     var body: some View {
         Form {
             Section("Trenutna lozinka") {
                 SecureField("Unesite trenutnu lozinku", text: $currentPassword)
+                    .textContentType(.password)
+                    .autocapitalization(.none)
             }
             
             Section("Nova lozinka") {
                 SecureField("Unesite novu lozinku", text: $newPassword)
+                    .textContentType(.newPassword)
+                    .autocapitalization(.none)
+                
                 SecureField("Potvrdite novu lozinku", text: $confirmPassword)
+                    .textContentType(.newPassword)
+                    .autocapitalization(.none)
+                
+                if !newPassword.isEmpty {
+                    if newPassword.count < 6 {
+                        Text("Lozinka mora imati najmanje 6 karaktera")
+                            .font(.caption)
+                            .foregroundColor(.red)
+                    }
+                }
+                
+                if !confirmPassword.isEmpty && newPassword != confirmPassword {
+                    Text("Lozinke se ne podudaraju")
+                        .font(.caption)
+                        .foregroundColor(.red)
+                }
+            }
+            
+            if let errorMessage = errorMessage {
+                Section {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .font(.callout)
+                }
             }
             
             Section {
-                Button("Sačuvaj") {
-                    // TODO: Implement password change
+                Button(action: {
+                    Task {
+                        await changePassword()
+                    }
+                }) {
+                    if isLoading {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                    } else {
+                        Text("Sačuvaj")
+                            .frame(maxWidth: .infinity)
+                            .foregroundColor(.blue)
+                    }
                 }
-                .frame(maxWidth: .infinity)
-                .foregroundColor(.blue)
+                .disabled(!isValid || isLoading)
             }
         }
         .navigationTitle("Promena lozinke")
         .navigationBarTitleDisplayMode(.inline)
+        .alert("Uspeh", isPresented: $showSuccessAlert) {
+            Button("OK") {
+                dismiss()
+            }
+        } message: {
+            Text("Lozinka je uspešno promenjena")
+        }
+    }
+    
+    private var isValid: Bool {
+        !currentPassword.isEmpty &&
+        !newPassword.isEmpty &&
+        !confirmPassword.isEmpty &&
+        newPassword.count >= 6 &&
+        newPassword == confirmPassword
+    }
+    
+    private func changePassword() async {
+        errorMessage = nil
+        isLoading = true
+        
+        do {
+            try await UserService.shared.changePassword(
+                currentPassword: currentPassword,
+                newPassword: newPassword
+            )
+            
+            isLoading = false
+            showSuccessAlert = true
+        } catch let error as APIError {
+            isLoading = false
+            switch error {
+            case .unauthorized:
+                errorMessage = "Trenutna lozinka nije tačna"
+            case .badRequest(let message):
+                errorMessage = message
+            default:
+                errorMessage = "Greška pri promeni lozinke. Pokušajte ponovo."
+            }
+        } catch {
+            isLoading = false
+            errorMessage = "Greška pri promeni lozinke. Pokušajte ponovo."
+        }
     }
 }
 
