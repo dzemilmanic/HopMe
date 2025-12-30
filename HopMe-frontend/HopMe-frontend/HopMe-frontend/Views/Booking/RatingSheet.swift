@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct RatingSheet: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     let booking: Booking
     let onComplete: () -> Void
     let isDriverRatingPassenger: Bool
