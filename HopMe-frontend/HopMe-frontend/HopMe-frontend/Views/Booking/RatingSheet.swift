@@ -19,7 +19,7 @@ struct RatingSheet: View {
         if isDriverRatingPassenger {
             return String(booking.passenger.firstName.prefix(1))
         } else {
-            return booking.ride.driver.initials
+            return String(booking.ride.driver.firstName.prefix(1))
         }
     }
     
@@ -141,6 +141,11 @@ struct RatingSheet: View {
                 }
             }
             .errorAlert(errorMessage: $viewModel.errorMessage)
+            .onAppear {
+                print("✅ RatingSheet appeared")
+                print("   isDriverRatingPassenger: \(isDriverRatingPassenger)")
+                print("   Rated user: \(ratedUserName)")
+            }
         }
     }
     
