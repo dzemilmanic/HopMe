@@ -68,11 +68,11 @@ struct RideBookingsListView: View {
             }
             .sheet(isPresented: $showRatingSheet) {
                 if let booking = bookingToRate {
-                    RatingSheet(booking: booking, isDriverRatingPassenger: true) {
+                    RatingSheet(booking: booking, onComplete: {
                         Task {
                             await viewModel.loadBookings()
                         }
-                    }
+                    }, isDriverRatingPassenger: true)
                 }
             }
         }
