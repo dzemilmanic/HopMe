@@ -420,8 +420,8 @@ struct ChangePasswordView: View {
             switch error {
             case .unauthorized:
                 errorMessage = "Trenutna lozinka nije tačna"
-            case .badRequest(let message):
-                errorMessage = message
+            case .badRequest:
+                errorMessage = "Nevalidni podaci. Proverite unos."
             default:
                 errorMessage = "Greška pri promeni lozinke. Pokušajte ponovo."
             }
