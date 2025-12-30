@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import Vehicle from '../models/Vehicle.js';
 import AzureService from '../services/azure.service.js';
 import pool from '../config/database.js';
+import bcrypt from 'bcryptjs';
 import { formatUserResponse, formatVehicleResponse } from '../utils/responseFormatter.js';
 
 class UserController {
@@ -275,7 +276,6 @@ class UserController {
       const user = userResult.rows[0];
 
       // Provera trenutne lozinke
-      const bcrypt = await import('bcryptjs');
       const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
       
       if (!isPasswordValid) {
