@@ -1,6 +1,15 @@
 import TokenService from '../services/token.service.js';
 import User from '../models/User.js';
 
+// Parse PostgreSQL array string to proper array
+const parsePostgresArray = (value) => {
+  if (Array.isArray(value)) return value;
+  if (typeof value === 'string' && value.startsWith('{') && value.endsWith('}')) {
+    return value.replace(/[{}]/g, '').split(',').filter(r => r.trim());
+  }
+  return value;
+};
+
 export const authenticate = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
@@ -30,7 +39,7 @@ export const authenticate = async (req, res, next) => {
     req.user = {
       id: user.id,
       email: user.email,
-      roles: user.roles
+      roles: parsePostgresArray(user.roles) || []
     };
 
     next();
