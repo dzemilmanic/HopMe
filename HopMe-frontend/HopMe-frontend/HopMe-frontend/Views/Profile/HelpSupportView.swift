@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HelpSupportView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @State private var searchText = ""
     @State private var selectedCategory: HelpCategory? = nil
     @State private var showContactForm = false
@@ -378,7 +378,7 @@ struct FAQItemView: View {
 }
 
 struct ContactSupportFormView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @State private var name = ""
     @State private var email = ""
     @State private var subject = ""

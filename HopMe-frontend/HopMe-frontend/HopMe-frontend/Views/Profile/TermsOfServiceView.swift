@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TermsOfServiceView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @State private var selectedSection: TermsSection? = nil
     
     var body: some View {

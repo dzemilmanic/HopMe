@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PrivacySecurityView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @AppStorage("location_sharing") private var locationSharing = true
     @AppStorage("profile_visibility") private var profileVisibility = true
     @AppStorage("phone_visibility") private var phoneVisibility = false
@@ -315,7 +315,7 @@ struct SettingToggleRow: View {
 // MARK: - Placeholder Views (To be implemented)
 
 struct ChangePasswordView: View {
-    @Environment(\.dismiss) var dismiss
+    @SwiftUI.Environment(\.dismiss) var dismiss
     @State private var currentPassword = ""
     @State private var newPassword = ""
     @State private var confirmPassword = ""
