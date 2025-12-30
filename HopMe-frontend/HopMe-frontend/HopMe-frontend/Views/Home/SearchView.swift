@@ -40,8 +40,8 @@ struct SearchView: View {
             } else if viewModel.searchResults.isEmpty {
                 EmptyStateView(
                     icon: "car.fill",
-                    title: "Nema rezultata",
-                    description: "Pokušajte sa različitim kriterijumima pretrage"
+                    title: "Nema dostupnih vožnji",
+                    description: viewModel.canSearch ? "Pokušajte sa različitim kriterijumima pretrage" : "Trenutno nema aktivnih vožnji"
                 )
             } else {
                 searchResults
@@ -68,7 +68,8 @@ struct SearchView: View {
             viewModel.passengers = passengers
             
             Task {
-                await performSearch()
+                // Load all rides initially, user can search to filter
+                await viewModel.loadAllRides()
             }
         }
     }

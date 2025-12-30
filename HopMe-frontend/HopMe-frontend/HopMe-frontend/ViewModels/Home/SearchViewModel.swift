@@ -27,12 +27,37 @@ class SearchViewModel: ObservableObject {
     private let rideService = RideService.shared
     
     var canSearch: Bool {
-        !searchFrom.isEmpty && !searchTo.isEmpty
+        !searchFrom.isEmpty || !searchTo.isEmpty
+    }
+    
+    func loadAllRides() async {
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            searchResults = try await rideService.searchRides(
+                from: nil,
+                to: nil,
+                date: nil,
+                seats: 1
+            )
+            
+            // Apply filters
+            applyFilters()
+            
+        } catch let error as APIError {
+            errorMessage = error.errorDescription
+        } catch {
+            errorMessage = "Greška pri učitavanju vožnji"
+        }
+        
+        isLoading = false
     }
     
     func search() async {
         guard canSearch else {
-            errorMessage = "Unesite polazište i destinaciju"
+            // If no search criteria, load all rides
+            await loadAllRides()
             return
         }
         
@@ -40,9 +65,12 @@ class SearchViewModel: ObservableObject {
         errorMessage = nil
         
         do {
+            let from = searchFrom.isEmpty ? nil : searchFrom
+            let to = searchTo.isEmpty ? nil : searchTo
+            
             searchResults = try await rideService.searchRides(
-                from: searchFrom,
-                to: searchTo,
+                from: from,
+                to: to,
                 date: selectedDate,
                 seats: passengers
             )
