@@ -38,3 +38,21 @@ export const authenticate = async (req, res, next) => {
     res.status(401).json({ message: 'Autentifikacija neuspešna' });
   }
 };
+
+export const authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user || !req.user.roles) {
+      return res.status(403).json({ message: 'Nemate pristup ovom resursu' });
+    }
+
+    const hasRole = req.user.roles.some(role => roles.includes(role));
+
+    if (!hasRole) {
+      return res.status(403).json({ 
+        message: `Za pristup potrebna uloga: ${roles.join(', ')}` 
+      });
+    }
+
+    next();
+  };
+};
