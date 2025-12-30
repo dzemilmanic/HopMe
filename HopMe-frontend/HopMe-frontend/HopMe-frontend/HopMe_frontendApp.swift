@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct HopMeApp: App {
     @StateObject private var authViewModel = AuthViewModel()
+    @AppStorage("appearance_mode") private var appearanceMode: AppearanceMode = .system
     
     init() {
         // Configure app appearance
@@ -13,6 +14,7 @@ struct HopMeApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(authViewModel)
+                .preferredColorScheme(appearanceMode.colorScheme)
         }
     }
     

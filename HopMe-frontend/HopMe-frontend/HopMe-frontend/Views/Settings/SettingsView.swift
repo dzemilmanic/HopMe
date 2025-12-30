@@ -7,7 +7,7 @@ struct SettingsView: View {
     @AppStorage("push_notifications") private var pushNotifications = true
     @AppStorage("booking_notifications") private var bookingNotifications = true
     @AppStorage("ride_notifications") private var rideNotifications = true
-    @AppStorage("dark_mode") private var darkMode = false
+    @AppStorage("appearance_mode") private var appearanceMode: AppearanceMode = .system
     
     var body: some View {
         NavigationView {
@@ -30,7 +30,32 @@ struct SettingsView: View {
                 }
                 
                 Section("Izgled") {
-                    Toggle("Tamna tema", isOn: $darkMode)
+                    Picker("Tema", selection: $appearanceMode) {
+                        ForEach(AppearanceMode.allCases) { mode in
+                            HStack {
+                                Image(systemName: mode.icon)
+                                Text(mode.displayName)
+                            }
+                            .tag(mode)
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
+                    
+                    // Visual preview
+                    HStack {
+                        Spacer()
+                        VStack(spacing: 8) {
+                            Image(systemName: appearanceMode.previewIcon)
+                                .font(.largeTitle)
+                                .foregroundColor(.blue)
+                            Text(appearanceMode.description)
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                                .multilineTextAlignment(.center)
+                        }
+                        Spacer()
+                    }
+                    .padding(.vertical, 8)
                 }
                 
                 Section("O aplikaciji") {
