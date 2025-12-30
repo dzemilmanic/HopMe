@@ -17,7 +17,15 @@ class UserController {
 
       delete user.password;
 
-      res.json({ user: formatUserResponse(user) });
+      const formattedUser = formatUserResponse(user);
+      
+      // Extract vehicles to match Swift UserProfile structure which expects vehicles at root
+      const vehicles = formattedUser.vehicles;
+
+      res.json({ 
+        user: formattedUser,
+        vehicles: vehicles
+      });
     } catch (error) {
       console.error('Greška pri učitavanju profila:', error);
       res.status(500).json({ message: 'Greška pri učitavanju profila' });
