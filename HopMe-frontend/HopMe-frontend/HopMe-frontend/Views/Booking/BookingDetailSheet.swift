@@ -67,9 +67,9 @@ struct BookingDetailSheet: View {
                 Text("Da li ste sigurni da želite da otkažete ovu rezervaciju?")
             }
             .sheet(isPresented: $showRating) {
-                RatingSheet(booking: viewModel.booking) {
+                RatingSheet(booking: viewModel.booking, onComplete: {
                     onUpdate()
-                }
+                }, isDriverRatingPassenger: false)
             }
         }
     }
