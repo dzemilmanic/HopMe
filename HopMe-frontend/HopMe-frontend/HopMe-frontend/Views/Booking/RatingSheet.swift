@@ -11,6 +11,18 @@ struct RatingSheet: View {
     @State private var isLoading = false
     @State private var errorMessage: String?
     
+    init(booking: Booking, onComplete: @escaping () -> Void, isDriverRatingPassenger: Bool) {
+        self.booking = booking
+        self.onComplete = onComplete
+        self.isDriverRatingPassenger = isDriverRatingPassenger
+        
+        print("🔵 RatingSheet INIT")
+        print("   Booking ID: \(booking.id)")
+        print("   isDriverRatingPassenger: \(isDriverRatingPassenger)")
+        print("   Passenger: \(booking.passenger.firstName) \(booking.passenger.lastName)")
+        print("   Driver: \(booking.ride.driver.firstName) \(booking.ride.driver.lastName)")
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
@@ -122,25 +134,38 @@ struct RatingSheet: View {
                     }
                 }
             }
+            .onAppear {
+                print("🟢 RatingSheet APPEARED")
+                print("   User being rated: \(getUserName())")
+            }
+        }
+        .onAppear {
+            print("🟡 NavigationView APPEARED")
         }
     }
     
     // MARK: - Helper Functions
     
     private func getUserName() -> String {
+        let name: String
         if isDriverRatingPassenger {
-            return "\(booking.passenger.firstName) \(booking.passenger.lastName)"
+            name = "\(booking.passenger.firstName) \(booking.passenger.lastName)"
         } else {
-            return "\(booking.ride.driver.firstName) \(booking.ride.driver.lastName)"
+            name = "\(booking.ride.driver.firstName) \(booking.ride.driver.lastName)"
         }
+        print("🔸 getUserName() = \(name)")
+        return name
     }
     
     private func getUserInitials() -> String {
+        let initials: String
         if isDriverRatingPassenger {
-            return String(booking.passenger.firstName.prefix(1))
+            initials = String(booking.passenger.firstName.prefix(1))
         } else {
-            return String(booking.ride.driver.firstName.prefix(1))
+            initials = String(booking.ride.driver.firstName.prefix(1))
         }
+        print("🔸 getUserInitials() = \(initials)")
+        return initials
     }
     
     private func getNavigationTitle() -> String {

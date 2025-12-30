@@ -4,7 +4,7 @@ struct MyBookingsView: View {
     @StateObject private var viewModel = MyBookingsViewModel()
     @State private var selectedSegment = 0
     @State private var selectedBooking: Booking?
-    @State private var showRatingSheet = false
+
     @State private var bookingToRate: Booking?
     
     var body: some View {
@@ -42,14 +42,12 @@ struct MyBookingsView: View {
                 }
             }
         }
-        .sheet(isPresented: $showRatingSheet) {
-            if let booking = bookingToRate {
-                RatingSheet(booking: booking, onComplete: {
-                    Task {
-                        await viewModel.refreshBookings()
-                    }
-                }, isDriverRatingPassenger: false)
-            }
+        .sheet(item: $bookingToRate) { booking in
+            RatingSheet(booking: booking, onComplete: {
+                Task {
+                    await viewModel.refreshBookings()
+                }
+            }, isDriverRatingPassenger: false)
         }
         .task {
             await viewModel.loadBookings()
@@ -85,7 +83,6 @@ struct MyBookingsView: View {
                             },
                             onRate: {
                                 bookingToRate = booking
-                                showRatingSheet = true
                             },
                             onCancel: {
                                 Task {

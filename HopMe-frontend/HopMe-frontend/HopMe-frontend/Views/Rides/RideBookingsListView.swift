@@ -4,7 +4,6 @@ struct RideBookingsListView: View {
     @SwiftUI.Environment(\.dismiss) var dismiss
     let ride: Ride
     @StateObject private var viewModel: RideBookingsViewModel
-    @State private var showRatingSheet = false
     @State private var bookingToRate: Booking?
     
     init(ride: Ride) {
@@ -66,14 +65,12 @@ struct RideBookingsListView: View {
             .refreshable {
                 await viewModel.loadBookings()
             }
-            .sheet(isPresented: $showRatingSheet) {
-                if let booking = bookingToRate {
-                    RatingSheet(booking: booking, onComplete: {
-                        Task {
-                            await viewModel.loadBookings()
-                        }
-                    }, isDriverRatingPassenger: true)
-                }
+            .sheet(item: $bookingToRate) { booking in
+                RatingSheet(booking: booking, onComplete: {
+                    Task {
+                        await viewModel.loadBookings()
+                    }
+                }, isDriverRatingPassenger: true)
             }
         }
     }
@@ -141,7 +138,6 @@ struct RideBookingsListView: View {
                         },
                         onRatePassenger: {
                             bookingToRate = booking
-                            showRatingSheet = true
                         }
                     )
                 }
