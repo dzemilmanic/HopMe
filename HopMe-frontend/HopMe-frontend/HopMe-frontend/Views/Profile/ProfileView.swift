@@ -6,6 +6,9 @@ struct ProfileView: View {
     @State private var showEditProfile = false
     @State private var showVehicles = false
     @State private var showSettings = false
+    @State private var showPrivacySecurity = false
+    @State private var showHelpSupport = false
+    @State private var showTermsOfService = false
     @State private var showLogoutAlert = false
     
     var body: some View {
@@ -64,6 +67,15 @@ struct ProfileView: View {
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
+        }
+        .sheet(isPresented: $showPrivacySecurity) {
+            PrivacySecurityView()
+        }
+        .sheet(isPresented: $showHelpSupport) {
+            HelpSupportView()
+        }
+        .sheet(isPresented: $showTermsOfService) {
+            TermsOfServiceView()
         }
         .alert("Odjava", isPresented: $showLogoutAlert) {
             Button("Otkaži", role: .cancel) { }
@@ -374,7 +386,7 @@ struct ProfileView: View {
                     title: "Privatnost i bezbednost",
                     color: .orange
                 ) {
-                    // TODO: Navigate to privacy settings
+                    showPrivacySecurity = true
                 }
                 
                 Divider()
@@ -385,7 +397,7 @@ struct ProfileView: View {
                     title: "Pomoć i podrška",
                     color: .blue
                 ) {
-                    // TODO: Navigate to help
+                    showHelpSupport = true
                 }
                 
                 Divider()
@@ -396,7 +408,7 @@ struct ProfileView: View {
                     title: "Uslovi korišćenja",
                     color: .green
                 ) {
-                    // TODO: Open terms
+                    showTermsOfService = true
                 }
             }
             .padding()
