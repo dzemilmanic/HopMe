@@ -9,6 +9,8 @@ struct HomeView: View {
     @State private var selectedDate = Date()
     @State private var passengers = 1
     @State private var showAddTestimonial = false
+    @State private var testimonialToDelete: Testimonial?
+    @State private var showDeleteConfirmation = false
     
     var body: some View {
         ScrollView {
@@ -268,10 +270,8 @@ struct HomeView: View {
                             TestimonialCard(
                                 testimonial: testimonial,
                                 onDelete: authViewModel.currentUser?.isAdmin == true ? {
-                                    Task {
-                                        try? await TestimonialService.shared.deleteTestimonial(id: testimonial.id)
-                                        await viewModel.loadTestimonials()
-                                    }
+                                    testimonialToDelete = testimonial
+                                    showDeleteConfirmation = true
                                 } : nil
                             )
                         }
@@ -281,6 +281,22 @@ struct HomeView: View {
             }
         }
         .padding(.bottom)
+        .alert("Brisanje recenzije", isPresented: $showDeleteConfirmation) {
+            Button("Otkaži", role: .cancel) {
+                testimonialToDelete = nil
+            }
+            Button("Obriši", role: .destructive) {
+                if let testimonial = testimonialToDelete {
+                    Task {
+                        try? await TestimonialService.shared.deleteTestimonial(id: testimonial.id)
+                        await viewModel.loadTestimonials()
+                        testimonialToDelete = nil
+                    }
+                }
+            }
+        } message: {
+            Text("Da li ste sigurni da želite da obrišete ovu recenziju?")
+        }
     }
 }
 #Preview("Home View") {
