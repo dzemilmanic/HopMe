@@ -263,7 +263,7 @@ struct HomeView: View {
                         ForEach(viewModel.testimonials) { testimonial in
                             TestimonialCard(
                                 testimonial: testimonial,
-                                onDelete: authViewModel.currentUser?.roles.contains("admin") == true ? {
+                                onDelete: authViewModel.currentUser?.isAdmin == true ? {
                                     Task {
                                         try? await TestimonialService.shared.deleteTestimonial(id: testimonial.id)
                                         await viewModel.loadTestimonials()
