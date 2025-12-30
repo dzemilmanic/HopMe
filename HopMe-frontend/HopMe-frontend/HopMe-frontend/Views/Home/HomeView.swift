@@ -52,6 +52,7 @@ struct HomeView: View {
             CreateTestimonialView {
                 Task {
                     await viewModel.loadTestimonials()
+                    await viewModel.checkUserTestimonial() // Proveri ponovo da li korisnik sada ima testimonial
                 }
             }
         }
@@ -238,15 +239,18 @@ struct HomeView: View {
                 
                 Spacer()
                 
-                Button(action: {
-                    showAddTestimonial = true
-                }) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "plus.circle.fill")
-                        Text("Dodaj utisak")
+                // Prikaži dugme samo ako korisnik nema testimonial
+                if !viewModel.userHasTestimonial {
+                    Button(action: {
+                        showAddTestimonial = true
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "plus.circle.fill")
+                            Text("Dodaj utisak")
+                        }
+                        .font(.subheadline)
+                        .foregroundColor(.blue)
                     }
-                    .font(.subheadline)
-                    .foregroundColor(.blue)
                 }
             }
             .padding(.horizontal)

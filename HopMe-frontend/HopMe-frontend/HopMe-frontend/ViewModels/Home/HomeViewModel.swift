@@ -19,6 +19,7 @@ class HomeViewModel: ObservableObject {
     )
     
     @Published var testimonials: [Testimonial] = []
+    @Published var userHasTestimonial: Bool = false
     
     private let testimonialService = TestimonialService.shared
     
@@ -30,7 +31,7 @@ class HomeViewModel: ObservableObject {
     
     func loadData() async {
         await loadTestimonials()
-        // Other data loading logic...
+        await checkUserTestimonial()
     }
     
     func loadTestimonials() async {
@@ -54,6 +55,16 @@ class HomeViewModel: ObservableObject {
             }
         } catch {
             print("❌ Error loading testimonials: \(error)")
+        }
+    }
+    
+    func checkUserTestimonial() async {
+        do {
+            let myTestimonial = try await testimonialService.getMyTestimonial()
+            userHasTestimonial = myTestimonial != nil
+        } catch {
+            // User doesn't have testimonial or not authenticated
+            userHasTestimonial = false
         }
     }
 }
