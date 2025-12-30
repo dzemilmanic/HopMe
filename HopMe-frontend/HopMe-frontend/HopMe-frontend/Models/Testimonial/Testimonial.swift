@@ -38,15 +38,15 @@ struct Testimonial: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case userId = "user_id"
+        case userId // Backend vraća camelCase zbog responseTransformer middleware
         case rating
         case text
-        case isApproved = "is_approved"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case userProfileImage = "profile_image_url"
+        case isApproved
+        case createdAt
+        case updatedAt
+        case firstName
+        case lastName
+        case userProfileImage = "profileImageUrl" // Backend vraća kao profileImageUrl
     }
 }
 
