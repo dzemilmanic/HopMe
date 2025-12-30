@@ -4,6 +4,8 @@ struct RideBookingsListView: View {
     @SwiftUI.Environment(\.dismiss) var dismiss
     let ride: Ride
     @StateObject private var viewModel: RideBookingsViewModel
+    @State private var showRatingSheet = false
+    @State private var bookingToRate: Booking?
     
     init(ride: Ride) {
         self.ride = ride
@@ -63,6 +65,15 @@ struct RideBookingsListView: View {
             }
             .refreshable {
                 await viewModel.loadBookings()
+            }
+            .sheet(isPresented: $showRatingSheet) {
+                if let booking = bookingToRate {
+                    RatingSheet(booking: booking, isDriverRatingPassenger: true) {
+                        Task {
+                            await viewModel.loadBookings()
+                        }
+                    }
+                }
             }
         }
     }
@@ -127,6 +138,10 @@ struct RideBookingsListView: View {
                             Task {
                                 await viewModel.rejectBooking(id: booking.id, response: nil)  // ← Dodaj response: nil
                             }
+                        },
+                        onRatePassenger: {
+                            bookingToRate = booking
+                            showRatingSheet = true
                         }
                     )
                 }
@@ -152,6 +167,7 @@ struct BookingRowCard: View {
     let booking: Booking
     let onAccept: () -> Void
     let onReject: () -> Void
+    let onRatePassenger: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -224,6 +240,19 @@ struct BookingRowCard: View {
                             .background(Color.green)
                             .cornerRadius(8)
                     }
+                }
+            } else if booking.status == .completed {
+                Button(action: onRatePassenger) {
+                    HStack {
+                        Image(systemName: "star.fill")
+                        Text("Oceni putnika")
+                    }
+                    .fontWeight(.semibold)
+                    .foregroundColor(.orange)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .background(Color.orange.opacity(0.1))
+                    .cornerRadius(8)
                 }
             } else {
                 StatusBadge(

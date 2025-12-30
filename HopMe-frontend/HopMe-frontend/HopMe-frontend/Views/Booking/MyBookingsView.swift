@@ -44,7 +44,7 @@ struct MyBookingsView: View {
         }
         .sheet(isPresented: $showRatingSheet) {
             if let booking = bookingToRate {
-                RatingSheet(booking: booking) {
+                RatingSheet(booking: booking, isDriverRatingPassenger: false) {
                     Task {
                         await viewModel.refreshBookings()
                     }

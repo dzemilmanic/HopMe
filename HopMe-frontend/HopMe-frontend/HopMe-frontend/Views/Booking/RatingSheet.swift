@@ -4,19 +4,45 @@ struct RatingSheet: View {
     @SwiftUI.Environment(\.dismiss) var dismiss
     let booking: Booking
     let onComplete: () -> Void
+    let isDriverRatingPassenger: Bool
     
     @StateObject private var viewModel = RatingViewModel()
     @State private var rating: Int = 5
     @State private var comment: String = ""
     
+    // Computed properties to determine who is being rated
+    private var ratedUserName: String {
+        isDriverRatingPassenger ? booking.passenger.fullName : booking.ride.driver.fullName
+    }
+    
+    private var ratedUserInitials: String {
+        if isDriverRatingPassenger {
+            return String(booking.passenger.firstName.prefix(1))
+        } else {
+            return booking.ride.driver.initials
+        }
+    }
+    
+    private var ratedUserProfileImage: String? {
+        isDriverRatingPassenger ? booking.passenger.profileImage : booking.ride.driver.profileImage
+    }
+    
+    private var navigationTitle: String {
+        isDriverRatingPassenger ? "Oceni putnika" : "Oceni vožnju"
+    }
+    
+    private var questionText: String {
+        isDriverRatingPassenger ? "Kako biste ocenili putnika?" : "Kako biste ocenili vožnju?"
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
-                    // Driver Info
+                    // User Info (Driver or Passenger being rated)
                     VStack(spacing: 12) {
                         // Avatar
-                        if let profileImage = booking.ride.driver.profileImage {
+                        if let profileImage = ratedUserProfileImage {
                             AsyncImage(url: URL(string: profileImage)) { image in
                                 image
                                     .resizable()
@@ -25,7 +51,7 @@ struct RatingSheet: View {
                                 Circle()
                                     .fill(Color.blue.opacity(0.3))
                                     .overlay(
-                                        Text(booking.ride.driver.initials)
+                                        Text(ratedUserInitials)
                                             .font(.title)
                                             .foregroundColor(.blue)
                                     )
@@ -37,13 +63,13 @@ struct RatingSheet: View {
                                 .fill(Color.blue.opacity(0.3))
                                 .frame(width: 80, height: 80)
                                 .overlay(
-                                    Text(booking.ride.driver.initials)
+                                    Text(ratedUserInitials)
                                         .font(.title)
                                         .foregroundColor(.blue)
                                 )
                         }
                         
-                        Text(booking.ride.driver.fullName)
+                        Text(ratedUserName)
                             .font(.title3)
                             .fontWeight(.bold)
                         
@@ -56,7 +82,7 @@ struct RatingSheet: View {
                     
                     // Rating Section
                     VStack(spacing: 16) {
-                        Text("Kako biste ocenili vožnju?")
+                        Text(questionText)
                             .font(.headline)
                         
                         HStack(spacing: 12) {
@@ -105,7 +131,7 @@ struct RatingSheet: View {
                 }
                 .padding()
             }
-            .navigationTitle("Oceni vožnju")
+            .navigationTitle(navigationTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
