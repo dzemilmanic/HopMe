@@ -67,11 +67,12 @@ class Ride {
           json_agg(
             json_build_object(
               'id', w.id,
+              'ride_id', w.ride_id,
               'location', w.location,
               'lat', w.lat,
               'lng', w.lng,
-              'orderIndex', w.order_index,
-              'estimatedTime', w.estimated_time
+              'order_index', w.order_index,
+              'estimated_time', w.estimated_time
             ) ORDER BY w.order_index
           ) FILTER (WHERE w.id IS NOT NULL),
           '[]'
