@@ -82,12 +82,16 @@ class TestimonialController {
       const userQuery = 'SELECT first_name, last_name, profile_image_url FROM users WHERE id = $1';
       const userResult = await pool.query(userQuery, [userId]);
       
-      newTestimonial.user = userResult.rows[0];
+      // Merge user details into testimonial at root level (not nested)
+      const testimonialWithUser = {
+        ...newTestimonial,
+        ...userResult.rows[0]
+      };
 
       res.status(201).json({
         success: true,
         message: 'Recenzija uspešno kreirana',
-        testimonial: newTestimonial
+        testimonial: testimonialWithUser
       });
     } catch (error) {
       console.error('Create testimonial error:', error);
@@ -133,15 +137,18 @@ class TestimonialController {
       
       const testimonial = result.rows[0];
       
-      // Fetch user info
+      // Fetch user info and merge at root level
       const userQuery = 'SELECT first_name, last_name, profile_image_url FROM users WHERE id = $1';
       const userResult = await pool.query(userQuery, [userId]);
-      testimonial.user = userResult.rows[0];
+      const testimonialWithUser = {
+        ...testimonial,
+        ...userResult.rows[0]
+      };
 
       res.json({
         success: true,
         message: 'Recenzija uspešno ažurirana',
-        testimonial
+        testimonial: testimonialWithUser
       });
     } catch (error) {
       console.error('Update testimonial error:', error);
