@@ -115,7 +115,14 @@ class RatingController {
       // Ocene koje sam dobio
       const receivedResult = await pool.query(
         `SELECT 
-          r.*,
+          r.id,
+          r.booking_id,
+          r.ride_id,
+          r.rater_id,
+          r.rated_id,
+          r.rating,
+          r.comment,
+          r.created_at,
           json_build_object(
             'id', rater.id,
             'firstName', rater.first_name,
@@ -132,7 +139,14 @@ class RatingController {
       // Ocene koje sam dao
       const givenResult = await pool.query(
         `SELECT 
-          r.*,
+          r.id,
+          r.booking_id,
+          r.ride_id,
+          r.rater_id,
+          r.rated_id,
+          r.rating,
+          r.comment,
+          r.created_at,
           json_build_object(
             'id', rated.id,
             'firstName', rated.first_name,
