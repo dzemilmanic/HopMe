@@ -7,18 +7,31 @@ struct CustomTextField: View {
     var isSecure: Bool = false
     var keyboardType: UIKeyboardType = .default
     
+    @State private var isPasswordVisible: Bool = false
+    
     var body: some View {
         HStack(spacing: 12) {
             Image(systemName: icon)
                 .foregroundColor(.gray)
                 .frame(width: 24)
             
-            if isSecure {
+            if isSecure && !isPasswordVisible {
                 SecureField(placeholder, text: $text)
             } else {
                 TextField(placeholder, text: $text)
                     .keyboardType(keyboardType)
                     .autocapitalization(.none)
+            }
+            
+            // Password visibility toggle button
+            if isSecure {
+                Button(action: {
+                    isPasswordVisible.toggle()
+                }) {
+                    Image(systemName: isPasswordVisible ? "eye.slash.fill" : "eye.fill")
+                        .foregroundColor(.gray)
+                        .frame(width: 24)
+                }
             }
         }
         .padding()
