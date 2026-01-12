@@ -200,7 +200,7 @@ struct HomeView: View {
     // MARK: - How It Works
     private var howItWorksSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Kako funkcionише?")
+            Text("Kako funkcionise?")
                 .font(.title3)
                 .fontWeight(.bold)
                 .padding(.horizontal)
