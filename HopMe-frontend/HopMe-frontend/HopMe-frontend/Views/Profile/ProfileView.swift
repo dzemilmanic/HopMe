@@ -5,6 +5,7 @@ struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @State private var showEditProfile = false
     @State private var showVehicles = false
+    @State private var showMyRatings = false
     @State private var showSettings = false
     @State private var showPrivacySecurity = false
     @State private var showHelpSupport = false
@@ -64,6 +65,11 @@ struct ProfileView: View {
         }
         .sheet(isPresented: $showVehicles) {
             VehiclesView()
+        }
+        .sheet(isPresented: $showMyRatings) {
+            NavigationView {
+                MyRatingsView()
+            }
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
@@ -277,19 +283,20 @@ struct ProfileView: View {
                     title: "Moje ocene",
                     color: .orange
                 ) {
-                    // TODO: Navigate to ratings
+                    showMyRatings = true
                 }
                 
-                Divider()
-                    .padding(.leading, 40)
-                
-                ActionRow(
-                    icon: "bell.fill",
-                    title: "Notifikacije",
-                    color: .purple
-                ) {
-                    // TODO: Navigate to notifications settings
-                }
+                // MARK: - Hidden for future use
+                // Divider()
+                //     .padding(.leading, 40)
+                // 
+                // ActionRow(
+                //     icon: "bell.fill",
+                //     title: "Notifikacije",
+                //     color: .purple
+                // ) {
+                //     // TODO: Navigate to notifications settings
+                // }
             }
             .padding()
             .background(Color(.systemBackground))

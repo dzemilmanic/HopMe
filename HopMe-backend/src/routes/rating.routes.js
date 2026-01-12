@@ -134,4 +134,46 @@ router.get('/user/:userId', RatingController.getUserRatings);
  */
 router.get('/my-ratings', RatingController.getMyRatings);
 
+/**
+ * @swagger
+ * /ratings/all-my-ratings:
+ *   get:
+ *     tags:
+ *       - Ratings
+ *     summary: Sve ocene trenutnog korisnika (primljene i date)
+ *     description: Vraća sve ocene koje je korisnik dobio od drugih i sve ocene koje je dao drugima
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Ocene i statistika
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 receivedRatings:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Rating'
+ *                 givenRatings:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Rating'
+ *                 stats:
+ *                   type: object
+ *                   properties:
+ *                     total_received:
+ *                       type: integer
+ *                       example: 25
+ *                     average_received:
+ *                       type: number
+ *                       format: double
+ *                       example: 4.8
+ *                     total_given:
+ *                       type: integer
+ *                       example: 15
+ */
+router.get('/all-my-ratings', RatingController.getAllMyRatings);
+
 export default router;

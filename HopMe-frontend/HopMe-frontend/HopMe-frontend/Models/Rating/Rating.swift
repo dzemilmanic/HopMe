@@ -9,6 +9,7 @@ struct Rating: Codable, Identifiable {
     let rating: Int
     let comment: String?
     let rater: UserInfo
+    let rated: UserInfo?
     let createdAt: Date
     
     var formattedDate: String {
@@ -16,7 +17,7 @@ struct Rating: Codable, Identifiable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case id, rating, comment, rater
+        case id, rating, comment, rater, rated
         case bookingId = "booking_id"
         case rideId = "ride_id"
         case raterId = "rater_id"

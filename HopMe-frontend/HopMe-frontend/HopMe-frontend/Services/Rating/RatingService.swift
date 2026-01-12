@@ -29,6 +29,13 @@ class RatingService {
             requiresAuth: true
         )
     }
+    
+    func getAllMyRatings() async throws -> MyRatingsResponse {
+        return try await api.request(
+            endpoint: .allMyRatings,
+            requiresAuth: true
+        )
+    }
 }
 
 struct UserRatingsResponse: Codable {

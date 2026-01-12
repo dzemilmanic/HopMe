@@ -1,5 +1,6 @@
 import Rating from '../models/Rating.js';
 import Notification from '../models/Notification.js';
+import pool from '../config/database.js';
 
 class RatingController {
   // Ocenjivanje
@@ -103,6 +104,77 @@ class RatingController {
     } catch (error) {
       console.error('Greška:', error);
       res.status(500).json({ message: 'Greška' });
+    }
+  }
+
+  // Sve moje ocene (primljene i date)
+  static async getAllMyRatings(req, res) {
+    try {
+      const userId = req.user.id;
+
+      // Ocene koje sam dobio
+      const receivedResult = await pool.query(
+        `SELECT 
+          r.*,
+          json_build_object(
+            'id', rater.id,
+            'firstName', rater.first_name,
+            'lastName', rater.last_name,
+            'profileImage', rater.profile_image_url
+          ) as rater
+         FROM ratings r
+         JOIN users rater ON r.rater_id = rater.id
+         WHERE r.rated_id = $1
+         ORDER BY r.created_at DESC`,
+        [userId]
+      );
+
+      // Ocene koje sam dao
+      const givenResult = await pool.query(
+        `SELECT 
+          r.*,
+          json_build_object(
+            'id', rated.id,
+            'firstName', rated.first_name,
+            'lastName', rated.last_name,
+            'profileImage', rated.profile_image_url
+          ) as rated
+         FROM ratings r
+         JOIN users rated ON r.rated_id = rated.id
+         WHERE r.rater_id = $1
+         ORDER BY r.created_at DESC`,
+        [userId]
+      );
+
+      // Statistika
+      const statsResult = await pool.query(
+        `SELECT 
+          COUNT(*) as total_received,
+          COALESCE(AVG(rating), 0) as average_received
+         FROM ratings
+         WHERE rated_id = $1`,
+        [userId]
+      );
+
+      const givenCountResult = await pool.query(
+        `SELECT COUNT(*) as total_given
+         FROM ratings
+         WHERE rater_id = $1`,
+        [userId]
+      );
+
+      res.json({
+        receivedRatings: receivedResult.rows,
+        givenRatings: givenResult.rows,
+        stats: {
+          total_received: parseInt(statsResult.rows[0].total_received),
+          average_received: parseFloat(statsResult.rows[0].average_received),
+          total_given: parseInt(givenCountResult.rows[0].total_given)
+        }
+      });
+    } catch (error) {
+      console.error('Greška:', error);
+      res.status(500).json({ message: 'Greška pri učitavanju ocena' });
     }
   }
 }

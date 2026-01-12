@@ -40,6 +40,7 @@ enum APIEndpoint {
     case createRating
     case userRatings(userId: Int)
     case myRatings
+    case allMyRatings
     
     // Notifications
     case notifications
@@ -112,6 +113,7 @@ enum APIEndpoint {
         case .createRating: return "/ratings"
         case .userRatings(let userId): return "/ratings/user/\(userId)"
         case .myRatings: return "/ratings/my-ratings"
+        case .allMyRatings: return "/ratings/all-my-ratings"
         
         // Notifications
         case .notifications: return "/notifications"
