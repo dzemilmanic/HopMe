@@ -21,11 +21,11 @@ struct CreateTestimonialView: View {
                     .padding(.vertical)
                 }
                 
-                Section(header: Text("Vaše iskustvo")) {
+                Section(header: Text("Vaše iskustvo (opciono)")) {
                     TextEditor(text: $viewModel.text)
                         .frame(minHeight: 100)
                         .overlay(
-                            Text("Napišite vaše utiske (min 10 karaktera)...")
+                            Text("Napišite vaše utiske (opciono)...")
                                 .foregroundColor(.gray)
                                 .opacity(viewModel.text.isEmpty ? 0.6 : 0)
                                 .padding(.top, 8)
@@ -88,7 +88,7 @@ class CreateTestimonialViewModel: ObservableObject {
     private let service = TestimonialService.shared
     
     var isValid: Bool {
-        rating >= 1 && rating <= 5 && text.trimmingCharacters(in: .whitespacesAndNewlines).count >= 10
+        rating >= 1 && rating <= 5
     }
     
     @MainActor
