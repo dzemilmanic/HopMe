@@ -90,69 +90,6 @@ HopMe is a comprehensive ride-sharing solution designed to make carpooling easy 
 
 ---
 
-## 📦 Project Structure
-
-```
-HopMe/
-│
-├── 🔙 HopMe-backend/               # Node.js Backend
-│   ├── src/
-│   │   ├── config/                 # Database & app config
-│   │   ├── controllers/            # Business logic (9 controllers)
-│   │   │   ├── AdminController.js
-│   │   │   ├── AuthController.js
-│   │   │   ├── BookingController.js
-│   │   │   ├── MapsController.js
-│   │   │   ├── NotificationController.js
-│   │   │   ├── RatingController.js
-│   │   │   ├── RideController.js
-│   │   │   ├── TestimonialController.js
-│   │   │   └── UserController.js
-│   │   ├── middleware/             # Auth, validation, error handling
-│   │   ├── models/                 # Database models (8 models)
-│   │   │   ├── Booking.js
-│   │   │   ├── Notification.js
-│   │   │   ├── Rating.js
-│   │   │   ├── Ride.js
-│   │   │   ├── Testimonial.js
-│   │   │   ├── User.js
-│   │   │   ├── Vehicle.js
-│   │   │   └── VerificationToken.js
-│   │   ├── routes/                 # API routes
-│   │   ├── services/               # External services (email, storage)
-│   │   └── utils/                  # Helper functions
-│   ├── scripts/                    # Database migration scripts
-│   ├── .env.example                # Environment variables template
-│   ├── server.js                   # App entry point
-│   └── package.json
-│
-└── 📱 HopMe-frontend/              # SwiftUI iOS App
-    └── HopMe-frontend/
-        └── HopMe-frontend/
-            ├── Assets.xcassets/    # App images & icons
-            ├── Components/         # Reusable UI components (37 components)
-            ├── Core/               # Core utilities
-            ├── Models/             # Data models (33 models)
-            ├── Services/           # API services (12 services)
-            ├── ViewModels/         # MVVM view models (23 view models)
-            ├── Views/              # SwiftUI views (29 views)
-            │   ├── Auth/           # Login, Register, ForgotPassword
-            │   ├── Booking/        # Booking management
-            │   ├── Home/           # Home & Search
-            │   ├── Main/           # Tab bar & navigation
-            │   ├── Notifications/  # Notification center
-            │   ├── Profile/        # User profile & settings
-            │   ├── Rating/         # Rating & reviews
-            │   ├── Rides/          # Ride creation & management
-            │   ├── Settings/       # App settings
-            │   └── Vehicles/       # Vehicle management
-            ├── Utils/              # Helper utilities
-            ├── Environment.swift   # API configuration
-            └── HopMe_frontendApp.swift
-```
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -172,7 +109,7 @@ HopMe/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/HopMe.git
+   git clone https://github.com/dzemilmanic/HopMe.git
    cd HopMe/HopMe-backend
    ```
 
@@ -274,110 +211,6 @@ HopMe/
 5. **Run the app**
    - Press `⌘ + R` or click the Play button
    - Wait for the build to complete
-
----
-
-## 📡 API Documentation
-
-The HopMe backend provides a comprehensive RESTful API with Swagger documentation.
-
-### Access API Documentation
-
-**Local:** `http://localhost:5000/api-docs`  
-**Production:** `https://your-backend.up.railway.app/api-docs`
-
-### Main API Endpoints
-
-#### 🔐 Authentication
-```
-POST   /api/auth/register              # Register new user
-POST   /api/auth/login                 # Login user
-POST   /api/auth/verify-email          # Verify email address
-POST   /api/auth/forgot-password       # Request password reset
-POST   /api/auth/reset-password        # Reset password with token
-POST   /api/auth/resend-verification   # Resend verification email
-```
-
-#### 👤 User Management
-```
-GET    /api/user/profile               # Get current user profile
-PUT    /api/user/profile               # Update profile
-POST   /api/user/change-password       # Change password
-GET    /api/user/vehicles              # Get user vehicles
-POST   /api/user/vehicles              # Add new vehicle
-PUT    /api/user/vehicles/:id          # Update vehicle
-DELETE /api/user/vehicles/:id          # Delete vehicle
-POST   /api/user/profile-picture       # Upload profile picture
-DELETE /api/user/profile-picture       # Remove profile picture
-```
-
-#### 🚗 Rides
-```
-GET    /api/rides/search               # Search available rides
-POST   /api/rides                      # Create new ride
-GET    /api/rides/:rideId              # Get ride details
-GET    /api/rides/my-rides             # Get user's rides as driver
-POST   /api/rides/:rideId/publish      # Publish ride
-POST   /api/rides/:rideId/cancel       # Cancel ride
-POST   /api/rides/:rideId/complete     # Mark ride as completed
-```
-
-#### 🎫 Bookings
-```
-POST   /api/bookings                   # Create booking
-GET    /api/bookings/my-bookings       # Get user's bookings
-GET    /api/bookings/:bookingId        # Get booking details
-POST   /api/bookings/:bookingId/cancel # Cancel booking
-GET    /api/bookings/ride/:rideId      # Get bookings for a ride (driver)
-POST   /api/bookings/:bookingId/approve   # Approve booking (driver)
-POST   /api/bookings/:bookingId/reject    # Reject booking (driver)
-```
-
-#### ⭐ Ratings
-```
-POST   /api/ratings                    # Create rating
-GET    /api/ratings/user/:userId       # Get user's ratings
-GET    /api/ratings/my-ratings         # Get ratings I received
-GET    /api/ratings/all-my-ratings     # Get all my ratings (given & received)
-```
-
-#### 💬 Testimonials
-```
-GET    /api/testimonials               # Get all testimonials
-POST   /api/testimonials               # Create testimonial
-GET    /api/testimonials/my            # Get my testimonial
-PUT    /api/testimonials/my            # Update my testimonial
-DELETE /api/testimonials/my            # Delete my testimonial
-```
-
-#### 🔔 Notifications
-```
-GET    /api/notifications              # Get all notifications
-GET    /api/notifications/unread-count # Get unread count
-POST   /api/notifications/:id/read     # Mark as read
-POST   /api/notifications/mark-all-read # Mark all as read
-DELETE /api/notifications/:id          # Delete notification
-```
-
-#### 🗺️ Maps
-```
-GET    /api/maps/geocode               # Convert address to coordinates
-GET    /api/maps/reverse               # Convert coordinates to address
-POST   /api/maps/route                 # Get route between points
-GET    /api/maps/distance              # Calculate distance
-GET    /api/maps/search                # Search locations
-GET    /api/maps/nearby                # Find nearby places
-```
-
-#### 🛡️ Admin
-```
-GET    /api/admin/users                # Get all users
-PUT    /api/admin/users/:id            # Update user
-DELETE /api/admin/users/:id            # Delete user
-GET    /api/admin/rides                # Get all rides
-DELETE /api/admin/rides/:id            # Delete ride
-GET    /api/admin/statistics           # Get platform statistics
-```
 
 ---
 
@@ -520,12 +353,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built with ❤️ using modern web and mobile technologies
 - Inspired by the need for efficient carpooling solutions
 - Special thanks to all contributors and testers
-
----
-
-## 📧 Support
-
-For support, email support@hopme.app or open an issue in this repository.
 
 ---
 
