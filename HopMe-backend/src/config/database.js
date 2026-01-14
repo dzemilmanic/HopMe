@@ -1,13 +1,13 @@
-// PRVO učitaj dotenv i ovde!
+// First load dotenv and here!
 import dotenv from 'dotenv';
 dotenv.config();
 
 import pg from 'pg';
 const { Pool } = pg;
 
-// Proveri da li su varijable učitane
+// Check if environment variables are loaded
 if (!process.env.DB_HOST || !process.env.DB_PASSWORD) {
-  console.error('❌ KRITIČNA GREŠKA: Environment varijable nisu učitane!');
+  console.error('❌ CRITICAL ERROR: Environment variables are not loaded!');
   console.error('DB_HOST:', process.env.DB_HOST);
   console.error('DB_PASSWORD exists:', !!process.env.DB_PASSWORD);
   throw new Error('Database configuration missing');
@@ -18,7 +18,7 @@ const poolConfig = {
   port: parseInt(process.env.DB_PORT, 10),
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD, // već je string
+  password: process.env.DB_PASSWORD, // already a string
   ssl: {
     rejectUnauthorized: false
   },
@@ -38,21 +38,21 @@ console.log('  SSL:', poolConfig.ssl ? 'enabled' : 'disabled');
 const pool = new Pool(poolConfig);
 
 pool.on('connect', (client) => {
-  console.log('✅ PostgreSQL konekcija uspešna');
+  console.log('✅ PostgreSQL connection successful');
 });
 
 pool.on('error', (err, client) => {
-  console.error('❌ PostgreSQL greška:', err.message);
+  console.error('❌ PostgreSQL error:', err.message);
 });
 
-// Async test konekcije
+// Async test connection
 (async () => {
   try {
     const client = await pool.connect();
-    console.log('✅ Test konekcije uspešan');
+    console.log('✅ Connection test successful');
     client.release();
   } catch (err) {
-    console.error('❌ Greška pri testiranju konekcije:', err.message);
+    console.error('❌ Error while testing the connection:', err.message);
   }
 })();
 

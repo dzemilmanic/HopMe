@@ -4,30 +4,30 @@ import Notification from '../models/Notification.js';
 import pool from '../config/database.js';
 
 class BookingController {
-  // Kreiranje rezervacije
+  // Creating a reservation
   static async createBooking(req, res) {
     try {
       const passengerId = req.user.id;
       const { rideId, seatsBooked, pickupLocation, dropoffLocation, message } = req.body;
 
-      // Provera da li vožnja postoji
+      // Checking if the ride exists
       const ride = await Ride.findById(rideId);
       if (!ride) {
-        return res.status(404).json({ message: 'Vožnja nije pronađena' });
+        return res.status(404).json({ message: 'Ride not found' });
       }
 
-      // Provera da li vozač pokušava da rezerviše svoju vožnju
+      // Checking if the driver is trying to book their own ride
       if (ride.driver.id === passengerId) {
-        return res.status(400).json({ message: 'Ne možete rezervisati sopstvenu vožnju' });
+        return res.status(400).json({ message: 'You cannot book your own ride' });
       }
 
-      // Provera dostupnosti mesta
+      // Checking availability of seats
       const isAvailable = await Booking.checkAvailability(rideId, seatsBooked);
       if (!isAvailable) {
-        return res.status(400).json({ message: 'Nema dovoljno slobodnih mesta' });
+        return res.status(400).json({ message: 'Not enough available seats' });
       }
 
-      // Provera da li već postoji pending ili accepted rezervacija
+      // Checking if the passenger already has a pending or accepted booking
       const existingBooking = await pool.query(
         'SELECT * FROM bookings WHERE ride_id = $1 AND passenger_id = $2 AND status IN ($3, $4)',
         [rideId, passengerId, 'pending', 'accepted']
@@ -35,7 +35,7 @@ class BookingController {
 
       if (existingBooking.rows.length > 0) {
         return res.status(400).json({ 
-          message: 'Već imate aktivnu rezervaciju za ovu vožnju' 
+          message: 'You already have an active booking for this ride' 
         });
       }
 
@@ -46,24 +46,24 @@ class BookingController {
         pickupLocation, dropoffLocation, message
       });
 
-      // Automatsko prihvatanje ako je uključeno
+      // Automatically accepting if enabled
       if (ride.auto_accept_bookings) {
         await Booking.updateStatus(booking.id, 'accepted');
         
         await Notification.create({
           userId: passengerId,
           type: 'booking_accepted',
-          title: 'Rezervacija prihvaćena',
-          message: `Vaša rezervacija za vožnju ${ride.departure_location} → ${ride.arrival_location} je automatski prihvaćena`,
+          title: 'Booking accepted',
+          message: `Your booking for the ride ${ride.departure_location} → ${ride.arrival_location} has been automatically accepted`,
           data: { bookingId: String(booking.id), rideId: String(rideId) }
         });
       } else {
-        // Notifikacija vozaču
+        // Notifying the driver
         await Notification.create({
           userId: ride.driver.id,
           type: 'new_booking',
-          title: 'Nova rezervacija',
-          message: `Imate novu rezervaciju za vožnju ${ride.departure_location} → ${ride.arrival_location}`,
+          title: 'New booking',
+          message: `You have a new booking for the ride ${ride.departure_location} → ${ride.arrival_location}`,
           data: { bookingId: String(booking.id), rideId: String(rideId) }
         });
       }
@@ -71,16 +71,16 @@ class BookingController {
       const bookingDetails = await Booking.findById(booking.id);
 
       res.status(201).json({
-        message: ride.auto_accept_bookings ? 'Rezervacija automatski prihvaćena' : 'Rezervacija poslata vozaču',
+        message: ride.auto_accept_bookings ? 'Booking automatically accepted' : 'Booking sent to driver',
         booking: bookingDetails
       });
     } catch (error) {
-      console.error('Greška pri kreiranju rezervacije:', error);
-      res.status(500).json({ message: 'Greška pri kreiranju rezervacije' });
+      console.error('Error creating booking:', error);
+      res.status(500).json({ message: 'Error creating booking' });
     }
   }
 
-  // Rezervacije putnika
+  // Passenger's bookings
   static async getPassengerBookings(req, res) {
     try {
       const passengerId = req.user.id;
@@ -94,12 +94,12 @@ class BookingController {
 
       res.json(bookings);
     } catch (error) {
-      console.error('Greška pri učitavanju rezervacija:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('Error loading bookings:', error);
+      res.status(500).json({ message: 'Error loading bookings' });
     }
   }
 
-  // Rezervacije za vožnju (vozač)
+  // Driver's bookings
   static async getRideBookings(req, res) {
     try {
       const { rideId } = req.params;
@@ -112,19 +112,19 @@ class BookingController {
       );
 
       if (ride.rows.length === 0) {
-        return res.status(403).json({ message: 'Nemate pristup ovoj vožnji' });
+        return res.status(403).json({ message: 'You do not have access to this ride' });
       }
 
       const bookings = await Booking.findByRideId(rideId);
 
       res.json(bookings);
     } catch (error) {
-      console.error('Greška pri učitavanju rezervacija:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('Error loading bookings:', error);
+      res.status(500).json({ message: 'Error loading bookings' });
     }
   }
 
-  // Prihvatanje rezervacije (vozač)
+  // Accepting a booking (driver)
   static async acceptBooking(req, res) {
     try {
       const { bookingId } = req.params;
@@ -134,49 +134,49 @@ class BookingController {
       const booking = await Booking.findById(bookingId);
 
       if (!booking) {
-        return res.status(404).json({ message: 'Rezervacija nije pronađena' });
+        return res.status(404).json({ message: 'Booking not found' });
       }
 
       if (booking.ride.driverId !== driverId) {
-        return res.status(403).json({ message: 'Nemate pristup ovoj rezervaciji' });
+        return res.status(403).json({ message: 'You do not have access to this booking' });
       }
 
       if (booking.status !== 'pending') {
-        return res.status(400).json({ message: 'Rezervacija već obrađena' });
+        return res.status(400).json({ message: 'Booking already processed' });
       }
 
-      // Provera dostupnosti
+      // Checking availability
       const isAvailable = await Booking.checkAvailability(
         booking.ride_id, 
         booking.seats_booked
       );
 
       if (!isAvailable) {
-        return res.status(400).json({ message: 'Nema više slobodnih mesta' });
+        return res.status(400).json({ message: 'Not enough available seats' });
       }
 
       await Booking.updateStatus(bookingId, 'accepted', response);
 
-      // Notifikacija putniku
+      // Notifying the passenger
       await Notification.create({
         userId: booking.passenger.id,
         type: 'booking_accepted',
-        title: 'Rezervacija prihvaćena',
-        message: `Vaša rezervacija je prihvaćena za vožnju ${booking.ride.departureLocation} → ${booking.ride.arrivalLocation}`,
+        title: 'Booking accepted',
+        message: `Your booking has been accepted for the ride ${booking.ride.departureLocation} → ${booking.ride.arrivalLocation}`,
         data: { bookingId: String(bookingId), rideId: String(booking.ride.id) }
       });
 
-      res.json({ message: 'Rezervacija prihvaćena' });
+      res.json({ message: 'Booking accepted' });
     } catch (error) {
-      console.error('❌ Greška pri prihvatanju rezervacije:', error);
+      console.error('❌ Error accepting booking:', error);
       console.error('   Error message:', error.message);
       console.error('   Error code:', error.code);
       console.error('   Error detail:', error.detail);
-      res.status(500).json({ message: 'Greška pri prihvatanju' });
+      res.status(500).json({ message: 'Error accepting booking' });
     }
   }
 
-  // Odbijanje rezervacije (vozač)
+  // Rejecting a booking (driver)
   static async rejectBooking(req, res) {
     try {
       const { bookingId } = req.params;
@@ -186,36 +186,36 @@ class BookingController {
       const booking = await Booking.findById(bookingId);
 
       if (!booking) {
-        return res.status(404).json({ message: 'Rezervacija nije pronađena' });
+        return res.status(404).json({ message: 'Booking not found' });
       }
 
       if (booking.ride.driverId !== driverId) {
-        return res.status(403).json({ message: 'Nemate pristup ovoj rezervaciji' });
+        return res.status(403).json({ message: 'You do not have access to this booking' });
       }
 
       if (booking.status !== 'pending') {
-        return res.status(400).json({ message: 'Rezervacija već obrađena' });
+        return res.status(400).json({ message: 'Booking already processed' });
       }
 
       await Booking.updateStatus(bookingId, 'rejected', response);
 
-      // Notifikacija putniku
+      // Notifying the passenger
       await Notification.create({
         userId: booking.passenger.id,
         type: 'booking_rejected',
-        title: 'Rezervacija odbijena',
-        message: `Vaša rezervacija za vožnju ${booking.ride.departureLocation} → ${booking.ride.arrivalLocation} je odbijena`,
+        title: 'Booking rejected',
+        message: `Your booking for the ride ${booking.ride.departureLocation} → ${booking.ride.arrivalLocation} has been rejected`,
         data: { bookingId: String(bookingId), rideId: String(booking.ride_id) }
       });
 
-      res.json({ message: 'Rezervacija odbijena' });
+      res.json({ message: 'Booking rejected' });
     } catch (error) {
-      console.error('Greška pri odbijanju:', error);
-      res.status(500).json({ message: 'Greška pri odbijanju' });
+      console.error('❌ Error rejecting booking:', error);
+      res.status(500).json({ message: 'Error rejecting booking' });
     }
   }
 
-  // Otkazivanje rezervacije (putnik)
+  // Canceling a booking (passenger)
   static async cancelBooking(req, res) {
     try {
       const { bookingId } = req.params;
@@ -224,40 +224,40 @@ class BookingController {
       const booking = await Booking.findById(bookingId);
 
       if (!booking) {
-        return res.status(404).json({ message: 'Rezervacija nije pronađena' });
+        return res.status(404).json({ message: 'Booking not found' });
       }
 
       if (booking.passenger_id !== passengerId) {
-        return res.status(403).json({ message: 'Nemate pristup ovoj rezervaciji' });
+        return res.status(403).json({ message: 'You do not have access to this booking' });
       }
 
-      // Provera da li je vožnja već počela
+      // Checking if the ride has started
       const ride = await Ride.findById(booking.ride_id);
       if (new Date(ride.departure_time) < new Date()) {
         return res.status(400).json({ 
-          message: 'Ne možete otkazati rezervaciju nakon početka vožnje' 
+          message: 'You cannot cancel the booking after the ride has started' 
         });
       }
 
       await Booking.cancelBooking(bookingId, passengerId);
 
-      // Notifikacija vozaču
+      // Notifying the driver
       await Notification.create({
         userId: ride.driver.id,
         type: 'booking_cancelled',
-        title: 'Rezervacija otkazana',
-        message: `Putnik je otkazao rezervaciju za vožnju ${ride.departure_location} → ${ride.arrival_location}`,
+        title: 'Booking cancelled',
+        message: `Passenger has cancelled the booking for the ride ${ride.departure_location} → ${ride.arrival_location}`,
         data: { bookingId: String(bookingId), rideId: String(booking.ride_id) }
       });
 
-      res.json({ message: 'Rezervacija otkazana' });
+      res.json({ message: 'Booking cancelled' });
     } catch (error) {
-      console.error('Greška pri otkazivanju:', error);
-      res.status(500).json({ message: 'Greška pri otkazivanju' });
+      console.error('❌ Error cancelling booking:', error);
+      res.status(500).json({ message: 'Error cancelling booking' });
     }
   }
 
-  // Detalji rezervacije
+  // Booking details
   static async getBookingDetails(req, res) {
     try {
       const { bookingId } = req.params;
@@ -266,18 +266,18 @@ class BookingController {
       const booking = await Booking.findById(bookingId);
 
       if (!booking) {
-        return res.status(404).json({ message: 'Rezervacija nije pronađena' });
+        return res.status(404).json({ message: 'Booking not found' });
       }
 
-      // Provera pristupa
+      // Checking access
       if (booking.passenger.id !== userId && booking.ride.driverId !== userId) {
-        return res.status(403).json({ message: 'Nemate pristup ovoj rezervaciji' });
+        return res.status(403).json({ message: 'You do not have access to this booking' });
       }
 
       res.json(booking);
     } catch (error) {
-      console.error('Greška pri učitavanju detalja:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('❌ Error loading booking details:', error);
+      res.status(500).json({ message: 'Error loading booking details' });
     }
   }
 }

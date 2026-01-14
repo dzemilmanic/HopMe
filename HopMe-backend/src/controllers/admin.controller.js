@@ -3,18 +3,18 @@ import EmailService from '../services/email.service.js';
 import bcrypt from 'bcryptjs';
 
 class AdminController {
-  // Pregled svih pending korisnika
+  // View all pending users
   static async getPendingUsers(req, res) {
     try {
       const pendingUsers = await User.findPendingUsers();
       res.json(pendingUsers);
     } catch (error) {
-      console.error('Greška pri učitavanju pending korisnika:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('Error loading pending users:', error);
+      res.status(500).json({ message: 'Error loading' });
     }
   }
 
-  // Odobravanje korisnika
+  // Approve user
   static async approveUser(req, res) {
     try {
       const { userId } = req.params;
@@ -23,18 +23,18 @@ class AdminController {
       const user = await User.findById(userId);
       
       if (!user) {
-        return res.status(404).json({ message: 'Korisnik nije pronađen' });
+        return res.status(404).json({ message: 'User not found' });
       }
 
       if (user.account_status !== 'pending') {
         return res.status(400).json({ 
-          message: 'Korisnik nije u statusu pending' 
+          message: 'User is not in pending status' 
         });
       }
 
       if (!user.is_email_verified) {
         return res.status(400).json({ 
-          message: 'Korisnik mora prvo verifikovati email' 
+          message: 'User must first verify email' 
         });
       }
 
@@ -46,14 +46,14 @@ class AdminController {
         true
       );
 
-      res.json({ message: 'Korisnik uspešno odobren' });
+      res.json({ message: 'User approved successfully' });
     } catch (error) {
-      console.error('Greška pri odobravanju korisnika:', error);
-      res.status(500).json({ message: 'Greška pri odobravanju' });
+      console.error('Error approving user:', error);
+      res.status(500).json({ message: 'Error approving user' });
     }
   }
 
-  // Odbijanje korisnika
+  // Reject user
   static async rejectUser(req, res) {
     try {
       const { userId } = req.params;
@@ -61,7 +61,7 @@ class AdminController {
       const user = await User.findById(userId);
       
       if (!user) {
-        return res.status(404).json({ message: 'Korisnik nije pronađen' });
+        return res.status(404).json({ message: 'User not found' });
       }
 
       await User.updateAccountStatus(userId, 'rejected');
@@ -72,35 +72,35 @@ class AdminController {
         false
       );
 
-      res.json({ message: 'Korisnik odbijen' });
+      res.json({ message: 'User rejected successfully' });
     } catch (error) {
-      console.error('Greška pri odbijanju korisnika:', error);
-      res.status(500).json({ message: 'Greška pri odbijanju' });
+      console.error('Error rejecting user:', error);
+      res.status(500).json({ message: 'Error rejecting user' });
     }
   }
 
-  // Suspendovanje korisnika
+  // Suspend user
   static async suspendUser(req, res) {
     try {
       const { userId } = req.params;
 
       await User.updateAccountStatus(userId, 'suspended');
 
-      res.json({ message: 'Korisnik suspendovan' });
+      res.json({ message: 'User suspended successfully' });
     } catch (error) {
-      console.error('Greška pri suspendovanju:', error);
-      res.status(500).json({ message: 'Greška pri suspendovanju' });
+      console.error('Error suspending user:', error);
+      res.status(500).json({ message: 'Error suspending user' });
     }
   }
 
-  // Kreiranje novog admina (samo admin može)
+  // Create new admin (only admin can create)
   static async createAdmin(req, res) {
     try {
       const { email, password, firstName, lastName, phone } = req.body;
 
       const existingUser = await User.findByEmail(email);
       if (existingUser) {
-        return res.status(400).json({ message: 'Email već postoji' });
+        return res.status(400).json({ message: 'Email already exists' });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -114,21 +114,21 @@ class AdminController {
         roles: ['admin']
       });
 
-      // Admin se automatski odobrava i verifikuje
+      // Admin is automatically approved and verified
       await User.updateEmailVerification(admin.id);
       await User.updateAccountStatus(admin.id, 'approved', req.user.id);
 
       res.status(201).json({
-        message: 'Admin uspešno kreiran',
+        message: 'Admin successfully created',
         adminId: admin.id
       });
     } catch (error) {
-      console.error('Greška pri kreiranju admina:', error);
-      res.status(500).json({ message: 'Greška pri kreiranju admina' });
+      console.error('Error creating admin:', error);
+      res.status(500).json({ message: 'Error creating admin' });
     }
   }
 
-  // Pregled svih korisnika sa filterima
+  // View all users with filters
   static async getAllUsers(req, res) {
     try {
       const { status, role } = req.query;
@@ -151,12 +151,12 @@ class AdminController {
       const result = await pool.query(query, params);
       res.json(result.rows);
     } catch (error) {
-      console.error('Greška pri učitavanju korisnika:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('Error loading users:', error);
+      res.status(500).json({ message: 'Error loading users' });
     }
   }
 
-  // Detalji korisnika sa vozilima
+  // User details with vehicles
   static async getUserDetails(req, res) {
     try {
       const { userId } = req.params;
@@ -164,15 +164,15 @@ class AdminController {
       const user = await User.getUserWithVehicles(userId);
 
       if (!user) {
-        return res.status(404).json({ message: 'Korisnik nije pronađen' });
+        return res.status(404).json({ message: 'User not found' });
       }
 
       delete user.password;
 
       res.json(user);
     } catch (error) {
-      console.error('Greška pri učitavanju detalja:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju detalja' });
+      console.error('Error loading user details:', error);
+      res.status(500).json({ message: 'Error loading user details' });
     }
   }
 }

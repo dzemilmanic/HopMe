@@ -6,7 +6,7 @@ const options = {
     info: {
       title: 'HopMe API',
       version: '1.0.0',
-      description: 'API dokumentacija za HopMe platformu za deljenje vožnji',
+      description: 'API documentation for HopMe platform',
       contact: {
         name: 'HopMe Support',
         email: 'info@hopme.rs',
@@ -94,14 +94,14 @@ const options = {
       },
     },
     tags: [
-      { name: 'Auth', description: 'Autentifikacija i registracija' },
-      { name: 'Rides', description: 'Upravljanje vožnjama' },
-      { name: 'Bookings', description: 'Upravljanje rezervacijama' },
-      { name: 'Ratings', description: 'Sistem ocenjivanja' },
-      { name: 'Notifications', description: 'Notifikacije' },
-      { name: 'Admin', description: 'Admin operacije' },
-      { name: 'User', description: 'Korisnički profil' },
-      { name: 'Maps', description: 'Mape, rute i geolokacija' },
+      { name: 'Auth', description: 'Authentication and registration' },
+      { name: 'Rides', description: 'Manage rides' },
+      { name: 'Bookings', description: 'Manage bookings' },
+      { name: 'Ratings', description: 'Rating system' },
+      { name: 'Notifications', description: 'Notifications' },
+      { name: 'Admin', description: 'Admin operations' },
+      { name: 'User', description: 'User profile' },
+      { name: 'Maps', description: 'Maps, routes and geolocation' },
     ],
   },
   apis: ['./src/routes/*.js'], // Path to the API routes

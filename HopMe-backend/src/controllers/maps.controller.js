@@ -7,19 +7,19 @@ class MapsController {
       const { address } = req.query;
       
       if (!address) {
-        return res.status(400).json({ message: 'Adresa je obavezna' });
+        return res.status(400).json({ message: 'Address is required' });
       }
 
       const result = await MapsService.geocodeAddress(address);
       
       if (!result) {
-        return res.status(404).json({ message: 'Lokacija nije pronađena' });
+        return res.status(404).json({ message: 'Location not found' });
       }
 
       res.json(result);
     } catch (error) {
-      console.error('Geocode error:', error);
-      res.status(500).json({ message: 'Greška pri geocoding-u' });
+      console.error('❌ Geocode error:', error);
+      res.status(500).json({ message: 'Error geocoding' });
     }
   }
 
@@ -29,7 +29,7 @@ class MapsController {
       const { lat, lng } = req.query;
       
       if (!lat || !lng) {
-        return res.status(400).json({ message: 'Koordinate su obavezne' });
+        return res.status(400).json({ message: 'Coordinates are required' });
       }
 
       const result = await MapsService.reverseGeocode(
@@ -38,13 +38,13 @@ class MapsController {
       );
       
       if (!result) {
-        return res.status(404).json({ message: 'Adresa nije pronađena' });
+        return res.status(404).json({ message: 'Location not found' });
       }
 
       res.json(result);
     } catch (error) {
-      console.error('Reverse geocode error:', error);
-      res.status(500).json({ message: 'Greška pri reverse geocoding-u' });
+      console.error('❌ Reverse geocode error:', error);
+      res.status(500).json({ message: 'Error reverse geocoding' });
     }
   }
 
@@ -55,7 +55,7 @@ class MapsController {
       
       if (!startLat || !startLng || !endLat || !endLng) {
         return res.status(400).json({ 
-          message: 'Start i end koordinate su obavezne' 
+          message: 'Start and end coordinates are required' 
         });
       }
 
@@ -68,7 +68,7 @@ class MapsController {
       );
       
       if (!route) {
-        return res.status(404).json({ message: 'Ruta nije pronađena' });
+        return res.status(404).json({ message: 'Route not found' });
       }
 
       res.json({
@@ -80,8 +80,8 @@ class MapsController {
         steps: route.steps,
       });
     } catch (error) {
-      console.error('Route error:', error);
-      res.status(500).json({ message: 'Greška pri rutiranju' });
+      console.error('❌ Route error:', error);
+      res.status(500).json({ message: 'Error routing' });
     }
   }
 
@@ -91,7 +91,7 @@ class MapsController {
       const { lat1, lng1, lat2, lng2 } = req.query;
       
       if (!lat1 || !lng1 || !lat2 || !lng2) {
-        return res.status(400).json({ message: 'Sve koordinate su obavezne' });
+        return res.status(400).json({ message: 'All coordinates are required' });
       }
 
       const distance = MapsService.calculateDistance(
@@ -106,8 +106,8 @@ class MapsController {
         distanceKm: distance,
       });
     } catch (error) {
-      console.error('Distance calculation error:', error);
-      res.status(500).json({ message: 'Greška pri kalkulaciji' });
+      console.error('❌ Distance calculation error:', error);
+      res.status(500).json({ message: 'Error calculating distance' });
     }
   }
 
@@ -117,7 +117,7 @@ class MapsController {
       const { query, limit } = req.query;
       
       if (!query) {
-        return res.status(400).json({ message: 'Query je obavezan' });
+        return res.status(400).json({ message: 'Query is required' });
       }
 
       const results = await MapsService.searchLocations(
@@ -127,8 +127,8 @@ class MapsController {
 
       res.json(results);
     } catch (error) {
-      console.error('Search error:', error);
-      res.status(500).json({ message: 'Greška pri pretrazi' });
+      console.error('❌ Search error:', error);
+      res.status(500).json({ message: 'Error searching' });
     }
   }
 
@@ -138,7 +138,7 @@ class MapsController {
       const { lat, lng, radius } = req.query;
       
       if (!lat || !lng) {
-        return res.status(400).json({ message: 'Koordinate su obavezne' });
+        return res.status(400).json({ message: 'Coordinates are required' });
       }
 
       const places = await MapsService.getNearbyPlaces(
@@ -149,8 +149,8 @@ class MapsController {
 
       res.json(places);
     } catch (error) {
-      console.error('Nearby places error:', error);
-      res.status(500).json({ message: 'Greška pri pretrazi' });
+      console.error('❌ Nearby places error:', error);
+      res.status(500).json({ message: 'Error searching nearby places' });
     }
   }
 }

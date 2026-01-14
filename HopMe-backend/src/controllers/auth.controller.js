@@ -8,14 +8,14 @@ import AzureService from '../services/azure.service.js';
 import { formatUserResponse } from '../utils/responseFormatter.js';
 
 class AuthController {
-  // Registracija putnika
+  // Register passenger
   static async registerPassenger(req, res) {
     try {
       const { email, password, firstName, lastName, phone } = req.body;
 
       const existingUser = await User.findByEmail(email);
       if (existingUser) {
-        return res.status(400).json({ message: 'Email već postoji' });
+        return res.status(400).json({ message: 'Email already exists' });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -39,16 +39,16 @@ class AuthController {
         .catch(err => console.error('Failed to send verification email:', err));
 
       res.status(201).json({
-        message: 'Registracija uspešna. Proverite email za verifikaciju.',
+        message: 'Registration successful. Please check your email for verification.',
         userId: user.id
       });
     } catch (error) {
-      console.error('Greška pri registraciji putnika:', error);
-      res.status(500).json({ message: 'Greška pri registraciji' });
+      console.error('Error registering passenger:', error);
+      res.status(500).json({ message: 'Error registering passenger' });
     }
   }
 
-  // Registracija vozača
+  // Register driver
   static async registerDriver(req, res) {
     try {
       const { 
@@ -58,7 +58,7 @@ class AuthController {
 
       const existingUser = await User.findByEmail(email);
       if (existingUser) {
-        return res.status(400).json({ message: 'Email već postoji' });
+        return res.status(400).json({ message: 'Email already exists' });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -82,7 +82,7 @@ class AuthController {
         color
       });
 
-      // Upload slika vozila ako postoje
+      // Upload vehicle images if any
       if (req.files && req.files.length > 0) {
         for (let i = 0; i < req.files.length; i++) {
           const file = req.files[i];
@@ -101,17 +101,17 @@ class AuthController {
         .catch(err => console.error('Failed to send verification email:', err));
 
       res.status(201).json({
-        message: 'Registracija vozača uspešna. Proverite email za verifikaciju.',
+        message: 'Registration successful. Please check your email for verification.',
         userId: user.id,
         vehicleId: vehicle.id
       });
     } catch (error) {
-      console.error('Greška pri registraciji vozača:', error);
-      res.status(500).json({ message: 'Greška pri registraciji' });
+      console.error('Error registering driver:', error);
+      res.status(500).json({ message: 'Error during registration' });
     }
   }
 
-  // Verifikacija email-a
+  // Verify email
   static async verifyEmail(req, res) {
     try {
       const { token } = req.query;
@@ -120,7 +120,7 @@ class AuthController {
       
       if (!verificationToken) {
         return res.status(400).json({ 
-          message: 'Nevažeći ili istekao verifikacioni token' 
+          message: 'Invalid or expired verification token' 
         });
       }
 
@@ -131,15 +131,15 @@ class AuthController {
       );
 
       res.json({ 
-        message: 'Email uspešno verifikovan. Sada možete sačekati odobrenje administratora.' 
+        message: 'Email successfully verified. You can now wait for approval from the administrator.' 
       });
     } catch (error) {
-      console.error('Greška pri verifikaciji email-a:', error);
-      res.status(500).json({ message: 'Greška pri verifikaciji' });
+      console.error('Error verifying email:', error);
+      res.status(500).json({ message: 'Error verifying email' });
     }
   }
 
-  // Prijava korisnika
+  // Login
   static async login(req, res) {
     try {
       const { email, password } = req.body;
@@ -147,24 +147,24 @@ class AuthController {
       const user = await User.findByEmail(email);
       
       if (!user) {
-        return res.status(401).json({ message: 'Nevalidni kredencijali' });
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
       
       if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Nevalidni kredencijali' });
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
 
       if (!user.is_email_verified) {
         return res.status(403).json({ 
-          message: 'Email nije verifikovan. Proverite vaš inbox.' 
+          message: 'Email is not verified. Please check your inbox.' 
         });
       }
 
       if (user.account_status !== 'approved') {
         return res.status(403).json({ 
-          message: 'Vaš nalog još uvek čeka odobrenje administratora.' 
+          message: 'Your account is still pending approval from the administrator.' 
         });
       }
 
@@ -179,12 +179,12 @@ class AuthController {
         user: formatUserResponse(user)
       });
     } catch (error) {
-      console.error('Greška pri prijavi:', error);
-      res.status(500).json({ message: 'Greška pri prijavi' });
+      console.error('Error logging in:', error);
+      res.status(500).json({ message: 'Error logging in' });
     }
   }
 
-  // Zahtev za resetovanje lozinke
+  // Password reset request
   static async requestPasswordReset(req, res) {
     try {
       const { email } = req.body;
@@ -193,7 +193,7 @@ class AuthController {
       
       if (!user) {
         return res.json({ 
-          message: 'Ako email postoji, link za resetovanje će biti poslat.' 
+          message: 'If email exists, reset link will be sent.' 
         });
       }
 
@@ -202,7 +202,7 @@ class AuthController {
       const resetToken = await VerificationToken.create(
         user.id, 
         'password_reset',
-        1 // Ističe za 1 sat
+        1 // Expires in 1 hour
       );
 
       await EmailService.sendPasswordResetEmail(
@@ -212,15 +212,15 @@ class AuthController {
       );
 
       res.json({ 
-        message: 'Ako email postoji, link za resetovanje će biti poslat.' 
+        message: 'If email exists, reset link will be sent.' 
       });
     } catch (error) {
-      console.error('Greška pri zahtevu za reset:', error);
-      res.status(500).json({ message: 'Greška pri zahtevu' });
+      console.error('Error requesting password reset:', error);
+      res.status(500).json({ message: 'Error requesting password reset' });
     }
   }
 
-  // Resetovanje lozinke
+  // Reset password
   static async resetPassword(req, res) {
     try {
       const { token, newPassword } = req.body;
@@ -229,7 +229,7 @@ class AuthController {
       
       if (!resetToken) {
         return res.status(400).json({ 
-          message: 'Nevažeći ili istekao token za resetovanje' 
+          message: 'Invalid or expired reset token' 
         });
       }
 
@@ -245,14 +245,14 @@ class AuthController {
         'password_reset'
       );
 
-      res.json({ message: 'Lozinka uspešno promenjena' });
+      res.json({ message: 'Password successfully reset' });
     } catch (error) {
-      console.error('Greška pri resetovanju lozinke:', error);
-      res.status(500).json({ message: 'Greška pri resetovanju' });
+      console.error('Error resetting password:', error);
+      res.status(500).json({ message: 'Error resetting password' });
     }
   }
 
-  // Dodavanje uloge vozača postojećem putniku
+  // Add driver role to existing passenger
   static async addDriverRole(req, res) {
     try {
       const userId = req.user.id;
@@ -264,7 +264,7 @@ class AuthController {
       
       if (user.roles.includes('vozac')) {
         return res.status(400).json({ 
-          message: 'Već imate ulogu vozača' 
+          message: 'You already have a driver role' 
         });
       }
 
@@ -289,12 +289,12 @@ class AuthController {
       }
 
       res.json({
-        message: 'Uloga vozača uspešno dodata',
+        message: 'Driver role added successfully',
         vehicleId: vehicle.id
       });
     } catch (error) {
-      console.error('Greška pri dodavanju uloge vozača:', error);
-      res.status(500).json({ message: 'Greška pri dodavanju uloge' });
+      console.error('Error adding driver role:', error);
+      res.status(500).json({ message: 'Error adding driver role' });
     }
   }
 }
