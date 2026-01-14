@@ -12,8 +12,8 @@ router.use(authenticate);
  *   post:
  *     tags:
  *       - Ratings
- *     summary: Kreiranje ocene
- *     description: Putnik ocenjuje vozača ili vozač ocenjuje putnika nakon završene vožnje
+ *     summary: Creates a rating
+ *     description: Passenger rates the driver or the driver rates the passenger after the ride
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -40,10 +40,10 @@ router.use(authenticate);
  *                 example: 5
  *               comment:
  *                 type: string
- *                 example: "Odličan vozač, preporučujem!"
+ *                 example: "Excellent driver, I recommend!"
  *     responses:
  *       201:
- *         description: Ocena kreirana
+ *         description: Rating created
  *         content:
  *           application/json:
  *             schema:
@@ -54,7 +54,7 @@ router.use(authenticate);
  *                 rating:
  *                   $ref: '#/components/schemas/Rating'
  *       400:
- *         description: Ne možete oceniti (već ocenjeno, vožnja nije završena)
+ *         description: You cannot rate (already rated, ride not completed)
  */
 router.post('/', RatingController.createRating);
 
@@ -64,8 +64,8 @@ router.post('/', RatingController.createRating);
  *   get:
  *     tags:
  *       - Ratings
- *     summary: Sve ocene korisnika sa statistikom
- *     security:
+ *     summary: Gets all ratings for a user with statistics
+ *     security:    
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
@@ -75,7 +75,7 @@ router.post('/', RatingController.createRating);
  *           type: integer
  *     responses:
  *       200:
- *         description: Ocene i statistika
+ *         description: Ratings and statistics
  *         content:
  *           application/json:
  *             schema:
@@ -119,12 +119,12 @@ router.get('/user/:userId', RatingController.getUserRatings);
  *   get:
  *     tags:
  *       - Ratings
- *     summary: Ocene koje je trenutni korisnik dao drugima
- *     security:
+ *     summary: Gets all ratings made by the current user
+ *     security:    
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Lista ocena
+ *         description: List of ratings
  *         content:
  *           application/json:
  *             schema:
@@ -140,13 +140,13 @@ router.get('/my-ratings', RatingController.getMyRatings);
  *   get:
  *     tags:
  *       - Ratings
- *     summary: Sve ocene trenutnog korisnika (primljene i date)
- *     description: Vraća sve ocene koje je korisnik dobio od drugih i sve ocene koje je dao drugima
- *     security:
+ *     summary: Gets all ratings made by and received by the current user
+ *     description: Returns all ratings received from others and all ratings given to others
+ *     security:    
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Ocene i statistika
+ *         description: Ratings and statistics
  *         content:
  *           application/json:
  *             schema:

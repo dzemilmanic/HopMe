@@ -46,13 +46,13 @@ class MapsService {
     }
   }
 
-  // Dobijanje rute između dve tačke (OpenRouteService ili OSRM)
+  // Get route between two points (OpenRouteService or OSRM)
   static async getRoute(startLat, startLng, endLat, endLng, waypoints = []) {
     try {
-      // Koristimo OSRM (open-source routing engine)
+      // Use OSRM (open-source routing engine)
       let coordinates = `${startLng},${startLat}`;
       
-      // Dodaj waypoints
+      // Add waypoints
       waypoints.forEach(wp => {
         coordinates += `;${wp.lng},${wp.lat}`;
       });
@@ -74,9 +74,9 @@ class MapsService {
         const route = response.data.routes[0];
         
         return {
-          distance: route.distance, // u metrima
-          duration: route.duration, // u sekundama
-          geometry: route.geometry, // GeoJSON format za Leaflet
+          distance: route.distance, // in meters
+          duration: route.duration, // in seconds
+          geometry: route.geometry, // GeoJSON format for Leaflet
           steps: route.legs[0].steps.map(step => ({
             instruction: step.maneuver.type,
             distance: step.distance,
@@ -93,9 +93,9 @@ class MapsService {
     }
   }
 
-  // Kalkulacija distance između dve tačke (Haversine formula)
+  // Calculate distance between two points (Haversine formula)
   static calculateDistance(lat1, lng1, lat2, lng2) {
-    const R = 6371; // Radius Zemlje u km
+    const R = 6371; // Radius Earth in km
     const dLat = this.toRad(lat2 - lat1);
     const dLng = this.toRad(lng2 - lng1);
     
@@ -107,14 +107,14 @@ class MapsService {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     
-    return Math.round(distance * 100) / 100; // Zaokruži na 2 decimale
+    return Math.round(distance * 100) / 100; // Round to 2 decimals
   }
 
   static toRad(degrees) {
     return degrees * (Math.PI / 180);
   }
 
-  // Formatiranje vremena trajanja
+  // Format time duration
   static formatDuration(seconds) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -125,7 +125,7 @@ class MapsService {
     return `${minutes}min`;
   }
 
-  // Formatiranje distance
+  // Format distance
   static formatDistance(meters) {
     const km = meters / 1000;
     if (km < 1) {
@@ -134,10 +134,10 @@ class MapsService {
     return `${Math.round(km * 10) / 10}km`;
   }
 
-  // Dobijanje nearby lokacija (gradovi, landmarks)
+  // Get nearby locations (cities, landmarks)
   static async getNearbyPlaces(lat, lng, radius = 5000) {
     try {
-      // Koristi Overpass API za OSM data
+      // Use Overpass API for OSM data
       const query = `
         [out:json];
         (
@@ -165,7 +165,7 @@ class MapsService {
     }
   }
 
-  // Autocomplete za lokacije
+  // Autocomplete locations
   static async searchLocations(query, limit = 5) {
     try {
       const response = await axios.get(
@@ -175,7 +175,7 @@ class MapsService {
             q: query,
             format: 'json',
             limit: limit,
-            countrycodes: 'rs', // Samo Srbija
+            countrycodes: 'rs', // Only Serbia
             addressdetails: 1,
           },
           headers: {

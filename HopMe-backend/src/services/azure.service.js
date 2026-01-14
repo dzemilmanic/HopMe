@@ -16,8 +16,8 @@ class AzureService {
         blobName: blobName
       };
     } catch (error) {
-      console.error('Azure upload greška:', error);
-      throw new Error('Greška pri upload-u slike');
+      console.error('Azure upload error:', error);
+      throw new Error('Error uploading image');
     }
   }
 
@@ -27,7 +27,7 @@ class AzureService {
       await blockBlobClient.delete();
       return true;
     } catch (error) {
-      console.error('Azure delete greška:', error);
+      console.error('Azure delete error:', error);
       return false;
     }
   }

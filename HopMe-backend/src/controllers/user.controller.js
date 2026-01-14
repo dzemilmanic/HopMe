@@ -6,13 +6,13 @@ import bcrypt from 'bcryptjs';
 import { formatUserResponse, formatVehicleResponse } from '../utils/responseFormatter.js';
 
 class UserController {
-  // Dobijanje profila trenutnog korisnika
+  // Get current user profile
   static async getProfile(req, res) {
     try {
       const user = await User.getUserWithVehicles(req.user.id);
 
       if (!user) {
-        return res.status(404).json({ message: 'Korisnik nije pronađen' });
+        return res.status(404).json({ message: 'User not found' });
       }
 
       delete user.password;
@@ -27,12 +27,12 @@ class UserController {
         vehicles: vehicles
       });
     } catch (error) {
-      console.error('Greška pri učitavanju profila:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju profila' });
+      console.error('Error loading profile:', error);
+      res.status(500).json({ message: 'Error loading profile' });
     }
   }
 
-  // Ažuriranje profila
+  // Update profile
   static async updateProfile(req, res) {
     try {
       const { firstName, lastName, phone } = req.body;
@@ -48,16 +48,16 @@ class UserController {
       const result = await pool.query(query, [firstName, lastName, phone, userId]);
 
       res.json({
-        message: 'Profil uspešno ažuriran',
+        message: 'Profile successfully updated',
         user: formatUserResponse(result.rows[0])
       });
     } catch (error) {
-      console.error('Greška pri ažuriranju profila:', error);
-      res.status(500).json({ message: 'Greška pri ažuriranju' });
+      console.error('Error updating profile:', error);
+      res.status(500).json({ message: 'Error updating profile' });
     }
   }
 
-  // Dodavanje novog vozila
+  // Add new vehicle
   static async addVehicle(req, res) {
     try {
       const userId = req.user.id;
@@ -65,7 +65,7 @@ class UserController {
 
       if (!req.user.roles.includes('vozac')) {
         return res.status(403).json({ 
-          message: 'Samo vozači mogu dodavati vozila' 
+          message: 'Only drivers can add vehicles' 
         });
       }
 
@@ -90,27 +90,27 @@ class UserController {
       const vehicleWithImages = await Vehicle.findById(vehicle.id);
 
       res.status(201).json({
-        message: 'Vozilo uspešno dodato',
+        message: 'Vehicle successfully added',
         vehicle: vehicleWithImages
       });
     } catch (error) {
-      console.error('Greška pri dodavanju vozila:', error);
-      res.status(500).json({ message: 'Greška pri dodavanju vozila' });
+      console.error('Error adding vehicle:', error);
+      res.status(500).json({ message: 'Error adding vehicle' });
     }
   }
 
-  // Dobijanje svih vozila korisnika
+  // Get all vehicles of user
   static async getVehicles(req, res) {
     try {
       const vehicles = await Vehicle.findByUserId(req.user.id);
       res.json(vehicles);
     } catch (error) {
-      console.error('Greška pri učitavanju vozila:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('Error loading vehicles:', error);
+      res.status(500).json({ message: 'Error loading vehicles' });
     }
   }
 
-  // Ažuriranje vozila
+  // Update vehicle
   static async updateVehicle(req, res) {
     try {
       const { vehicleId } = req.params;
@@ -130,37 +130,37 @@ class UserController {
       ]);
 
       if (result.rows.length === 0) {
-        return res.status(404).json({ message: 'Vozilo nije pronađeno' });
+        return res.status(404).json({ message: 'Vehicle not found' });
       }
 
       res.json({
-        message: 'Vozilo uspešno ažurirano',
+        message: 'Vehicle successfully updated',
         vehicle: result.rows[0]
       });
     } catch (error) {
-      console.error('Greška pri ažuriranju vozila:', error);
-      res.status(500).json({ message: 'Greška pri ažuriranju' });
+      console.error('Error updating vehicle:', error);
+      res.status(500).json({ message: 'Error updating vehicle' });
     }
   }
 
-  // Dodavanje slika vozilu
+  // Add vehicle images
   static async addVehicleImages(req, res) {
     try {
       const { vehicleId } = req.params;
       const userId = req.user.id;
 
-      // Provera da li vozilo pripada korisniku
+      // Checking if the vehicle belongs to the user
       const vehicle = await pool.query(
         'SELECT * FROM vehicles WHERE id = $1 AND user_id = $2',
         [vehicleId, userId]
       );
 
       if (vehicle.rows.length === 0) {
-        return res.status(404).json({ message: 'Vozilo nije pronađeno' });
+        return res.status(404).json({ message: 'Vehicle not found' });
       }
 
       if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ message: 'Nema slika za upload' });
+        return res.status(400).json({ message: 'No images to upload' });
       }
 
       const uploadedImages = [];
@@ -172,22 +172,22 @@ class UserController {
       }
 
       res.json({
-        message: 'Slike uspešno dodati',
+        message: 'Images successfully added',
         images: uploadedImages
       });
     } catch (error) {
-      console.error('Greška pri dodavanju slika:', error);
-      res.status(500).json({ message: 'Greška pri dodavanju slika' });
+      console.error('Error adding images:', error);
+      res.status(500).json({ message: 'Error adding images' });
     }
   }
 
-  // Brisanje slike vozila
+  // Delete vehicle image
   static async deleteVehicleImage(req, res) {
     try {
       const { imageId } = req.params;
       const userId = req.user.id;
 
-      // Provera da li slika pripada korisniku
+      // Checking if the image belongs to the user
       const result = await pool.query(
         `SELECT vi.*, v.user_id 
          FROM vehicle_images vi
@@ -197,11 +197,11 @@ class UserController {
       );
 
       if (result.rows.length === 0) {
-        return res.status(404).json({ message: 'Slika nije pronađena' });
+        return res.status(404).json({ message: 'Image not found' });
       }
 
       if (result.rows[0].user_id !== userId) {
-        return res.status(403).json({ message: 'Nemate pristup ovoj slici' });
+        return res.status(403).json({ message: 'You do not have access to this image' });
       }
 
       const blobName = result.rows[0].blob_name;
@@ -210,93 +210,93 @@ class UserController {
 
       await pool.query('DELETE FROM vehicle_images WHERE id = $1', [imageId]);
 
-      res.json({ message: 'Slika uspešno obrisana' });
+      res.json({ message: 'Image successfully deleted' });
     } catch (error) {
-      console.error('Greška pri brisanju slike:', error);
-      res.status(500).json({ message: 'Greška pri brisanju' });
+      console.error('Error deleting image:', error);
+      res.status(500).json({ message: 'Error deleting image' });
     }
   }
 
-  // Brisanje vozila
+  // Delete vehicle
   static async deleteVehicle(req, res) {
     try {
       const { vehicleId } = req.params;
       const userId = req.user.id;
 
-      // Prvo dobijamo sve slike vozila
+      // First we get all the vehicle images
       const imagesResult = await pool.query(
         'SELECT blob_name FROM vehicle_images WHERE vehicle_id = $1',
         [vehicleId]
       );
 
-      // Brišemo slike sa Azure-a
+      // Delete images from Azure
       if (imagesResult.rows.length > 0) {
         const blobNames = imagesResult.rows.map(row => row.blob_name);
         await AzureService.deleteMultipleImages(blobNames);
       }
 
-      // Brišemo vozilo (CASCADE će obrisati i slike iz baze)
+      // Delete vehicle (CASCADE will delete images from the database)
       const vehicle = await Vehicle.delete(vehicleId, userId);
 
       if (!vehicle) {
-        return res.status(404).json({ message: 'Vozilo nije pronađeno' });
+        return res.status(404).json({ message: 'Vehicle not found' });
       }
 
-      res.json({ message: 'Vozilo uspešno obrisano' });
+      res.json({ message: 'Vehicle successfully deleted' });
     } catch (error) {
-      console.error('Greška pri brisanju vozila:', error);
-      res.status(500).json({ message: 'Greška pri brisanju' });
+      console.error('Error deleting vehicle:', error);
+      res.status(500).json({ message: 'Error deleting vehicle' });
     }
   }
 
-  // Promena lozinke
+  // Change password
   static async changePassword(req, res) {
     try {
       const { currentPassword, newPassword } = req.body;
       const userId = req.user.id;
 
-      // Validacija
+      // Validation
       if (!currentPassword || !newPassword) {
         return res.status(400).json({ 
           success: false,
-          message: 'Trenutna i nova lozinka su obavezne' 
+          message: 'Current and new password are required' 
         });
       }
 
       if (newPassword.length < 6) {
         return res.status(400).json({ 
           success: false,
-          message: 'Nova lozinka mora imati najmanje 6 karaktera' 
+          message: 'New password must have at least 6 characters' 
         });
       }
 
-      // Učitaj trenutnog korisnika sa lozinkom
+      // Load current user with password
       const userQuery = 'SELECT * FROM users WHERE id = $1';
       const userResult = await pool.query(userQuery, [userId]);
       
       if (userResult.rows.length === 0) {
         return res.status(404).json({ 
           success: false,
-          message: 'Korisnik nije pronađen' 
+          message: 'User not found' 
         });
       }
 
       const user = userResult.rows[0];
 
-      // Provera trenutne lozinke
+      // Check current password
       const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
       
       if (!isPasswordValid) {
         return res.status(401).json({ 
           success: false,
-          message: 'Trenutna lozinka nije tačna' 
+          message: 'Current password is incorrect' 
         });
       }
 
-      // Hash nove lozinke
+      // Hash new password
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      // Ažuriraj lozinku
+      // Update password
       const updateQuery = `
         UPDATE users 
         SET password = $1, updated_at = CURRENT_TIMESTAMP
@@ -308,13 +308,13 @@ class UserController {
 
       res.json({ 
         success: true,
-        message: 'Lozinka uspešno promenjena' 
+        message: 'Password successfully changed' 
       });
     } catch (error) {
-      console.error('Greška pri promeni lozinke:', error);
+      console.error('Error changing password:', error);
       res.status(500).json({ 
         success: false,
-        message: 'Greška pri promeni lozinke' 
+        message: 'Error changing password' 
       });
     }
   }

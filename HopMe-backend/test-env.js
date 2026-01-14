@@ -30,7 +30,7 @@ Object.entries(envVars).forEach(([key, value]) => {
   console.log('');
 });
 
-// Test password kao string
+// Test password as string
 if (process.env.DB_PASSWORD) {
   const cleanPassword = String(process.env.DB_PASSWORD).trim();
   console.log('🧹 Cleaned password:');

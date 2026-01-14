@@ -43,21 +43,21 @@ class EmailService {
     console.log(`📧 Attempting to send verification email to: ${email}`);
     
     const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
-    const subject = 'HopMe - Verifikacija email adrese';
+    const subject = 'HopMe - Verification email address';
     const html = `
-      <h2>Pozdrav ${firstName},</h2>
-      <p>Hvala što ste se registrovali na HopMe platformu!</p>
-      <p>Molimo vas da verifikujete vašu email adresu klikom na dugme ispod:</p>
+      <h2>Hello ${firstName},</h2>
+      <p>Thank you for registering on the HopMe platform!</p>
+      <p>Please verify your email address by clicking the button below:</p>
       <a href="${verificationUrl}" 
          style="background-color: #4CAF50; color: white; padding: 14px 20px; 
                 text-decoration: none; display: inline-block; border-radius: 4px;">
-        Verifikuj Email
+        Verify Email
       </a>
-      <p>Ili kopirajte sledeći link u vaš browser:</p>
+      <p>Or copy the following link into your browser:</p>
       <p>${verificationUrl}</p>
-      <p>Link ističe za 24 sata.</p>
+      <p>The link expires in 24 hours.</p>
       <br>
-      <p>Srdačan pozdrav,<br>HopMe Tim</p>
+      <p>Best regards,<br>HopMe Team</p>
     `;
 
     return this.sendEmailJS(email, subject, html);
@@ -67,30 +67,30 @@ class EmailService {
     console.log(`📧 Attempting to send approval email to: ${email} (approved: ${isApproved})`);
     
     const subject = isApproved 
-      ? 'HopMe - Vaš nalog je odobren!' 
-      : 'HopMe - Status vašeg naloga';
+      ? 'HopMe - Your account has been approved!' 
+      : 'HopMe - Your account status';
     
     let message = '';
     if (isApproved) {
       message = `
-        <h2>Pozdrav ${firstName},</h2>
-        <p>Vaš nalog je odobren od strane administratora!</p>
-        <p>Sada možete da se prijavite i koristite sve funkcionalnosti HopMe platforme.</p>
+        <h2>Hello ${firstName},</h2>
+        <p>Your account has been approved by the administrator!</p>
+        <p>You can now log in and use all the features of the HopMe platform.</p>
         <a href="${process.env.FRONTEND_URL}/login" 
            style="background-color: #4CAF50; color: white; padding: 14px 20px; 
                   text-decoration: none; display: inline-block; border-radius: 4px;">
-          Prijavite se
+          Login
         </a>
       `;
     } else {
       message = `
-        <h2>Pozdrav ${firstName},</h2>
-        <p>Žao nam je, ali vaš zahtev za registraciju nije odobren.</p>
-        <p>Za više informacija, molimo kontaktirajte našu korisničku podršku.</p>
+        <h2>Hello ${firstName},</h2>
+        <p>Sorry, but your registration request has not been approved.</p>
+        <p>For more information, please contact our customer support.</p>
       `;
     }
     
-    const html = message + '<br><p>Srdačan pozdrav,<br>HopMe Tim</p>';
+    const html = message + '<br><p>Best regards,<br>HopMe Team</p>';
     return this.sendEmailJS(email, subject, html);
   }
 
@@ -98,20 +98,20 @@ class EmailService {
     console.log(`📧 Attempting to send password reset email to: ${email}`);
     
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
-    const subject = 'HopMe - Resetovanje lozinke';
+    const subject = 'HopMe - Password Reset';
     const html = `
-      <h2>Pozdrav ${firstName},</h2>
-      <p>Primili smo zahtev za resetovanje vaše lozinke.</p>
-      <p>Kliknite na dugme ispod da resetujete lozinku:</p>
+      <h2>Hello ${firstName},</h2>
+      <p>We have received a request to reset your password.</p>
+      <p>Click the button below to reset your password:</p>
       <a href="${resetUrl}" 
          style="background-color: #2196F3; color: white; padding: 14px 20px; 
                 text-decoration: none; display: inline-block; border-radius: 4px;">
-        Resetuj Lozinku
+        Reset Password
       </a>
-      <p>Link ističe za 1 sat.</p>
-      <p>Ako niste Vi zatražili ovu promenu, ignorišite ovaj email.</p>
+      <p>The link expires in 1 hour.</p>
+      <p>If you did not request this change, ignore this email.</p>
       <br>
-      <p>Srdačan pozdrav,<br>HopMe Tim</p>
+      <p>Best regards,<br>HopMe Team</p>
     `;
 
     return this.sendEmailJS(email, subject, html);

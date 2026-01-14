@@ -8,7 +8,7 @@ const router = express.Router();
  * /maps/geocode:
  *   get:
  *     tags: [Maps]
- *     summary: Pretvara adresu u koordinate
+ *     summary: Converts address to coordinates
  *     parameters:
  *       - in: query
  *         name: address
@@ -35,7 +35,7 @@ router.get('/geocode', MapsController.geocode);
  * /maps/reverse:
  *   get:
  *     tags: [Maps]
- *     summary: Pretvara koordinate u adresu
+ *     summary: Converts coordinates to address
  *     parameters:
  *       - in: query
  *         name: lat
@@ -58,7 +58,7 @@ router.get('/reverse', MapsController.reverseGeocode);
  * /maps/route:
  *   post:
  *     tags: [Maps]
- *     summary: Dobija rutu između dve tačke
+ *     summary: Gets route between two points
  *     requestBody:
  *       required: true
  *       content:
@@ -80,7 +80,7 @@ router.get('/reverse', MapsController.reverseGeocode);
  *                     lng: { type: number }
  *     responses:
  *       200:
- *         description: Ruta sa distancom i trajanjem
+ *         description: Route with distance and duration
  *         content:
  *           application/json:
  *             schema:
@@ -98,7 +98,7 @@ router.post('/route', MapsController.getRoute);
  * /maps/distance:
  *   get:
  *     tags: [Maps]
- *     summary: Izračunava distancu između dve tačke
+ *     summary: Calculates distance between two points
  *     parameters:
  *       - in: query
  *         name: lat1
@@ -118,7 +118,7 @@ router.post('/route', MapsController.getRoute);
  *         schema: { type: number }
  *     responses:
  *       200:
- *         description: Distanca u kilometrima
+ *         description: Distance in kilometers
  */
 router.get('/distance', MapsController.calculateDistance);
 
@@ -127,7 +127,7 @@ router.get('/distance', MapsController.calculateDistance);
  * /maps/search:
  *   get:
  *     tags: [Maps]
- *     summary: Autocomplete pretraga lokacija
+ *     summary: Autocomplete location search
  *     parameters:
  *       - in: query
  *         name: query
@@ -151,7 +151,7 @@ router.get('/search', MapsController.searchLocations);
  * /maps/nearby:
  *   get:
  *     tags: [Maps]
- *     summary: Nearby gradovi i mesta
+ *     summary: Gets nearby cities and places
  *     parameters:
  *       - in: query
  *         name: lat
@@ -166,10 +166,10 @@ router.get('/search', MapsController.searchLocations);
  *         schema:
  *           type: integer
  *           default: 5000
- *         description: Radius u metrima
+ *         description: Radius in meters
  *     responses:
  *       200:
- *         description: Lista mesta
+ *         description: List of places
  */
 router.get('/nearby', MapsController.getNearbyPlaces);
 

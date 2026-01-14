@@ -1,5 +1,5 @@
 // ============================================
-// src/routes/user.routes.js - KOMPLETNO SA SWAGGER-OM
+// src/routes/user.routes.js - COMPLETELY WITH SWAGGER
 // ============================================
 import express from 'express';
 import UserController from '../controllers/user.controller.js';
@@ -17,12 +17,12 @@ router.use(authenticate);
  * /user/profile:
  *   get:
  *     tags: [User]
- *     summary: Profil trenutnog korisnika
+ *     summary: Gets the profile of the current user
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Profil korisnika sa vozilima
+ *         description: User profile with vehicles
  *         content:
  *           application/json:
  *             schema:
@@ -51,7 +51,7 @@ router.get('/profile', UserController.getProfile);
  * /user/profile:
  *   put:
  *     tags: [User]
- *     summary: Ažuriranje profila
+ *     summary: Updates the profile of the current user
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -66,7 +66,7 @@ router.get('/profile', UserController.getProfile);
  *               phone: { type: string, example: "+381641234567" }
  *     responses:
  *       200:
- *         description: Profil ažuriran
+ *         description: Profile updated
  *         content:
  *           application/json:
  *             schema:
@@ -87,12 +87,12 @@ router.put('/profile', UserController.updateProfile);
  * /user/vehicles:
  *   get:
  *     tags: [User]
- *     summary: Sva vozila trenutnog korisnika
+ *     summary: Gets all vehicles of the current user
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Lista vozila
+ *         description: List of vehicles
  *         content:
  *           application/json:
  *             schema:
@@ -123,7 +123,7 @@ router.get('/vehicles', UserController.getVehicles);
  * /user/vehicles:
  *   post:
  *     tags: [User]
- *     summary: Dodavanje novog vozila (samo vozači)
+ *     summary: Adds a new vehicle (only drivers)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -147,20 +147,20 @@ router.get('/vehicles', UserController.getVehicles);
  *                   format: binary
  *     responses:
  *       201:
- *         description: Vozilo dodato
+ *         description: Vehicle added
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message: { type: string, example: "Vozilo uspešno dodato" }
+ *                 message: { type: string, example: "Vehicle successfully added" }
  *                 vehicle:
  *                   type: object
  *                   properties:
  *                     id: { type: integer }
  *                     vehicleType: { type: string }
  *       403:
- *         description: Samo vozači mogu dodavati vozila
+ *         description: Only drivers can add vehicles
  */
 router.post(
   '/vehicles',
@@ -176,7 +176,7 @@ router.post(
  * /user/vehicles/{vehicleId}:
  *   put:
  *     tags: [User]
- *     summary: Ažuriranje vozila
+ *     summary: Updates a vehicle
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -184,7 +184,7 @@ router.post(
  *         name: vehicleId
  *         required: true
  *         schema: { type: integer }
- *         description: ID vozila
+ *         description: ID vehicle
  *     requestBody:
  *       required: true
  *       content:
@@ -200,16 +200,16 @@ router.post(
  *               color: { type: string, example: "Crvena" }
  *     responses:
  *       200:
- *         description: Vozilo ažurirano
+ *         description: Vehicle updated
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message: { type: string, example: "Vozilo uspešno ažurirano" }
+ *                 message: { type: string, example: "Vehicle successfully updated" }
  *                 vehicle: { type: object }
  *       404:
- *         description: Vozilo nije pronađeno
+ *         description: Vehicle not found
  */
 router.put(
   '/vehicles/:vehicleId',
@@ -222,7 +222,7 @@ router.put(
  * /user/vehicles/{vehicleId}/images:
  *   post:
  *     tags: [User]
- *     summary: Dodavanje slika vozilu
+ *     summary: Adds images to a vehicle
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -230,7 +230,7 @@ router.put(
  *         name: vehicleId
  *         required: true
  *         schema: { type: integer }
- *         description: ID vozila
+ *         description: ID vehicle
  *     requestBody:
  *       required: true
  *       content:
@@ -243,10 +243,10 @@ router.put(
  *                 items:
  *                   type: string
  *                   format: binary
- *                 description: Maksimalno 5 slika
+ *                 description: Maximum 5 images
  *     responses:
  *       200:
- *         description: Slike dodati
+ *         description: Images added
  *         content:
  *           application/json:
  *             schema:
@@ -261,9 +261,9 @@ router.put(
  *                       id: { type: integer }
  *                       imageUrl: { type: string }
  *       400:
- *         description: Nema slika za upload
+ *         description: No images for upload
  *       404:
- *         description: Vozilo nije pronađeno
+ *         description: Vehicle not found
  */
 router.post(
   '/vehicles/:vehicleId/images',
@@ -277,7 +277,7 @@ router.post(
  * /user/vehicles/{vehicleId}/images/{imageId}:
  *   delete:
  *     tags: [User]
- *     summary: Brisanje slike vozila
+ *     summary: Deletes a vehicle image
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -285,25 +285,25 @@ router.post(
  *         name: vehicleId
  *         required: true
  *         schema: { type: integer }
- *         description: ID vozila
+ *         description: ID vehicle
  *       - in: path
  *         name: imageId
  *         required: true
  *         schema: { type: integer }
- *         description: ID slike
+ *         description: ID image
  *     responses:
  *       200:
- *         description: Slika obrisana
+ *         description: Image deleted
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message: { type: string, example: "Slika uspešno obrisana" }
+ *                 message: { type: string, example: "Image successfully deleted" }
  *       403:
- *         description: Nemate pristup ovoj slici
+ *         description: You do not have access to this image
  *       404:
- *         description: Slika nije pronađena
+ *         description: Image not found
  */
 router.delete(
   '/vehicles/:vehicleId/images/:imageId',
@@ -316,7 +316,7 @@ router.delete(
  * /user/vehicles/{vehicleId}:
  *   delete:
  *     tags: [User]
- *     summary: Brisanje vozila
+ *     summary: Deletes a vehicle
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -324,20 +324,20 @@ router.delete(
  *         name: vehicleId
  *         required: true
  *         schema: { type: integer }
- *         description: ID vozila
+ *         description: ID vehicle
  *     responses:
  *       200:
- *         description: Vozilo obrisano
+ *         description: Vehicle deleted
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message: { type: string, example: "Vozilo uspešno obrisano" }
+ *                 message: { type: string, example: "Vehicle successfully deleted" }
  *       400:
- *         description: Ne možete obrisati vozilo koje ima rezervacije
+ *         description: You cannot delete a vehicle that has reservations
  *       404:
- *         description: Vozilo nije pronađeno
+ *         description: Vehicle not found
  */
 router.delete(
   '/vehicles/:vehicleId',
@@ -350,7 +350,7 @@ router.delete(
  * /user/change-password:
  *   post:
  *     tags: [User]
- *     summary: Promena lozinke
+ *     summary: Changes password
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -365,18 +365,18 @@ router.delete(
  *               newPassword: { type: string, example: "nova123456" }
  *     responses:
  *       200:
- *         description: Lozinka promenjena
+ *         description: Password changed
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
  *                 success: { type: boolean, example: true }
- *                 message: { type: string, example: "Lozinka uspešno promenjena" }
+ *                 message: { type: string, example: "Password successfully changed" }
  *       400:
- *         description: Nevalidni podaci
+ *         description: Invalid data
  *       401:
- *         description: Netačna trenutna lozinka
+ *         description: Invalid current password
  */
 router.post('/change-password', UserController.changePassword);
 

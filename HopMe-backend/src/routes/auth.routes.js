@@ -16,7 +16,7 @@ const router = express.Router();
  *   post:
  *     tags:
  *       - Auth
- *     summary: Registracija putnika
+ *     summary: Registers a passenger
  *     requestBody:
  *       required: true
  *       content:
@@ -44,7 +44,7 @@ const router = express.Router();
  *                 type: string
  *     responses:
  *       201:
- *         description: Registracija uspešna
+ *         description: Passenger registered successfully
  *         content:
  *           application/json:
  *             schema:
@@ -55,7 +55,7 @@ const router = express.Router();
  *                 userId:
  *                   type: integer
  *       400:
- *         description: Nevalidni podaci
+ *         description: Invalid data
  *         content:
  *           application/json:
  *             schema:
@@ -74,7 +74,7 @@ router.post(
  *   post:
  *     tags:
  *       - Auth
- *     summary: Registracija vozača
+ *     summary: Registers a driver
  *     requestBody:
  *       required: true
  *       content:
@@ -118,7 +118,7 @@ router.post(
  *                   format: binary
  *     responses:
  *       201:
- *         description: Registracija vozača uspešna
+ *         description: Driver registered successfully
  */
 router.post(
   '/register/driver',
@@ -135,19 +135,19 @@ router.post(
  *   get:
  *     tags:
  *       - Auth
- *     summary: Verifikacija email adrese
+ *     summary: Verifies email address
  *     parameters:
  *       - in: query
  *         name: token
  *         required: true
  *         schema:
  *           type: string
- *         description: Verifikacioni token
+ *         description: Verification token
  *     responses:
  *       200:
- *         description: Email uspešno verifikovan
+ *         description: Email verified successfully
  *       400:
- *         description: Nevažeći token
+ *         description: Invalid token
  */
 router.get('/verify-email', AuthController.verifyEmail);
 
@@ -157,7 +157,7 @@ router.get('/verify-email', AuthController.verifyEmail);
  *   post:
  *     tags:
  *       - Auth
- *     summary: Prijava korisnika
+ *     summary: Logs in a user
  *     requestBody:
  *       required: true
  *       content:
@@ -175,7 +175,7 @@ router.get('/verify-email', AuthController.verifyEmail);
  *                 type: string
  *     responses:
  *       200:
- *         description: Prijava uspešna
+ *         description: Login successful
  *         content:
  *           application/json:
  *             schema:
@@ -186,9 +186,9 @@ router.get('/verify-email', AuthController.verifyEmail);
  *                 user:
  *                   $ref: '#/components/schemas/User'
  *       401:
- *         description: Nevalidni kredencijali
+ *         description: Invalid credentials
  *       403:
- *         description: Nalog nije verifikovan ili odobren
+ *         description: Account is not verified or approved
  */
 router.post('/login', AuthController.login);
 
@@ -198,7 +198,7 @@ router.post('/login', AuthController.login);
  *   post:
  *     tags:
  *       - Auth
- *     summary: Zahtev za resetovanje lozinke
+ *     summary: Request password reset
  *     requestBody:
  *       required: true
  *       content:
@@ -213,7 +213,7 @@ router.post('/login', AuthController.login);
  *                 format: email
  *     responses:
  *       200:
- *         description: Email sa linkom poslat
+ *         description: Email with reset link sent
  */
 router.post('/request-password-reset', AuthController.requestPasswordReset);
 
@@ -223,7 +223,7 @@ router.post('/request-password-reset', AuthController.requestPasswordReset);
  *   post:
  *     tags:
  *       - Auth
- *     summary: Resetovanje lozinke
+ *     summary: Reset password
  *     requestBody:
  *       required: true
  *       content:
@@ -241,7 +241,7 @@ router.post('/request-password-reset', AuthController.requestPasswordReset);
  *                 minLength: 6
  *     responses:
  *       200:
- *         description: Lozinka uspešno promenjena
+ *         description: Password reset successfully
  */
 router.post('/reset-password', AuthController.resetPassword);
 
@@ -251,7 +251,7 @@ router.post('/reset-password', AuthController.resetPassword);
  *   post:
  *     tags:
  *       - Auth
- *     summary: Dodavanje vozačke uloge postojećem korisniku
+ *     summary: Add driver role to existing user
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -276,8 +276,8 @@ router.post('/reset-password', AuthController.resetPassword);
  *                   format: binary
  *     responses:
  *       200:
- *         description: Uloga vozača dodata
- */
+ *         description: Driver role added successfully
+ */ 
 router.post(
   '/add-driver-role',
   authenticate,

@@ -9,11 +9,11 @@ const router = express.Router();
 const testimonialValidation = [
   body('rating')
     .isInt({ min: 1, max: 5 })
-    .withMessage('Ocena mora biti između 1 i 5'),
+    .withMessage('Rating must be between 1 and 5'),
   body('text')
     .trim()
     .isLength({ min: 10, max: 500 })
-    .withMessage('Tekst mora biti između 10 i 500 karaktera')
+    .withMessage('Text must be between 10 and 500 characters')
 ];
 
 // Public routes

@@ -12,7 +12,7 @@ router.use(authenticate);
  *   get:
  *     tags:
  *       - Notifications
- *     summary: Sve notifikacije trenutnog korisnika
+ *     summary: Gets all notifications for the current user
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -21,10 +21,10 @@ router.use(authenticate);
  *         schema:
  *           type: integer
  *           default: 50
- *         description: Broj notifikacija za učitavanje
+ *         description: Number of notifications to load
  *     responses:
  *       200:
- *         description: Lista notifikacija
+ *         description: List of notifications
  *         content:
  *           application/json:
  *             schema:
@@ -39,13 +39,13 @@ router.get('/', NotificationController.getNotifications);
  * /notifications/unread-count:
  *   get:
  *     tags:
- *       - Notifications
- *     summary: Broj nepročitanih notifikacija
+ *       - Notifications    
+ *     summary: Gets the number of unread notifications for the current user
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Broj nepročitanih
+ *         description: Number of unread notifications
  *         content:
  *           application/json:
  *             schema:
@@ -62,8 +62,8 @@ router.get('/unread-count', NotificationController.getUnreadCount);
  * /notifications/{notificationId}/read:
  *   post:
  *     tags:
- *       - Notifications
- *     summary: Označi notifikaciju kao pročitanu
+ *       - Notifications    
+ *     summary: Marks a notification as read
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -74,7 +74,7 @@ router.get('/unread-count', NotificationController.getUnreadCount);
  *           type: integer
  *     responses:
  *       200:
- *         description: Notifikacija označena kao pročitana
+ *         description: Notification marked as read
  */
 router.post('/:notificationId/read', NotificationController.markAsRead);
 
@@ -83,13 +83,13 @@ router.post('/:notificationId/read', NotificationController.markAsRead);
  * /notifications/mark-all-read:
  *   post:
  *     tags:
- *       - Notifications
- *     summary: Označi sve notifikacije kao pročitane
- *     security:
+ *       - Notifications    
+ *     summary: Marks all notifications as read
+ *     security:    
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Sve notifikacije označene kao pročitane
+ *         description: All notifications marked as read
  */
 router.post('/mark-all-read', NotificationController.markAllAsRead);
 
@@ -98,11 +98,11 @@ router.post('/mark-all-read', NotificationController.markAllAsRead);
  * /notifications/{notificationId}:
  *   delete:
  *     tags:
- *       - Notifications
- *     summary: Brisanje notifikacije
- *     security:
+ *       - Notifications    
+ *     summary: Deletes a notification
+ *     security:    
  *       - bearerAuth: []
- *     parameters:
+ *     parameters:  
  *       - in: path
  *         name: notificationId
  *         required: true
@@ -110,7 +110,7 @@ router.post('/mark-all-read', NotificationController.markAllAsRead);
  *           type: integer
  *     responses:
  *       200:
- *         description: Notifikacija obrisana
+ *         description: Notification deleted
  */
 router.delete('/:notificationId', NotificationController.deleteNotification);
 

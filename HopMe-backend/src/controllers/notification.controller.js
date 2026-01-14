@@ -13,8 +13,8 @@ class NotificationController {
 
       res.json(notifications);
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška' });
+      console.error('❌ Error:', error);
+      res.status(500).json({ message: 'Error' });
     }
   }
 
@@ -25,10 +25,10 @@ class NotificationController {
 
       await Notification.markAsRead(notificationId, userId);
 
-      res.json({ message: 'Notifikacija označena kao pročitana' });
+      res.json({ message: 'Notification marked as read' });
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška' });
+      console.error('❌ Error:', error);
+      res.status(500).json({ message: 'Error' });
     }
   }
 
@@ -38,10 +38,10 @@ class NotificationController {
 
       await Notification.markAllAsRead(userId);
 
-      res.json({ message: 'Sve notifikacije označene kao pročitane' });
+      res.json({ message: 'All notifications marked as read' });
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška' });
+      console.error('❌ Error:', error);
+      res.status(500).json({ message: 'Error' });
     }
   }
 
@@ -53,8 +53,8 @@ class NotificationController {
 
       res.json({ count });
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška' });
+      console.error('Error:', error);
+      res.status(500).json({ message: 'Error' });
     }
   }
 
@@ -65,10 +65,10 @@ class NotificationController {
 
       await Notification.delete(notificationId, userId);
 
-      res.json({ message: 'Notifikacija obrisana' });
+      res.json({ message: 'Notification deleted' });
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška' });
+      console.error('Error:', error);
+      res.status(500).json({ message: 'Error' });
     }
   }
 }

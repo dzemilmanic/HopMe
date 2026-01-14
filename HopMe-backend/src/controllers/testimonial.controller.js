@@ -32,10 +32,10 @@ class TestimonialController {
         testimonials: result.rows
       });
     } catch (error) {
-      console.error('Get testimonials error:', error);
+      console.error('Error getting testimonials:', error);
       res.status(500).json({
         success: false,
-        message: 'Greška pri učitavanju recenzija'
+        message: 'Error getting testimonials'
       });
     }
   }
@@ -49,7 +49,7 @@ class TestimonialController {
       if (!errors.isEmpty()) {
         return res.status(400).json({
           success: false,
-          message: 'Validaciona greška',
+          message: 'Validation error',
           errors: errors.array()
         });
       }
@@ -64,7 +64,7 @@ class TestimonialController {
       if (checkResult.rows.length > 0) {
         return res.status(400).json({
           success: false,
-          message: 'Već ste ostavili recenziju. Možete je ažurirati ili obrisati.'
+          message: 'You have already left a testimonial. You can update or delete it.'
         });
       }
 
@@ -90,14 +90,14 @@ class TestimonialController {
 
       res.status(201).json({
         success: true,
-        message: 'Recenzija uspešno kreirana',
+        message: 'Testimonial successfully created',
         testimonial: testimonialWithUser
       });
     } catch (error) {
       console.error('Create testimonial error:', error);
       res.status(500).json({
         success: false,
-        message: 'Greška pri kreiranju recenzije'
+        message: 'Error creating testimonial'
       });
     }
   }
@@ -111,7 +111,7 @@ class TestimonialController {
       if (!errors.isEmpty()) {
         return res.status(400).json({
           success: false,
-          message: 'Validaciona greška',
+          message: 'Validation error',
           errors: errors.array()
         });
       }
@@ -131,7 +131,7 @@ class TestimonialController {
       if (result.rows.length === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Nemate aktivnu recenziju'
+          message: 'You do not have an active testimonial'
         });
       }
       
@@ -147,14 +147,14 @@ class TestimonialController {
 
       res.json({
         success: true,
-        message: 'Recenzija uspešno ažurirana',
+        message: 'Testimonial successfully updated',
         testimonial: testimonialWithUser
       });
     } catch (error) {
       console.error('Update testimonial error:', error);
       res.status(500).json({
         success: false,
-        message: 'Greška pri ažuriranju recenzije'
+        message: 'Error updating testimonial'
       });
     }
   }
@@ -183,7 +183,7 @@ class TestimonialController {
       console.error('Get my testimonial error:', error);
       res.status(500).json({
         success: false,
-        message: 'Greška pri učitavanju recenzije'
+        message: 'Error loading testimonial'
       });
     }
   }
@@ -200,19 +200,19 @@ class TestimonialController {
       if (result.rowCount === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Recenzija nije pronađena'
+          message: 'Testimonial not found'
         });
       }
 
       res.json({
         success: true,
-        message: 'Recenzija uspešno obrisana'
+        message: 'Testimonial successfully deleted'
       });
     } catch (error) {
       console.error('Delete testimonial error:', error);
       res.status(500).json({
         success: false,
-        message: 'Greška pri brisanju recenzije'
+        message: 'Error deleting testimonial'
       });
     }
   }
@@ -229,19 +229,19 @@ class TestimonialController {
       if (result.rowCount === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Nemate aktivnu recenziju'
+          message: 'You do not have an active testimonial'
         });
       }
 
       res.json({
         success: true,
-        message: 'Recenzija uspešno obrisana'
+        message: 'Testimonial successfully deleted'
       });
     } catch (error) {
       console.error('Delete my testimonial error:', error);
       res.status(500).json({
         success: false,
-        message: 'Greška pri brisanju recenzije'
+        message: 'Error deleting testimonial'
       });
     }
   }

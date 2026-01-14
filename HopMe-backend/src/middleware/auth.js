@@ -15,24 +15,24 @@ export const authenticate = async (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     
     if (!token) {
-      return res.status(401).json({ message: 'Token nije pronađen' });
+      return res.status(401).json({ message: 'Token not found' });
     }
 
     const decoded = TokenService.verifyToken(token);
     
     if (!decoded) {
-      return res.status(401).json({ message: 'Nevažeći token' });
+      return res.status(401).json({ message: 'Invalid token' });
     }
 
     const user = await User.findById(decoded.userId);
     
     if (!user) {
-      return res.status(401).json({ message: 'Korisnik ne postoji' });
+      return res.status(401).json({ message: 'User not found' });
     }
 
     if (user.account_status !== 'approved') {
       return res.status(403).json({ 
-        message: 'Vaš nalog još uvek nije odobren ili je suspendovan' 
+        message: 'Your account is not approved or suspended' 
       });
     }
 
@@ -44,21 +44,21 @@ export const authenticate = async (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Autentifikacija neuspešna' });
+    res.status(401).json({ message: 'Authentication failed' });
   }
 };
 
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user || !req.user.roles) {
-      return res.status(403).json({ message: 'Nemate pristup ovom resursu' });
+      return res.status(403).json({ message: 'You do not have access to this resource' });
     }
 
     const hasRole = req.user.roles.some(role => roles.includes(role));
 
     if (!hasRole) {
       return res.status(403).json({ 
-        message: `Za pristup potrebna uloga: ${roles.join(', ')}` 
+        message: `You do not have access to this resource: ${roles.join(', ')}` 
       });
     }
 

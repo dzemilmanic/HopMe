@@ -13,7 +13,7 @@ router.use(authenticate);
  *   post:
  *     tags:
  *       - Bookings
- *     summary: Kreiranje rezervacije
+ *     summary: Creates a booking
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -44,7 +44,7 @@ router.use(authenticate);
  *                 example: "Možete li da me sačekate 5 minuta?"
  *     responses:
  *       201:
- *         description: Rezervacija kreirana
+ *         description: Booking created successfully
  *         content:
  *           application/json:
  *             schema:
@@ -55,9 +55,9 @@ router.use(authenticate);
  *                 booking:
  *                   $ref: '#/components/schemas/Booking'
  *       400:
- *         description: Greška (nema mesta, već postoji rezervacija)
+ *         description: Error (no seats available, booking already exists)
  *       404:
- *         description: Vožnja nije pronađena
+ *         description: Ride not found
  */
 router.post('/', BookingController.createBooking);
 
@@ -67,7 +67,7 @@ router.post('/', BookingController.createBooking);
  *   get:
  *     tags:
  *       - Bookings
- *     summary: Sve rezervacije trenutnog korisnika
+ *     summary: All bookings of the current user
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -95,7 +95,7 @@ router.get('/my-bookings', BookingController.getPassengerBookings);
  *   get:
  *     tags:
  *       - Bookings
- *     summary: Detalji rezervacije
+ *     summary: Booking details
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -106,13 +106,13 @@ router.get('/my-bookings', BookingController.getPassengerBookings);
  *           type: integer
  *     responses:
  *       200:
- *         description: Detalji rezervacije
+ *         description: Booking details
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Booking'
  *       404:
- *         description: Rezervacija nije pronađena
+ *         description: Booking not found
  */
 router.get('/:bookingId', BookingController.getBookingDetails);
 
@@ -122,7 +122,7 @@ router.get('/:bookingId', BookingController.getBookingDetails);
  *   post:
  *     tags:
  *       - Bookings
- *     summary: Otkazivanje rezervacije (putnik)
+ *     summary: Cancel booking (passenger)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -133,11 +133,11 @@ router.get('/:bookingId', BookingController.getBookingDetails);
  *           type: integer
  *     responses:
  *       200:
- *         description: Rezervacija otkazana
+ *         description: Booking cancelled successfully
  *       400:
- *         description: Ne može se otkazati nakon početka vožnje
+ *         description: Cannot cancel booking after ride has started
  *       403:
- *         description: Nemate pristup ovoj rezervaciji
+ *         description: You do not have access to this booking
  */
 router.post('/:bookingId/cancel', BookingController.cancelBooking);
 
@@ -147,7 +147,7 @@ router.post('/:bookingId/cancel', BookingController.cancelBooking);
  *   get:
  *     tags:
  *       - Bookings
- *     summary: Sve rezervacije za vožnju (samo vozač)
+ *     summary: All bookings for a ride (only driver)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -158,7 +158,7 @@ router.post('/:bookingId/cancel', BookingController.cancelBooking);
  *           type: integer
  *     responses:
  *       200:
- *         description: Lista rezervacija
+ *         description: List of bookings for a ride
  *         content:
  *           application/json:
  *             schema:
@@ -166,7 +166,7 @@ router.post('/:bookingId/cancel', BookingController.cancelBooking);
  *               items:
  *                 $ref: '#/components/schemas/Booking'
  *       403:
- *         description: Nemate pristup ovoj vožnji
+ *         description: You do not have access to this ride
  */
 router.get(
   '/ride/:rideId',
@@ -180,7 +180,7 @@ router.get(
  *   post:
  *     tags:
  *       - Bookings
- *     summary: Prihvatanje rezervacije (samo vozač)
+ *     summary: Accept booking (only driver)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -200,11 +200,11 @@ router.get(
  *                 example: "Vidimo se! Dolazim na vreme."
  *     responses:
  *       200:
- *         description: Rezervacija prihvaćena
+ *         description: Booking accepted
  *       400:
- *         description: Rezervacija već obrađena ili nema mesta
+ *         description: Booking already processed or no seats available
  *       403:
- *         description: Nemate pristup ovoj rezervaciji
+ *         description: You do not have access to this booking
  */
 router.post(
   '/:bookingId/accept',
@@ -218,7 +218,7 @@ router.post(
  *   post:
  *     tags:
  *       - Bookings
- *     summary: Odbijanje rezervacije (samo vozač)
+ *     summary: Reject booking (only driver)
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -238,11 +238,11 @@ router.post(
  *                 example: "Žao mi je, već imam druge putanje."
  *     responses:
  *       200:
- *         description: Rezervacija odbijena
+ *         description: Booking rejected
  *       400:
- *         description: Rezervacija već obrađena
+ *         description: Booking already processed
  *       403:
- *         description: Nemate pristup ovoj rezervaciji
+ *         description: You do not have access to this booking
  */
 router.post(
   '/:bookingId/reject',

@@ -3,24 +3,24 @@ import Notification from '../models/Notification.js';
 import pool from '../config/database.js';
 
 class RatingController {
-  // Ocenjivanje
+  // Rating
   static async createRating(req, res) {
     try {
       const raterId = req.user.id;
       const { bookingId, rating, comment } = req.body;
 
       if (rating < 1 || rating > 5) {
-        return res.status(400).json({ message: 'Ocena mora biti između 1 i 5' });
+        return res.status(400).json({ message: 'Rating must be between 1 and 5' });
       }
 
-      // Provera da li korisnik može oceniti
+      // Check if user can rate
       const canRate = await Rating.canRate(bookingId, raterId);
 
       if (!canRate.canRate) {
         return res.status(400).json({ message: canRate.reason });
       }
 
-      // Određivanje ko ocenjuje koga
+      // Determine who is being rated
       const ratedId = raterId === canRate.passengerId 
         ? canRate.driverId 
         : canRate.passengerId;
@@ -34,26 +34,26 @@ class RatingController {
         comment
       });
 
-      // Notifikacija ocenjenom korisniku
+      // Notification to rated user
       await Notification.create({
         userId: ratedId,
         type: 'new_rating',
-        title: 'Nova ocena',
-        message: `Dobili ste ocenu ${rating}/5`,
+        title: 'New rating',
+        message: `You received a rating of ${rating}/5`,
         data: { ratingId: ratingRecord.id, bookingId }
       });
 
       res.status(201).json({
-        message: 'Ocena uspešno dodata',
+        message: 'Rating successfully added',
         rating: ratingRecord
       });
     } catch (error) {
-      console.error('Greška pri ocenjivanju:', error);
-      res.status(500).json({ message: 'Greška pri ocenjivanju' });
+      console.error('Error rating:', error);
+      res.status(500).json({ message: 'Error rating' });
     }
   }
 
-  // Ocene korisnika
+  // User ratings
   static async getUserRatings(req, res) {
     try {
       const { userId } = req.params;
@@ -74,12 +74,12 @@ class RatingController {
         }
       });
     } catch (error) {
-      console.error('Greška pri učitavanju ocena:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('Error loading ratings:', error);
+      res.status(500).json({ message: 'Error loading ratings' });
     }
   }
 
-  // Moje ocene (koje sam dao)
+  // My ratings (given)
   static async getMyRatings(req, res) {
     try {
       const raterId = req.user.id;
@@ -102,17 +102,17 @@ class RatingController {
 
       res.json(result.rows);
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška' });
+      console.error('Error:', error);
+      res.status(500).json({ message: 'Error' });
     }
   }
 
-  // Sve moje ocene (primljene i date)
+  // All my ratings (received and given)
   static async getAllMyRatings(req, res) {
     try {
       const userId = req.user.id;
 
-      // Ocene koje sam dobio
+      // Ratings I received
       const receivedResult = await pool.query(
         `SELECT 
           r.id,
@@ -136,7 +136,7 @@ class RatingController {
         [userId]
       );
 
-      // Ocene koje sam dao
+      // Ratings I gave
       const givenResult = await pool.query(
         `SELECT 
           r.id,
@@ -160,7 +160,7 @@ class RatingController {
         [userId]
       );
 
-      // Statistika
+      // Statistics
       const statsResult = await pool.query(
         `SELECT 
           COUNT(*) as total_received,
@@ -187,8 +187,8 @@ class RatingController {
         }
       });
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju ocena' });
+      console.error('Error:', error);
+      res.status(500).json({ message: 'Error loading ratings' });
     }
   }
 }

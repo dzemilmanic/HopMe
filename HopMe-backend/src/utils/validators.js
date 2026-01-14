@@ -1,19 +1,19 @@
 import { body, validationResult } from 'express-validator';
 
 export const validateRegistration = [
-  body('email').isEmail().withMessage('Unesite validnu email adresu'),
+  body('email').isEmail().withMessage('Please enter a valid email address'),
   body('password')
     .isLength({ min: 6 })
-    .withMessage('Lozinka mora imati minimum 6 karaktera'),
-  body('firstName').notEmpty().withMessage('Ime je obavezno'),
-  body('lastName').notEmpty().withMessage('Prezime je obavezno'),
+    .withMessage('Password must have a minimum of 6 characters'),
+  body('firstName').notEmpty().withMessage('First name is required'),
+  body('lastName').notEmpty().withMessage('Last name is required'),
   body('phone')
     .matches(/^[0-9+\-\s()]+$/)
-    .withMessage('Unesite validan broj telefona'),
+    .withMessage('Please enter a valid phone number'),
 ];
 
 export const validateVehicle = [
-  body('vehicleType').notEmpty().withMessage('Tip vozila je obavezan'),
+  body('vehicleType').notEmpty().withMessage('Vehicle type is required'),
 ];
 
 export const handleValidationErrors = (req, res, next) => {

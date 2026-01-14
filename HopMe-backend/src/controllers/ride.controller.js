@@ -4,7 +4,7 @@ import Notification from '../models/Notification.js';
 import pool from '../config/database.js';
 
 class RideController {
-  // Kreiranje nove vožnje (samo vozači)
+  // Create new ride (only drivers)
   static async createRide(req, res) {
     try {
       const driverId = req.user.id;
@@ -22,13 +22,13 @@ class RideController {
       console.log('   departureLocation:', departureLocation);
       console.log('   arrivalLocation:', arrivalLocation);
 
-      // Provera da li vozilo pripada vozaču
+      // Check if vehicle belongs to driver
       const vehicle = await Vehicle.findById(vehicleId);
       console.log('   vehicle found:', vehicle ? 'YES' : 'NO');
       console.log('   vehicle.user_id:', vehicle?.user_id);
       
       if (!vehicle || vehicle.user_id !== driverId) {
-        return res.status(403).json({ message: 'Nemate pristup ovom vozilu' });
+        return res.status(403).json({ message: 'You do not have access to this vehicle' });
       }
 
       const ride = await Ride.create({
@@ -40,7 +40,7 @@ class RideController {
 
       console.log('   ride created:', ride?.id);
 
-      // Dodavanje međupostaja ako postoje
+      // Add waypoints if they exist
       if (waypoints && waypoints.length > 0) {
         for (let i = 0; i < waypoints.length; i++) {
           const wp = waypoints[i];
@@ -53,16 +53,16 @@ class RideController {
       const rideWithDetails = await Ride.findById(ride.id);
 
       res.status(201).json({
-        message: 'Vožnja uspešno kreirana',
+        message: 'Ride successfully created',
         ride: rideWithDetails
       });
     } catch (error) {
-      console.error('Greška pri kreiranju vožnje:', error);
-      res.status(500).json({ message: 'Greška pri kreiranju vožnje' });
+      console.error('Error creating ride:', error);
+      res.status(500).json({ message: 'Error creating ride' });
     }
   }
 
-  // Pretraga vožnji
+  // Search rides
   static async searchRides(req, res) {
     try {
       const { from, to, date, seats, maxPrice, page, limit } = req.query;
@@ -84,16 +84,16 @@ class RideController {
         page: parseInt(page) || 1
       });
     } catch (error) {
-      console.error('❌ Greška pri pretrazi vožnji:', error);
+      console.error('❌ Error searching rides:', error);
       console.error('   Error message:', error.message);
       console.error('   Error code:', error.code);
       console.error('   Error detail:', error.detail);
       console.error('   Error hint:', error.hint);
-      res.status(500).json({ message: 'Greška pri pretrazi' });
+      res.status(500).json({ message: 'Error searching rides' });
     }
   }
 
-  // Detalji vožnje
+  // Ride details
   static async getRideDetails(req, res) {
     try {
       const { rideId } = req.params;
@@ -101,17 +101,17 @@ class RideController {
       const ride = await Ride.findById(rideId);
 
       if (!ride) {
-        return res.status(404).json({ message: 'Vožnja nije pronađena' });
+        return res.status(404).json({ message: 'Ride not found' });
       }
 
       res.json(ride);
     } catch (error) {
-      console.error('Greška pri učitavanju detalja:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('Error loading ride details:', error);
+      res.status(500).json({ message: 'Error loading ride details' });
     }
   }
 
-  // Vožnje vozača
+  // Driver's rides
   static async getDriverRides(req, res) {
     try {
       const driverId = req.user.id;
@@ -120,18 +120,18 @@ class RideController {
 
       res.json(rides);
     } catch (error) {
-      console.error('Greška pri učitavanju vožnji:', error);
-      res.status(500).json({ message: 'Greška pri učitavanju' });
+      console.error('Error loading driver rides:', error);
+      res.status(500).json({ message: 'Error loading driver rides' });
     }
   }
 
-  // Ažuriranje vožnje
+  // Update ride
   static async updateRide(req, res) {
     try {
       const { rideId } = req.params;
       const driverId = req.user.id;
 
-      // Provera da li vožnja ima rezervacije
+      // Check if ride has accepted bookings
       const bookingsCheck = await pool.query(
         'SELECT COUNT(*) as count FROM bookings WHERE ride_id = $1 AND status IN ($2, $3)',
         [rideId, 'accepted', 'completed']
@@ -139,33 +139,33 @@ class RideController {
 
       if (parseInt(bookingsCheck.rows[0].count) > 0) {
         return res.status(400).json({ 
-          message: 'Ne možete menjati vožnju koja ima prihvaćene rezervacije' 
+          message: 'You cannot change a ride that has accepted bookings' 
         });
       }
 
       const ride = await Ride.update(rideId, driverId, req.body);
 
       if (!ride) {
-        return res.status(404).json({ message: 'Vožnja nije pronađena' });
+        return res.status(404).json({ message: 'Ride not found' });
       }
 
       res.json({
-        message: 'Vožnja uspešno ažurirana',
+        message: 'Ride successfully updated',
         ride
       });
     } catch (error) {
-      console.error('Greška pri ažuriranju vožnje:', error);
-      res.status(500).json({ message: 'Greška pri ažuriranju' });
+      console.error('Error updating ride:', error);
+      res.status(500).json({ message: 'Error updating ride' });
     }
   }
 
-  // Otkazivanje vožnje
+  // Cancel ride
   static async cancelRide(req, res) {
     try {
       const { rideId } = req.params;
       const driverId = req.user.id;
 
-      // Dobijanje svih prihvaćenih rezervacija
+      // Get all accepted bookings
       const bookings = await pool.query(
         `SELECT b.*, u.first_name, u.last_name 
          FROM bookings b 
@@ -177,10 +177,10 @@ class RideController {
       const ride = await Ride.updateStatus(rideId, 'cancelled');
 
       if (!ride || ride.driver_id !== driverId) {
-        return res.status(404).json({ message: 'Vožnja nije pronađena' });
+        return res.status(404).json({ message: 'Ride not found' });
       }
 
-      // Otkazivanje svih rezervacija i slanje notifikacija
+      // Cancel all bookings and send notifications
       for (const booking of bookings.rows) {
         await pool.query(
           'UPDATE bookings SET status = $1 WHERE id = $2',
@@ -190,20 +190,20 @@ class RideController {
         await Notification.create({
           userId: booking.passenger_id,
           type: 'ride_cancelled',
-          title: 'Vožnja otkazana',
-          message: `Vožnja ${ride.departure_location} → ${ride.arrival_location} je otkazana od strane vozača`,
+          title: 'Ride cancelled',
+          message: `Ride ${ride.departure_location} → ${ride.arrival_location} has been cancelled by the driver`,
           data: { rideId: String(ride.id), bookingId: String(booking.id) }
         });
       }
 
-      res.json({ message: 'Vožnja uspešno otkazana' });
+      res.json({ message: 'Ride successfully cancelled' });
     } catch (error) {
-      console.error('Greška pri otkazivanju vožnje:', error);
-      res.status(500).json({ message: 'Greška pri otkazivanju' });
+      console.error('Error cancelling ride:', error);
+      res.status(500).json({ message: 'Error cancelling ride' });
     }
   }
 
-  // Brisanje vožnje
+  // Delete ride
   static async deleteRide(req, res) {
     try {
       const { rideId } = req.params;
@@ -217,24 +217,24 @@ class RideController {
 
       if (parseInt(bookingsCheck.rows[0].count) > 0) {
         return res.status(400).json({ 
-          message: 'Ne možete obrisati vožnju koja ima rezervacije' 
+          message: 'You cannot delete a ride that has accepted bookings' 
         });
       }
 
       const ride = await Ride.delete(rideId, driverId);
 
       if (!ride) {
-        return res.status(404).json({ message: 'Vožnja nije pronađena' });
+        return res.status(404).json({ message: 'Ride not found' });
       }
 
-      res.json({ message: 'Vožnja uspešno obrisana' });
+      res.json({ message: 'Ride successfully deleted' });
     } catch (error) {
-      console.error('Greška pri brisanju vožnje:', error);
-      res.status(500).json({ message: 'Greška pri brisanju' });
+      console.error('Error deleting ride:', error);
+      res.status(500).json({ message: 'Error deleting ride' });
     }
   }
 
-  // Početak vožnje
+  // Start ride
   static async startRide(req, res) {
     try {
       const { rideId } = req.params;
@@ -246,19 +246,19 @@ class RideController {
       );
 
       if (ride.rows.length === 0) {
-        return res.status(404).json({ message: 'Vožnja nije pronađena' });
+        return res.status(404).json({ message: 'Ride not found' });
       }
 
       await Ride.updateStatus(rideId, 'in_progress');
 
-      res.json({ message: 'Vožnja započeta' });
+      res.json({ message: 'Ride started' });
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška' });
+      console.error('Error starting ride:', error);
+      res.status(500).json({ message: 'Error starting ride' });
     }
   }
 
-  // Završetak vožnje
+  // End ride
   static async completeRide(req, res) {
     try {
       const { rideId } = req.params;
@@ -270,12 +270,12 @@ class RideController {
       );
 
       if (ride.rows.length === 0) {
-        return res.status(404).json({ message: 'Vožnja nije pronađena' });
+        return res.status(404).json({ message: 'Ride not found' });
       }
 
       await Ride.updateStatus(rideId, 'completed');
 
-      // Ažuriranje svih prihvaćenih rezervacija na completed
+      // Updating all accepted reservations to completed
       await pool.query(
         `UPDATE bookings 
          SET status = 'completed', completed_at = NOW() 
@@ -283,7 +283,7 @@ class RideController {
         [rideId]
       );
 
-      // Slanje notifikacija putnicima
+      // Sending notifications to passengers
       const bookings = await pool.query(
         'SELECT passenger_id FROM bookings WHERE ride_id = $1 AND status = $2',
         [rideId, 'completed']
@@ -293,16 +293,16 @@ class RideController {
         await Notification.create({
           userId: booking.passenger_id,
           type: 'ride_completed',
-          title: 'Vožnja završena',
-          message: 'Vožnja je uspešno završena. Molimo ocenite vozača.',
+          title: 'Ride completed',
+          message: 'Ride has been successfully completed. Please rate the driver.',
           data: { rideId: String(rideId) }
         });
       }
 
-      res.json({ message: 'Vožnja završena' });
+      res.json({ message: 'Ride successfully completed' });
     } catch (error) {
-      console.error('Greška:', error);
-      res.status(500).json({ message: 'Greška' });
+      console.error('Error completing ride:', error);
+      res.status(500).json({ message: 'Error completing ride' });
     }
   }
 }

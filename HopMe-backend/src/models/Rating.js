@@ -60,15 +60,15 @@ class Rating {
     const { status, passenger_id, driver_id, already_rated } = result.rows[0];
 
     if (already_rated) {
-      return { canRate: false, reason: 'Već ste ocenili' };
+      return { canRate: false, reason: 'You have already rated' };
     }
 
     if (status !== 'completed') {
-      return { canRate: false, reason: 'Vožnja još nije završena' };
+      return { canRate: false, reason: 'The ride has not yet finished' };
     }
 
     if (raterId !== passenger_id && raterId !== driver_id) {
-      return { canRate: false, reason: 'Niste učesnik ove vožnje' };
+      return { canRate: false, reason: 'You are not a participant of this ride' };
     }
 
     return { canRate: true, passengerId: passenger_id, driverId: driver_id };

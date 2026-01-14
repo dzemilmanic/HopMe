@@ -11,50 +11,50 @@ const router = express.Router();
  *   get:
  *     tags:
  *       - Rides
- *     summary: Pretraga vožnji
+ *     summary: Searches for rides
  *     parameters:
  *       - in: query
  *         name: from
  *         schema:
  *           type: string
- *         description: Polazna lokacija
+ *         description: Starting location
  *       - in: query
  *         name: to
  *         schema:
  *           type: string
- *         description: Dolazna lokacija
+ *         description: Destination location
  *       - in: query
  *         name: date
  *         schema:
  *           type: string
  *           format: date
- *         description: Datum vožnje (YYYY-MM-DD)
+ *         description: Ride date (YYYY-MM-DD)
  *       - in: query
  *         name: seats
  *         schema:
  *           type: integer
  *           default: 1
- *         description: Broj potrebnih mesta
+ *         description: Number of seats needed
  *       - in: query
  *         name: maxPrice
  *         schema:
  *           type: number
- *         description: Maksimalna cena po mestu
+ *         description: Maximum price per seat
  *       - in: query
  *         name: page
  *         schema:
  *           type: integer
  *           default: 1
- *         description: Broj stranice
+ *         description: Page number
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
  *           default: 20
- *         description: Broj rezultata po stranici
+ *         description: Number of results per page
  *     responses:
  *       200:
- *         description: Lista vožnji
+ *         description: List of rides
  *         content:
  *           application/json:
  *             schema:
@@ -77,7 +77,7 @@ router.get('/search', RideController.searchRides);
  *   get:
  *     tags:
  *       - Rides
- *     summary: Detalji vožnje
+ *     summary: Gets ride details
  *     parameters:
  *       - in: path
  *         name: rideId
@@ -86,13 +86,13 @@ router.get('/search', RideController.searchRides);
  *           type: integer
  *     responses:
  *       200:
- *         description: Detalji vožnje
+ *         description: Ride details
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Ride'
  *       404:
- *         description: Vožnja nije pronađena
+ *         description: Ride not found
  */
 router.get('/:rideId', RideController.getRideDetails);
 
@@ -102,7 +102,7 @@ router.get('/:rideId', RideController.getRideDetails);
  *   post:
  *     tags:
  *       - Rides
- *     summary: Kreiranje nove vožnje (samo vozači)
+ *     summary: Creates a new ride (only drivers)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -161,9 +161,9 @@ router.get('/:rideId', RideController.getRideDetails);
  *                   type: object
  *     responses:
  *       201:
- *         description: Vožnja kreirana
+ *         description: Ride created
  *       403:
- *         description: Nemate vozačku ulogu
+ *         description: You do not have a driver role
  */
 router.post(
   '/',
@@ -178,12 +178,12 @@ router.post(
  *   get:
  *     tags:
  *       - Rides
- *     summary: Sve vožnje vozača
+ *     summary: Gets all rides of the driver
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Lista vožnji vozača
+ *         description: List of driver's rides
  */
 router.get(
   '/driver/my-rides',
@@ -198,7 +198,7 @@ router.get(
  *   post:
  *     tags:
  *       - Rides
- *     summary: Otkazivanje vožnje
+ *     summary: Cancels a ride
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -209,7 +209,7 @@ router.get(
  *           type: integer
  *     responses:
  *       200:
- *         description: Vožnja otkazana
+ *         description: Ride cancelled
  */
 router.post(
   '/:rideId/cancel',
@@ -224,7 +224,7 @@ router.post(
  *   post:
  *     tags:
  *       - Rides
- *     summary: Početak vožnje
+ *     summary: Starts a ride
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -235,7 +235,7 @@ router.post(
  *           type: integer
  *     responses:
  *       200:
- *         description: Vožnja započeta
+ *         description: Ride started
  */
 router.post(
   '/:rideId/start',
@@ -250,7 +250,7 @@ router.post(
  *   post:
  *     tags:
  *       - Rides
- *     summary: Završetak vožnje
+ *     summary: Completes a ride
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -261,7 +261,7 @@ router.post(
  *           type: integer
  *     responses:
  *       200:
- *         description: Vožnja završena
+ *         description: Ride completed
  */
 router.post(
   '/:rideId/complete',

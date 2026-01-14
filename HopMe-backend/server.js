@@ -1,4 +1,4 @@
-// PRVO učitaj dotenv - pre svih ostalih importa!
+// First load dotenv - before all other imports!
 import dotenv from "dotenv";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -6,16 +6,16 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Eksplicitno učitaj .env fajl
+// Explicitly load .env file
 const result = dotenv.config({ path: join(__dirname, '.env') });
 
 if (result.error) {
-  console.error('❌ Greška pri učitavanju .env fajla:', result.error);
-  console.log('📁 Tražim .env na lokaciji:', join(__dirname, '.env'));
+  console.error('❌ Error loading .env file:', result.error);
+  console.log('📁 Looking for .env at:', join(__dirname, '.env'));
 } else {
-  console.log('✅ .env fajl uspešno učitan');
-  console.log('🔍 DB_HOST:', process.env.DB_HOST ? '✓ postoji' : '✗ ne postoji');
-  console.log('🔍 DB_PORT:', process.env.DB_PORT ? '✓ postoji' : '✗ ne postoji');
+  console.log('✅ .env file successfully loaded');
+  console.log('🔍 DB_HOST:', process.env.DB_HOST ? '✓ exists' : '✗ does not exist');
+  console.log('🔍 DB_PORT:', process.env.DB_PORT ? '✓ exists' : '✗ does not exist');
 }
 
 import express from 'express';
@@ -41,9 +41,9 @@ const PORT = process.env.PORT || 5000;
 
 
 // Middleware
-// Najjednostavniji CORS za development
+// Simplest CORS for development
 app.use(cors({
-  origin: '*', // Dozvoljava SVE (samo za development!)
+  origin: '*', // Allow ALL (only for development!)
   credentials: true
 }));
 app.use(express.json());
@@ -95,53 +95,53 @@ app.use((err, req, res, next) => {
   
   if (err.code === 'LIMIT_FILE_SIZE') {
     return res.status(400).json({ 
-      message: 'Fajl je prevelik. Maksimalna veličina je 5MB' 
+      message: 'File is too large. Maximum size is 5MB' 
     });
   }
 
   if (err.code === '23505') {
     return res.status(400).json({ 
-      message: 'Vrednost već postoji u bazi' 
+      message: 'Value already exists in the database' 
     });
   }
 
   if (err.code === '23503') {
     return res.status(400).json({ 
-      message: 'Referencirani resurs ne postoji' 
+      message: 'Referenced resource does not exist' 
     });
   }
   
   res.status(err.status || 500).json({
-    message: err.message || 'Interna greška servera',
+    message: err.message || 'Internal server error',
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 });
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ message: 'Ruta nije pronađena' });
+  res.status(404).json({ message: 'Route not found' });
 });
 
 // PostgreSQL connection test
 pool.query('SELECT NOW()', (err, result) => {
   if (err) {
-    console.error('❌ Greška u PostgreSQL konekciji:', err);
+    console.error('❌ Error in PostgreSQL connection:', err);
     process.exit(1);
   } else {
-    console.log('✅ PostgreSQL povezan:', result.rows[0].now);
+    console.log('✅ PostgreSQL connected:', result.rows[0].now);
   }
 });
 
 // Server start
 app.listen(PORT, () => {
-  console.log(`🚀 HopMe Backend pokrenut na portu ${PORT}`);
+  console.log(`🚀 HopMe Backend started on port ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV}`);
   console.log(`📊 Database: ${process.env.DB_HOST}`);
 });
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
-  console.log('\n🛑 Gašenje servera...');
+  console.log('\n🛑 Server shutdown...');
   await pool.end();
   process.exit(0);
 });

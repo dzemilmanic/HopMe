@@ -15,12 +15,12 @@ router.use(requireRole('admin'));
  *   get:
  *     tags:
  *       - Admin
- *     summary: Svi korisnici koji čekaju odobrenje
+ *     summary: Gets all users that are pending approval
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Lista pending korisnika
+ *         description: List of pending users
  *         content:
  *           application/json:
  *             schema:
@@ -28,7 +28,7 @@ router.use(requireRole('admin'));
  *               items:
  *                 $ref: '#/components/schemas/User'
  *       403:
- *         description: Nemate admin pristup
+ *         description: You do not have admin access
  */
 router.get('/users/pending', AdminController.getPendingUsers);
 
@@ -38,7 +38,7 @@ router.get('/users/pending', AdminController.getPendingUsers);
  *   get:
  *     tags:
  *       - Admin
- *     summary: Svi korisnici sa filterima
+ *     summary: Gets all users with filters
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -56,7 +56,7 @@ router.get('/users/pending', AdminController.getPendingUsers);
  *         description: Filter po ulozi
  *     responses:
  *       200:
- *         description: Lista korisnika
+ *         description: List of users
  *         content:
  *           application/json:
  *             schema:
@@ -72,7 +72,7 @@ router.get('/users', AdminController.getAllUsers);
  *   get:
  *     tags:
  *       - Admin
- *     summary: Detalji korisnika sa vozilima
+ *     summary: Gets user details with vehicles
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -83,7 +83,7 @@ router.get('/users', AdminController.getAllUsers);
  *           type: integer
  *     responses:
  *       200:
- *         description: Detalji korisnika
+ *         description: User details with vehicles
  *         content:
  *           application/json:
  *             schema:
@@ -96,7 +96,7 @@ router.get('/users', AdminController.getAllUsers);
  *                       items:
  *                         $ref: '#/components/schemas/Vehicle'
  *       404:
- *         description: Korisnik nije pronađen
+ *         description: User not found
  */
 router.get('/users/:userId', AdminController.getUserDetails);
 
@@ -106,7 +106,7 @@ router.get('/users/:userId', AdminController.getUserDetails);
  *   post:
  *     tags:
  *       - Admin
- *     summary: Odobravanje korisničkog naloga
+ *     summary: Approves a user account
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -117,11 +117,11 @@ router.get('/users/:userId', AdminController.getUserDetails);
  *           type: integer
  *     responses:
  *       200:
- *         description: Korisnik odobren
+ *         description: User approved
  *       400:
- *         description: Korisnik nije u pending statusu ili email nije verifikovan
+ *         description: User is not in pending status or email is not verified
  *       404:
- *         description: Korisnik nije pronađen
+ *         description: User not found
  */
 router.post('/users/:userId/approve', AdminController.approveUser);
 
@@ -131,7 +131,7 @@ router.post('/users/:userId/approve', AdminController.approveUser);
  *   post:
  *     tags:
  *       - Admin
- *     summary: Odbijanje korisničkog naloga
+ *     summary: Rejects a user account
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -142,9 +142,9 @@ router.post('/users/:userId/approve', AdminController.approveUser);
  *           type: integer
  *     responses:
  *       200:
- *         description: Korisnik odbijen
+ *         description: User rejected
  *       404:
- *         description: Korisnik nije pronađen
+ *         description: User not found
  */
 router.post('/users/:userId/reject', AdminController.rejectUser);
 
@@ -154,7 +154,7 @@ router.post('/users/:userId/reject', AdminController.rejectUser);
  *   post:
  *     tags:
  *       - Admin
- *     summary: Suspendovanje korisničkog naloga
+ *     summary: Suspends a user account
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -165,9 +165,9 @@ router.post('/users/:userId/reject', AdminController.rejectUser);
  *           type: integer
  *     responses:
  *       200:
- *         description: Korisnik suspendovan
+ *         description: User suspended
  *       404:
- *         description: Korisnik nije pronađen
+ *         description: User not found
  */
 router.post('/users/:userId/suspend', AdminController.suspendUser);
 
@@ -177,7 +177,7 @@ router.post('/users/:userId/suspend', AdminController.suspendUser);
  *   post:
  *     tags:
  *       - Admin
- *     summary: Kreiranje novog admin naloga (samo admin može)
+ *     summary: Creates a new admin account (only admin can create)
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -207,7 +207,7 @@ router.post('/users/:userId/suspend', AdminController.suspendUser);
  *                 type: string
  *     responses:
  *       201:
- *         description: Admin kreiran
+ *         description: Admin created
  *         content:
  *           application/json:
  *             schema:
@@ -218,7 +218,7 @@ router.post('/users/:userId/suspend', AdminController.suspendUser);
  *                 adminId:
  *                   type: integer
  *       400:
- *         description: Email već postoji
+ *         description: Email already exists
  */
 router.post(
   '/create-admin',
