@@ -43,18 +43,18 @@ struct BookingDetailSheet: View {
                 }
                 .padding()
             }
-            .navigationTitle("Detalji rezervacije")
+            .navigationTitle("Booking details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Zatvori") {
+                    Button("Close") {
                         dismiss()
                     }
                 }
             }
-            .alert("Otkazivanje rezervacije", isPresented: $showCancelAlert) {
-                Button("Otkaži", role: .cancel) { }
-                Button("Potvrdi", role: .destructive) {
+            .alert("Cancel booking", isPresented: $showCancelAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Confirm", role: .destructive) {
                     Task {
                         let success = await viewModel.cancelBooking()
                         if success {
@@ -64,7 +64,7 @@ struct BookingDetailSheet: View {
                     }
                 }
             } message: {
-                Text("Da li ste sigurni da želite da otkažete ovu rezervaciju?")
+                Text("Are you sure you want to cancel this booking?")
             }
             .sheet(isPresented: $showRating) {
                 RatingSheet(booking: viewModel.booking, onComplete: {
@@ -90,7 +90,7 @@ struct BookingDetailSheet: View {
                     HStack(spacing: 4) {
                         ProgressView()
                             .scaleEffect(0.8)
-                        Text("Čeka se odobrenje")
+                        Text("Waiting for approval")
                             .font(.caption)
                             .foregroundColor(.gray)
                     }
@@ -133,28 +133,28 @@ struct BookingDetailSheet: View {
     // MARK: - Trip Details Section
     private var tripDetailsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Detalji putovanja")
+            Text("Trip details")
                 .font(.headline)
             
             VStack(spacing: 12) {
                 // Date
                 DetailRow(
                     icon: "calendar",
-                    title: "Datum",
+                    title: "Date",
                     value: viewModel.booking.ride.departureTime.formatted(date: .long, time: .omitted)
                 )
                 
                 // Time
                 DetailRow(
                     icon: "clock",
-                    title: "Vreme polaska",
+                    title: "Departure time",
                     value: viewModel.booking.ride.departureTime.formatted(date: .long, time: .shortened)
                 )
                 
                 // Seats
                 DetailRow(
                     icon: "person.fill",
-                    title: "Broj mesta",
+                    title: "Number of seats",
                     value: "\(viewModel.booking.seatsBooked)"
                 )
                 
@@ -162,7 +162,7 @@ struct BookingDetailSheet: View {
                 if let pickup = viewModel.booking.pickupLocation {
                     DetailRow(
                         icon: "mappin.circle",
-                        title: "Mesto polaska",
+                        title: "Pickup location",
                         value: pickup
                     )
                 }
@@ -171,7 +171,7 @@ struct BookingDetailSheet: View {
                 if let dropoff = viewModel.booking.dropoffLocation {
                     DetailRow(
                         icon: "mappin.and.ellipse",
-                        title: "Mesto dolaska",
+                        title: "Dropoff location",
                         value: dropoff
                     )
                 }
@@ -186,7 +186,7 @@ struct BookingDetailSheet: View {
     // MARK: - Driver Info Section
     private var driverInfoSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Vozač")
+            Text("Driver")
                 .font(.headline)
             
             HStack(spacing: 16) {
@@ -269,14 +269,14 @@ struct BookingDetailSheet: View {
     // MARK: - Booking Details Section
     private var bookingDetailsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Dodatne informacije")
+            Text("Additional information")
                 .font(.headline)
             
             VStack(spacing: 12) {
                 // Booking Date
                 DetailRow(
                     icon: "calendar.badge.clock",
-                    title: "Rezervisano",
+                    title: "Booked at",
                     value: viewModel.booking.createdAt.formatted(date: .abbreviated, time: .shortened)
                 )
                 
@@ -284,7 +284,7 @@ struct BookingDetailSheet: View {
                 if let acceptedAt = viewModel.booking.acceptedAt {
                     DetailRow(
                         icon: "checkmark.circle",
-                        title: "Prihvaćeno",
+                        title: "Accepted at",
                         value: acceptedAt.formatted(date: .abbreviated, time: .shortened)
                     )
                 }
@@ -295,7 +295,7 @@ struct BookingDetailSheet: View {
                         HStack {
                             Image(systemName: "text.bubble")
                                 .foregroundColor(.blue)
-                            Text("Vaša poruka")
+                            Text("Your message")
                                 .font(.subheadline)
                                 .fontWeight(.medium)
                         }
@@ -316,7 +316,7 @@ struct BookingDetailSheet: View {
                         HStack {
                             Image(systemName: "text.bubble.fill")
                                 .foregroundColor(.green)
-                            Text("Odgovor vozača")
+                            Text("Driver response")
                                 .font(.subheadline)
                                 .fontWeight(.medium)
                         }
@@ -341,7 +341,7 @@ struct BookingDetailSheet: View {
     // MARK: - Price Section
     private var priceSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Cena")
+            Text("Price")
                 .font(.headline)
             
             VStack(spacing: 8) {
@@ -360,7 +360,7 @@ struct BookingDetailSheet: View {
                 Divider()
                 
                 HStack {
-                    Text("Ukupno")
+                    Text("Total")
                         .font(.headline)
                     
                     Spacer()
@@ -380,7 +380,7 @@ struct BookingDetailSheet: View {
     // MARK: - Cancel Button
     private var cancelButton: some View {
         Button(action: { showCancelAlert = true }) {
-            Text("Otkaži rezervaciju")
+            Text("Cancel booking")
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
@@ -395,7 +395,7 @@ struct BookingDetailSheet: View {
         Button(action: { showRating = true }) {
             HStack {
                 Image(systemName: "star.fill")
-                Text("Oceni vožnju")
+                Text("Rate trip")
                     .fontWeight(.semibold)
             }
             .foregroundColor(.white)

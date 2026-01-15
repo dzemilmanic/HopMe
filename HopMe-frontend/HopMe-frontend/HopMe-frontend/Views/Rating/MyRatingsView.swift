@@ -15,9 +15,9 @@ struct MyRatingsView: View {
             
             // Tab Selector
             Picker("", selection: $selectedTab) {
-                Text("Dobijene (\(viewModel.receivedRatings.count))")
+                Text("Received (\(viewModel.receivedRatings.count))")
                     .tag(0)
-                Text("Date (\(viewModel.givenRatings.count))")
+                Text("Given (\(viewModel.givenRatings.count))")
                     .tag(1)
             }
             .pickerStyle(.segmented)
@@ -35,7 +35,7 @@ struct MyRatingsView: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
-        .navigationTitle("Moje ocene")
+        .navigationTitle("My ratings")
         .navigationBarTitleDisplayMode(.large)
         .task {
             await viewModel.loadRatings()
@@ -54,7 +54,7 @@ struct MyRatingsView: View {
                 Text("\(stats.totalReceived)")
                     .font(.title2)
                     .fontWeight(.bold)
-                Text("Primljeno")
+                Text("Received")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
@@ -71,7 +71,7 @@ struct MyRatingsView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                 }
-                Text("Prosek")
+                Text("Average")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
@@ -83,7 +83,7 @@ struct MyRatingsView: View {
                 Text("\(stats.totalGiven)")
                     .font(.title2)
                     .fontWeight(.bold)
-                Text("Dato")
+                Text("Given")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
@@ -99,8 +99,8 @@ struct MyRatingsView: View {
             if viewModel.receivedRatings.isEmpty {
                 emptyState(
                     icon: "star.slash",
-                    title: "Nemate primljenih ocena",
-                    message: "Kada vas neko oceni, ocene će se pojaviti ovde"
+                    title: "You have no received ratings",
+                    message: "When someone rates you, ratings will appear here"
                 )
             } else {
                 ScrollView {
@@ -125,8 +125,8 @@ struct MyRatingsView: View {
             if viewModel.givenRatings.isEmpty {
                 emptyState(
                     icon: "star",
-                    title: "Nemate datih ocena",
-                    message: "Kada ocenite nekoga, ocene će se pojaviti ovde"
+                    title: "You have no given ratings",
+                    message: "When you rate someone, ratings will appear here"
                 )
             } else {
                 ScrollView {
@@ -177,9 +177,9 @@ struct RatingCard: View {
             HStack {
                 // User Info
                 if showRater {
-                    UserInfoRow(user: rating.rater, label: "Ocenio")
+                    UserInfoRow(user: rating.rater, label: "Rated")
                 } else if showRated, let rated = rating.rated {
-                    UserInfoRow(user: rated, label: "Ocenjen")
+                    UserInfoRow(user: rated, label: "Rated")
                 }
                 
                 Spacer()

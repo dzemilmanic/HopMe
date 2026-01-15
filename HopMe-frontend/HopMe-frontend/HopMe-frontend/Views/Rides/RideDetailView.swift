@@ -32,7 +32,7 @@ struct RideDetailView: View {
                     if let waypoints = viewModel.ride.waypoints, !waypoints.isEmpty {
                         waypointsTab
                     } else {
-                        Text("Nema usputnih stanica")
+                        Text("No waypoints")
                             .foregroundColor(.gray)
                             .padding()
                     }
@@ -41,7 +41,7 @@ struct RideDetailView: View {
                 }
             }
         }
-        .navigationTitle("Detalji vožnje")
+        .navigationTitle("Ride details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -135,12 +135,12 @@ struct RideDetailView: View {
                         .fontWeight(.medium)
                     
                     HStack(spacing: 12) {
-                        Label("\(viewModel.ride.remainingSeats) mesta", systemImage: "person.fill")
+                        Label("\(viewModel.ride.remainingSeats) seats", systemImage: "person.fill")
                             .font(.caption)
                             .foregroundColor(.gray)
                         
                         if viewModel.ride.autoAcceptBookings {
-                            Label("Auto prihvat", systemImage: "checkmark.circle.fill")
+                            Label("Auto accept", systemImage: "checkmark.circle.fill")
                                 .font(.caption)
                                 .foregroundColor(.green)
                         }
@@ -156,7 +156,7 @@ struct RideDetailView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.blue)
                     
-                    Text("po mestu")
+                    Text("per seat")
                         .font(.caption)
                         .foregroundColor(.gray)
                 }
@@ -172,16 +172,16 @@ struct RideDetailView: View {
     // MARK: - Tab Selector
     private var tabSelector: some View {
         HStack(spacing: 0) {
-            TabButton(title: "Detalji", isSelected: selectedTab == 0) {
+            TabButton(title: "Details", isSelected: selectedTab == 0) {
                 withAnimation { selectedTab = 0 }
             }
             
-            TabButton(title: "Vozač", isSelected: selectedTab == 1) {
+            TabButton(title: "Driver", isSelected: selectedTab == 1) {
                 withAnimation { selectedTab = 1 }
             }
             
             if let waypoints = viewModel.ride.waypoints, !waypoints.isEmpty {
-                TabButton(title: "Ruta", isSelected: selectedTab == 2) {
+                TabButton(title: "Route", isSelected: selectedTab == 2) {
                     withAnimation { selectedTab = 2 }
                 }
             }
@@ -195,7 +195,7 @@ struct RideDetailView: View {
         VStack(alignment: .leading, spacing: 16) {
             // Vehicle Info
             if let vehicle = viewModel.ride.vehicle {
-                DetailSection(title: "Vozilo") {
+                DetailSection(title: "Vehicle") {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Image(systemName: "car.fill")
@@ -236,32 +236,32 @@ struct RideDetailView: View {
             }
             
             // Ride Preferences
-            DetailSection(title: "Preferencije") {
+            DetailSection(title: "Preferences") {
                 VStack(spacing: 12) {
                     PreferenceRow(
                         icon: "checkmark.circle.fill",
-                        title: "Automatski prihvat",
+                        title: "Auto accept",
                         value: viewModel.ride.autoAcceptBookings,
                         activeColor: .green
                     )
                     
                     PreferenceRow(
                         icon: "smoke.fill",
-                        title: "Dozvoljeno pušenje",
+                        title: "Allow smoking",
                         value: viewModel.ride.allowSmoking,
                         activeColor: .orange
                     )
                     
                     PreferenceRow(
                         icon: "pawprint.fill",
-                        title: "Dozvoljeni kućni ljubimci",
+                        title: "Allow pets",
                         value: viewModel.ride.allowPets,
                         activeColor: .brown
                     )
                     
                     PreferenceRow(
                         icon: "person.2.fill",
-                        title: "Maksimalno dvoje pozadi",
+                        title: "Max two in back",
                         value: viewModel.ride.maxTwoInBack,
                         activeColor: .blue
                     )
@@ -270,7 +270,7 @@ struct RideDetailView: View {
             
             // Luggage Size
             if let luggageSize = viewModel.ride.luggageSize {
-                DetailSection(title: "Prtljag") {
+                DetailSection(title: "Luggage") {
                     HStack {
                         Image(systemName: "suitcase.fill")
                             .foregroundColor(.purple)
@@ -285,7 +285,7 @@ struct RideDetailView: View {
             
             // Description
             if let description = viewModel.ride.description, !description.isEmpty {
-                DetailSection(title: "Opis") {
+                DetailSection(title: "Description") {
                     Text(description)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
@@ -369,7 +369,7 @@ struct RideDetailView: View {
                                         .foregroundColor(.blue)
                                         .font(.caption)
                                     
-                                    Text("\(totalRides) vožnji")
+                                    Text("\(totalRides) rides")
                                         .font(.caption)
                                         .foregroundColor(.gray)
                                 }
@@ -381,7 +381,7 @@ struct RideDetailView: View {
                                 .font(.caption)
                                 .foregroundColor(.gray)
                             
-                            Text("Pogledaj profil")
+                            Text("View profile")
                                 .font(.caption)
                                 .foregroundColor(.blue)
                         }
@@ -401,20 +401,20 @@ struct RideDetailView: View {
                 DriverStatCard(
                     icon: "star.fill",
                     value: viewModel.ride.driver.formattedRating,
-                    label: "Ocena"
+                    label: "Rating"
                 )
                 
                 DriverStatCard(
                     icon: "person.fill",
                     value: "\(viewModel.ride.driver.totalRatings)",
-                    label: "Recenzije"
+                    label: "Reviews"
                 )
                 
                 if let totalRides = viewModel.ride.driver.totalRides {
                     DriverStatCard(
                         icon: "car.fill",
                         value: "\(totalRides)",
-                        label: "Vožnje"
+                        label: "Rides"
                     )
                 }
             }
@@ -445,7 +445,7 @@ struct RideDetailView: View {
             
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Ukupno")
+                    Text("Total")
                         .font(.caption)
                         .foregroundColor(.gray)
                     
@@ -458,7 +458,7 @@ struct RideDetailView: View {
                 Spacer()
                 
                 Button(action: { showBooking = true }) {
-                    Text("Rezerviši")
+                    Text("Book")
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .padding(.horizontal, 40)

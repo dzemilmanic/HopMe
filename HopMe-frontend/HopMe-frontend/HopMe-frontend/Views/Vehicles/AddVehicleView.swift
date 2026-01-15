@@ -12,8 +12,8 @@ struct AddVehicleView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Tip vozila *") {
-                    Picker("Tip vozila", selection: $viewModel.vehicleType) {
+                Section("Vehicle type *") {
+                    Picker("Vehicle type", selection: $viewModel.vehicleType) {
                         ForEach(viewModel.vehicleTypes, id: \.self) { type in
                             Text(type).tag(type)
                         }
@@ -21,23 +21,23 @@ struct AddVehicleView: View {
                     .pickerStyle(.menu)
                 }
                 
-                Section("Detalji vozila") {
-                    TextField("Marka (opciono)", text: $viewModel.brand)
-                    TextField("Model (opciono)", text: $viewModel.model)
-                    TextField("Godina (opciono)", text: $viewModel.year)
+                Section("Vehicle details") {
+                    TextField("Brand (optional)", text: $viewModel.brand)
+                    TextField("Model (optional)", text: $viewModel.model)
+                    TextField("Year (optional)", text: $viewModel.year)
                         .keyboardType(.numberPad)
-                    TextField("Boja (opciono)", text: $viewModel.color)
-                    TextField("Registarska tablica (opciono)", text: $viewModel.licensePlate)
+                    TextField("Color (optional)", text: $viewModel.color)
+                    TextField("License plate (optional)", text: $viewModel.licensePlate)
                         .textInputAutocapitalization(.characters)
                 }
                 
-                Section("Slike vozila *") {
+                Section("Vehicle images *") {
                     if viewModel.images.isEmpty {
                         Button(action: { showImagePicker = true }) {
                             HStack {
                                 Image(systemName: "photo.on.rectangle.angled")
                                     .foregroundColor(.blue)
-                                Text("Dodaj slike")
+                                Text("Add images")
                                     .foregroundColor(.blue)
                             }
                         }
@@ -78,7 +78,7 @@ struct AddVehicleView: View {
                             }
                         }
                         
-                        Text("\(viewModel.images.count)/5 slika")
+                        Text("\(viewModel.images.count)/5 images")
                             .font(.caption)
                             .foregroundColor(.gray)
                     }
@@ -100,7 +100,7 @@ struct AddVehicleView: View {
                                 Spacer()
                             }
                         } else {
-                            Text("Dodaj vozilo")
+                            Text("Add vehicle")
                                 .frame(maxWidth: .infinity)
                                 .foregroundColor(.white)
                         }
@@ -109,11 +109,11 @@ struct AddVehicleView: View {
                     .disabled(!viewModel.isFormValid || viewModel.isLoading)
                 }
             }
-            .navigationTitle("Dodaj vozilo")
+            .navigationTitle("Add vehicle")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
@@ -121,13 +121,13 @@ struct AddVehicleView: View {
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(images: $viewModel.images, maxImages: 5)
             }
-            .alert("Vozilo dodato!", isPresented: $showSuccess) {
+            .alert("Vehicle added!", isPresented: $showSuccess) {
                 Button("OK") {
                     onComplete()
                     dismiss()
                 }
             } message: {
-                Text("Vaše vozilo je uspešno dodato.")
+                Text("Vehicle added successfully!")
             }
             .errorAlert(errorMessage: $viewModel.errorMessage)
         }

@@ -10,7 +10,7 @@ struct CreateTestimonialView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Vaša ocena")) {
+                Section(header: Text("Your rating")) {
                     HStack {
                         Spacer()
                         RatingStars(rating: Double(viewModel.rating), size: 30) { rating in
@@ -21,11 +21,11 @@ struct CreateTestimonialView: View {
                     .padding(.vertical)
                 }
                 
-                Section(header: Text("Vaše iskustvo (opciono)")) {
+                Section(header: Text("Your experience (optional)")) {
                     TextEditor(text: $viewModel.text)
                         .frame(minHeight: 100)
                         .overlay(
-                            Text("Napišite vaše utiske (opciono)...")
+                            Text("Write your experience (optional)...")
                                 .foregroundColor(.gray)
                                 .opacity(viewModel.text.isEmpty ? 0.6 : 0)
                                 .padding(.top, 8)
@@ -56,7 +56,7 @@ struct CreateTestimonialView: View {
                                 ProgressView()
                                     .padding(.trailing, 5)
                             }
-                            Text("Pošalji recenziju")
+                            Text("Send testimonial")
                                 .fontWeight(.bold)
                         }
                         .frame(maxWidth: .infinity, alignment: .center)
@@ -66,11 +66,11 @@ struct CreateTestimonialView: View {
                     .foregroundColor(viewModel.isValid ? .white : .gray)
                 }
             }
-            .navigationTitle("Ostavi utisak")
+            .navigationTitle("Leave testimonial")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
@@ -105,7 +105,7 @@ class CreateTestimonialViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri slanju recenzije"
+            errorMessage = "Error submitting testimonial"
         }
         
         isLoading = false

@@ -12,25 +12,25 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Notifikacije") {
-                    Toggle("Omogući notifikacije", isOn: $notificationsEnabled)
+                Section("Notifications") {
+                    Toggle("Enable notifications", isOn: $notificationsEnabled)
                     
                     if notificationsEnabled {
-                        Toggle("Email notifikacije", isOn: $emailNotifications)
-                        Toggle("Push notifikacije", isOn: $pushNotifications)
+                        Toggle("Email notifications", isOn: $emailNotifications)
+                        Toggle("Push notifications", isOn: $pushNotifications)
                         
                         Divider()
                         
-                        Toggle("Rezervacije", isOn: $bookingNotifications)
+                        Toggle("Bookings", isOn: $bookingNotifications)
                             .disabled(!notificationsEnabled)
                         
-                        Toggle("Vožnje", isOn: $rideNotifications)
+                        Toggle("Rides", isOn: $rideNotifications)
                             .disabled(!notificationsEnabled)
                     }
                 }
                 
-                Section("Izgled") {
-                    Picker("Tema", selection: $appearanceMode) {
+                Section("Appearance") {
+                    Picker("Theme", selection: $appearanceMode) {
                         ForEach(AppearanceMode.allCases) { mode in
                             HStack {
                                 Image(systemName: mode.icon)
@@ -58,9 +58,9 @@ struct SettingsView: View {
                     .padding(.vertical, 8)
                 }
                 
-                Section("O aplikaciji") {
+                Section("About") {
                     HStack {
-                        Text("Verzija")
+                        Text("Version")
                         Spacer()
                         Text(Constants.App.version)
                             .foregroundColor(.gray)
@@ -73,42 +73,42 @@ struct SettingsView: View {
                             .foregroundColor(.gray)
                     }
                     
-                    Button("Proveri ažuriranja") {
+                    Button("Check for updates") {
                         // TODO: Check for updates
                     }
                 }
                 
-                Section("Podrška") {
-                    Button("Kontaktiraj podršku") {
+                Section("Support") {
+                    Button("Contact support") {
                         // TODO: Open email
                     }
                     
-                    Button("Oceni aplikaciju") {
+                    Button("Rate app") {
                         // TODO: Open App Store rating
                     }
                     
-                    Button("Deli aplikaciju") {
+                    Button("Share app") {
                         // TODO: Share sheet
                     }
                 }
                 
                 Section {
-                    Button("Obriši keš") {
+                    Button("Clear cache") {
                         // TODO: Clear cache
                     }
                     .foregroundColor(.orange)
                     
-                    Button("Obriši nalog") {
+                    Button("Delete account") {
                         // TODO: Delete account
                     }
                     .foregroundColor(.red)
                 }
             }
-            .navigationTitle("Podešavanja")
+            .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Gotovo") {
+                    Button("Done") {
                         dismiss()
                     }
                 }

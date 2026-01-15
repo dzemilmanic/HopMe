@@ -54,7 +54,7 @@ struct HomeView: View {
             CreateTestimonialView {
                 Task {
                     await viewModel.loadTestimonials()
-                    await viewModel.checkUserTestimonial() // Proveri ponovo da li korisnik sada ima testimonial
+                    await viewModel.checkUserTestimonial() // Check again if user has testimonial
                 }
             }
         }
@@ -63,11 +63,11 @@ struct HomeView: View {
     // MARK: - Header Section
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Zdravo, \(authViewModel.currentUser?.firstName ?? "Korisnik")! 👋")
+            Text("Hello, \(authViewModel.currentUser?.firstName ?? "User")! 👋")
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("Gde želite da putujete?")
+            Text("Where do you want to go?")
                 .font(.subheadline)
                 .foregroundColor(.gray)
         }
@@ -84,7 +84,7 @@ struct HomeView: View {
                     .foregroundColor(.blue)
                     .font(.title3)
                 
-                TextField("Polazište", text: $searchFrom)
+                TextField("From", text: $searchFrom)
                     .font(.body)
             }
             .padding()
@@ -97,7 +97,7 @@ struct HomeView: View {
                     .foregroundColor(.green)
                     .font(.title3)
                 
-                TextField("Destinacija", text: $searchTo)
+                TextField("To", text: $searchTo)
                     .font(.body)
             }
             .padding()
@@ -142,7 +142,7 @@ struct HomeView: View {
             }) {
                 HStack {
                     Image(systemName: "magnifyingglass")
-                    Text("Pretraži vožnje")
+                    Text("Search")
                         .fontWeight(.semibold)
                 }
                 .frame(maxWidth: .infinity)
@@ -163,7 +163,7 @@ struct HomeView: View {
     // MARK: - Popular Routes
     private var popularRoutesSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Popularne rute")
+            Text("Popular routes")
                 .font(.title3)
                 .fontWeight(.bold)
                 .padding(.horizontal)
@@ -190,9 +190,9 @@ struct HomeView: View {
     // MARK: - Stats Section
     private var statsSection: some View {
         HStack(spacing: 16) {
-            StatCard(icon: "person.3.fill", value: viewModel.stats.users, label: "Korisnika")
-            StatCard(icon: "car.fill", value: viewModel.stats.rides, label: "Vožnji")
-            StatCard(icon: "star.fill", value: viewModel.stats.rating, label: "Ocena")
+            StatCard(icon: "person.3.fill", value: viewModel.stats.users, label: "Users")
+            StatCard(icon: "car.fill", value: viewModel.stats.rides, label: "Rides")
+            StatCard(icon: "star.fill", value: viewModel.stats.rating, label: "Rating")
         }
         .padding(.horizontal)
     }
@@ -200,7 +200,7 @@ struct HomeView: View {
     // MARK: - How It Works
     private var howItWorksSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Kako funkcioniše?")
+            Text("How it works?")
                 .font(.title3)
                 .fontWeight(.bold)
                 .padding(.horizontal)
@@ -209,22 +209,22 @@ struct HomeView: View {
                 HowItWorksStep(
                     number: 1,
                     icon: "magnifyingglass",
-                    title: "Pronađite vožnju",
-                    description: "Pretražite vožnje koje odgovaraju vašoj ruti"
+                    title: "Find a ride",
+                    description: "Search for rides that match your route"
                 )
                 
                 HowItWorksStep(
                     number: 2,
                     icon: "checkmark.circle.fill",
-                    title: "Rezervišite mesto",
-                    description: "Izaberite vožnju i rezervišite sedište"
+                    title: "Reserve a seat",
+                    description: "Choose a ride and reserve a seat"
                 )
                 
                 HowItWorksStep(
                     number: 3,
                     icon: "car.fill",
-                    title: "Putujte",
-                    description: "Upoznajte vozača i krenite na put"
+                    title: "Travel",
+                    description: "Get to know the driver and start your journey"
                 )
             }
             .padding(.horizontal)
@@ -235,20 +235,20 @@ struct HomeView: View {
     private var testimonialsSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("Šta korisnici kažu")
+                Text("What users say")
                     .font(.title3)
                     .fontWeight(.bold)
                 
                 Spacer()
                 
-                // Prikaži dugme samo ako korisnik nema testimonial
+                // Show button only if user doesn't have testimonial
                 if !viewModel.userHasTestimonial {
                     Button(action: {
                         showAddTestimonial = true
                     }) {
                         HStack(spacing: 4) {
                             Image(systemName: "plus.circle.fill")
-                            Text("Dodaj utisak")
+                            Text("Add testimonial")
                         }
                         .font(.subheadline)
                         .foregroundColor(.blue)
@@ -258,7 +258,7 @@ struct HomeView: View {
             .padding(.horizontal)
             
             if viewModel.testimonials.isEmpty {
-                Text("Budite prvi koji će ostaviti utisak!")
+                Text("Be the first to leave a testimonial!")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -281,11 +281,11 @@ struct HomeView: View {
             }
         }
         .padding(.bottom)
-        .alert("Brisanje recenzije", isPresented: $showDeleteConfirmation) {
-            Button("Otkaži", role: .cancel) {
+        .alert("Deleting testimonial", isPresented: $showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) {
                 testimonialToDelete = nil
             }
-            Button("Obriši", role: .destructive) {
+            Button("Delete", role: .destructive) {
                 if let testimonial = testimonialToDelete {
                     Task {
                         try? await TestimonialService.shared.deleteTestimonial(id: testimonial.id)
@@ -295,7 +295,7 @@ struct HomeView: View {
                 }
             }
         } message: {
-            Text("Da li ste sigurni da želite da obrišete ovu recenziju?")
+            Text("Are you sure you want to delete this testimonial?")
         }
     }
 }

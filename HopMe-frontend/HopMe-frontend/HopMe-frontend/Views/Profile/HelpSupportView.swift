@@ -27,11 +27,11 @@ struct HelpSupportView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Pomoć i podrška")
+            .navigationTitle("Help and support")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Gotovo") {
+                    Button("Done") {
                         dismiss()
                     }
                 }
@@ -49,11 +49,11 @@ struct HelpSupportView: View {
                 .font(.system(size: 60))
                 .foregroundColor(.blue)
             
-            Text("Kako vam možemo pomoći?")
+            Text("How can we help you?")
                 .font(.title3)
                 .fontWeight(.semibold)
             
-            Text("Pronađite odgovore na najčešća pitanja ili nas kontaktirajte")
+            Text("Find answers to the most common questions or contact us")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
@@ -70,7 +70,7 @@ struct HelpSupportView: View {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(.gray)
             
-            TextField("Pretražite pomoć...", text: $searchText)
+            TextField("Search help...", text: $searchText)
         }
         .padding()
         .background(Color(.systemGray6))
@@ -80,7 +80,7 @@ struct HelpSupportView: View {
     // MARK: - Quick Actions
     private var quickActionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Brze radnje")
+            Text("Quick actions")
                 .font(.headline)
             
             LazyVGrid(columns: [
@@ -89,7 +89,7 @@ struct HelpSupportView: View {
             ], spacing: 12) {
                 QuickActionCard(
                     icon: "envelope.fill",
-                    title: "Email podrška",
+                    title: "Email support",
                     color: .blue
                 ) {
                     // TODO: Open email
@@ -100,7 +100,7 @@ struct HelpSupportView: View {
                 
                 QuickActionCard(
                     icon: "phone.fill",
-                    title: "Pozovi nas",
+                    title: "Call us",
                     color: .green
                 ) {
                     // TODO: Call support
@@ -119,7 +119,7 @@ struct HelpSupportView: View {
                 
                 QuickActionCard(
                     icon: "doc.text.fill",
-                    title: "Dokumentacija",
+                    title: "Documentation",
                     color: .orange
                 ) {
                     // TODO: Open documentation
@@ -131,7 +131,7 @@ struct HelpSupportView: View {
     // MARK: - FAQ Categories
     private var faqCategoriesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Najčešća pitanja")
+            Text("Most common questions")
                 .font(.headline)
             
             VStack(spacing: 12) {
@@ -147,10 +147,10 @@ struct HelpSupportView: View {
     // MARK: - Contact Support
     private var contactSupportSection: some View {
         VStack(spacing: 16) {
-            Text("Niste pronašli odgovor?")
+            Text("Didn't find an answer?")
                 .font(.headline)
             
-            Text("Naš tim je ovde da vam pomogne 24/7")
+            Text("Our team is here to help you 24/7")
                 .font(.subheadline)
                 .foregroundColor(.gray)
             
@@ -159,7 +159,7 @@ struct HelpSupportView: View {
             }) {
                 HStack {
                     Image(systemName: "paperplane.fill")
-                    Text("Kontaktirajte nas")
+                    Text("Contact us")
                         .fontWeight(.semibold)
                 }
                 .foregroundColor(.white)
@@ -179,12 +179,12 @@ struct HelpSupportView: View {
 // MARK: - Supporting Models
 
 enum HelpCategory: String, CaseIterable, Identifiable {
-    case booking = "Rezervacije"
-    case rides = "Vožnje"
-    case payments = "Plaćanja"
-    case account = "Nalog"
-    case safety = "Bezbednost"
-    case technical = "Tehnički problemi"
+    case booking = "Bookings"
+    case rides = "Rides"
+    case payments = "Payments"
+    case account = "Account"
+    case safety = "Safety"
+    case technical = "Technical issues"
     
     var id: String { rawValue }
     
@@ -214,34 +214,34 @@ enum HelpCategory: String, CaseIterable, Identifiable {
         switch self {
         case .booking:
             return [
-                FAQItem(question: "Kako da rezervišem vožnju?", answer: "Otvorite aplikaciju, unesite destinaciju, izaberite vozača i potvrdite rezervaciju."),
-                FAQItem(question: "Mogu li otkazati rezervaciju?", answer: "Da, možete otkazati rezervaciju sve do 15 minuta pre zakazanog vremena."),
-                FAQItem(question: "Koliko košta rezervacija?", answer: "Cena zavisi od distance i vozača. Videćete konačnu cenu pre potvrde.")
+                FAQItem(question: "How do I book a ride?", answer: "Open the app, enter your destination, select a driver, and confirm the reservation."),
+                FAQItem(question: "Can I cancel my reservation?", answer: "Yes, you can cancel your reservation up to 15 minutes before the scheduled time."),
+                FAQItem(question: "How much does the reservation cost?", answer: "The price depends on the distance and driver. You will see the final price before confirmation.")
             ]
         case .rides:
             return [
-                FAQItem(question: "Kako da pratim svoju vožnju?", answer: "U aplikaciji možete pratiti trenutnu lokaciju vozača u realnom vremenu."),
-                FAQItem(question: "Šta ako vozač kasni?", answer: "Kontaktirajte vozača direktno ili kontaktirajte podršku za pomoć.")
+                FAQItem(question: "How do I track my ride?", answer: "In the app, you can track the driver's current location in real-time."),
+                FAQItem(question: "What if the driver is late?", answer: "Contact the driver directly or contact support for assistance.")
             ]
         case .payments:
             return [
-                FAQItem(question: "Koje metode plaćanja prihvatate?", answer: "Prihvatamo kartice, keš i mobilno plaćanje."),
-                FAQItem(question: "Kako da dodam novu karticu?", answer: "Idite na Podešavanja > Plaćanje i dodajte novu karticu.")
+                FAQItem(question: "What payment methods do you accept?", answer: "We accept credit cards, cash, and mobile payments."),
+                FAQItem(question: "How do I add a new card?", answer: "Go to Settings > Payment and add a new card.")
             ]
         case .account:
             return [
-                FAQItem(question: "Kako da promenim profil?", answer: "Idite na Profil > Izmeni profil i ažurirajte informacije."),
-                FAQItem(question: "Kako da obrišem nalog?", answer: "Kontaktirajte podršku za trajno brisanje naloga.")
+                FAQItem(question: "How do I change my profile?", answer: "Go to Profile > Edit Profile and update your information."),
+                FAQItem(question: "How do I delete my account?", answer: "Contact support for permanent account deletion.")
             ]
         case .safety:
             return [
-                FAQItem(question: "Da li je aplikacija bezbedna?", answer: "Da, svi vozači su verifikovani i imaju dozvole."),
-                FAQItem(question: "Šta da radim u hitnim situacijama?", answer: "Koristite dugme za hitne slučajeve u aplikaciji ili pozovite 192.")
+                FAQItem(question: "Is the app safe?", answer: "Yes, all drivers are verified and have licenses."),
+                FAQItem(question: "What should I do in emergency situations?", answer: "Use the emergency button in the app or call 192.")
             ]
         case .technical:
             return [
-                FAQItem(question: "Aplikacija ne radi kako treba", answer: "Pokušajte da restartujete aplikaciju ili proverite internet konekciju."),
-                FAQItem(question: "Kako da ažuriram aplikaciju?", answer: "Proverite App Store za najnoviju verziju.")
+                FAQItem(question: "The app doesn't work as expected", answer: "Try to restart the app or check your internet connection."),
+                FAQItem(question: "How do I update the app?", answer: "Check the App Store for the latest version.")
             ]
         }
     }
@@ -295,7 +295,7 @@ struct FAQCategoryRow: View {
                 Text(category.rawValue)
                     .foregroundColor(.primary)
                 
-                Text("\(category.questions.count) pitanja")
+                Text("\(category.questions.count) questions")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
@@ -388,28 +388,28 @@ struct ContactSupportFormView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Vaše informacije") {
-                    TextField("Ime i prezime", text: $name)
+                Section("Your information") {
+                    TextField("First name", text: $name)
                     TextField("Email", text: $email)
                         .keyboardType(.emailAddress)
                         .textInputAutocapitalization(.never)
                 }
                 
-                Section("Vaše pitanje") {
-                    Picker("Kategorija", selection: $selectedCategory) {
+                Section("Your question") {
+                    Picker("Category", selection: $selectedCategory) {
                         ForEach(HelpCategory.allCases) { category in
                             Text(category.rawValue).tag(category)
                         }
                     }
                     
-                    TextField("Naslov", text: $subject)
+                    TextField("Subject", text: $subject)
                     
                     TextEditor(text: $message)
                         .frame(minHeight: 120)
                 }
                 
                 Section {
-                    Button("Pošalji") {
+                    Button("Send") {
                         // TODO: Send support message
                         dismiss()
                     }
@@ -417,11 +417,11 @@ struct ContactSupportFormView: View {
                     .foregroundColor(.blue)
                 }
             }
-            .navigationTitle("Kontaktirajte nas")
+            .navigationTitle("Contact us")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }

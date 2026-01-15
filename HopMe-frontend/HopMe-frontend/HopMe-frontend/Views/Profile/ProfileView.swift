@@ -45,7 +45,7 @@ struct ProfileView: View {
             }
             .padding()
         }
-        .navigationTitle("Profil")
+        .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -83,13 +83,13 @@ struct ProfileView: View {
         .sheet(isPresented: $showTermsOfService) {
             TermsOfServiceView()
         }
-        .alert("Odjava", isPresented: $showLogoutAlert) {
-            Button("Otkaži", role: .cancel) { }
-            Button("Odjavi se", role: .destructive) {
+        .alert("Logout", isPresented: $showLogoutAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Logout", role: .destructive) {
                 authViewModel.logout()
             }
         } message: {
-            Text("Da li ste sigurni da želite da se odjavite?")
+            Text("Are you sure you want to logout?")
         }
         .task {
             await viewModel.loadProfile()
@@ -171,19 +171,19 @@ struct ProfileView: View {
                 StatCard(
                     icon: "car.fill",
                     value: "\(stats.totalRides)",
-                    label: "Vožnji"
+                    label: "Rides"
                 )
                 
                 StatCard(
                     icon: "star.fill",
                     value: String(format: "%.1f", stats.averageRating),
-                    label: "Ocena"
+                    label: "Rating"
                 )
                 
                 StatCard(
                     icon: "person.2.fill",
                     value: "\(stats.totalRatings)",
-                    label: "Recenzija"
+                    label: "Ratings"
                 )
                 
                 if let earnings = stats.totalEarnings {
@@ -200,13 +200,13 @@ struct ProfileView: View {
     // MARK: - Account Info Section
     private var accountInfoSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Informacije o nalogu")
+            Text("Account Information")
                 .font(.headline)
             
             VStack(spacing: 0) {
                 InfoRow(
                     icon: "person.fill",
-                    title: "Ime i prezime",
+                    title: "Name and surname",
                     value: viewModel.user?.fullName ?? ""
                 )
                 
@@ -224,7 +224,7 @@ struct ProfileView: View {
                 
                 InfoRow(
                     icon: "phone.fill",
-                    title: "Telefon",
+                    title: "Phone",
                     value: viewModel.user?.phone ?? ""
                 )
                 
@@ -234,7 +234,7 @@ struct ProfileView: View {
                     
                     InfoRow(
                         icon: "calendar",
-                        title: "Član od",
+                        title: "Member since",
                         value: createdAt.formatted(date: .abbreviated, time: .omitted)
                     )
                 }
@@ -249,13 +249,13 @@ struct ProfileView: View {
     // MARK: - Actions Section
     private var actionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Brze akcije")
+            Text("Quick actions")
                 .font(.headline)
             
             VStack(spacing: 0) {
                 ActionRow(
                     icon: "pencil",
-                    title: "Izmeni profil",
+                    title: "Edit profile",
                     color: .blue
                 ) {
                     showEditProfile = true
@@ -267,7 +267,7 @@ struct ProfileView: View {
                     
                     ActionRow(
                         icon: "car.fill",
-                        title: "Moja vozila",
+                        title: "My vehicles",
                         color: .green,
                         badge: "\(viewModel.vehicles.count)"
                     ) {
@@ -280,7 +280,7 @@ struct ProfileView: View {
                 
                 ActionRow(
                     icon: "star.fill",
-                    title: "Moje ocene",
+                    title: "My ratings",
                     color: .orange
                 ) {
                     showMyRatings = true
@@ -309,13 +309,13 @@ struct ProfileView: View {
     private var vehiclesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Vozila")
+                Text("Vehicles")
                     .font(.headline)
                 
                 Spacer()
                 
                 Button(action: { showVehicles = true }) {
-                    Text("Prikaži sve")
+                    Text("Show all")
                         .font(.subheadline)
                         .foregroundColor(.blue)
                 }
@@ -327,12 +327,12 @@ struct ProfileView: View {
                         .font(.title)
                         .foregroundColor(.gray)
                     
-                    Text("Nemate dodato vozilo")
+                    Text("You have no vehicles")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                     
                     Button(action: { showVehicles = true }) {
-                        Text("Dodaj vozilo")
+                        Text("Add vehicle")
                             .font(.subheadline)
                             .foregroundColor(.blue)
                     }
@@ -373,13 +373,13 @@ struct ProfileView: View {
     // MARK: - Settings Section
     private var settingsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Podešavanja")
+            Text("Settings")
                 .font(.headline)
             
             VStack(spacing: 0) {
                 ActionRow(
                     icon: "gear",
-                    title: "Opšta podešavanja",
+                    title: "General settings",
                     color: .gray
                 ) {
                     showSettings = true
@@ -390,7 +390,7 @@ struct ProfileView: View {
                 
                 ActionRow(
                     icon: "lock.fill",
-                    title: "Privatnost i bezbednost",
+                    title: "Privacy and security",
                     color: .orange
                 ) {
                     showPrivacySecurity = true
@@ -401,7 +401,7 @@ struct ProfileView: View {
                 
                 ActionRow(
                     icon: "questionmark.circle.fill",
-                    title: "Pomoć i podrška",
+                    title: "Help and support",
                     color: .blue
                 ) {
                     showHelpSupport = true
@@ -412,7 +412,7 @@ struct ProfileView: View {
                 
                 ActionRow(
                     icon: "doc.text.fill",
-                    title: "Uslovi korišćenja",
+                    title: "Terms of service",
                     color: .green
                 ) {
                     showTermsOfService = true
@@ -430,7 +430,7 @@ struct ProfileView: View {
         Button(action: { showLogoutAlert = true }) {
             HStack {
                 Image(systemName: "rectangle.portrait.and.arrow.right")
-                Text("Odjavi se")
+                Text("Logout")
                     .fontWeight(.semibold)
             }
             .foregroundColor(.red)
@@ -443,7 +443,7 @@ struct ProfileView: View {
     
     // MARK: - App Version
     private var appVersion: some View {
-        Text("Verzija \(Constants.App.version) (\(Constants.App.build))")
+        Text("Version \(Constants.App.version) (\(Constants.App.build))")
             .font(.caption)
             .foregroundColor(.gray)
             .frame(maxWidth: .infinity)

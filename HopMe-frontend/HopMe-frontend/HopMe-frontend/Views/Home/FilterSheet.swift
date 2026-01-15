@@ -18,14 +18,14 @@ struct FilterSheet: View {
             Form {
                 // Price Section
                 Section {
-                    Toggle("Postavi maksimalnu cenu", isOn: Binding(
+                    Toggle("Set maximum price", isOn: Binding(
                         get: { tempFilters.maxPrice != nil },
                         set: { if !$0 { tempFilters.maxPrice = nil } else { tempFilters.maxPrice = 1000 } }
                     ))
                     
                     if tempFilters.maxPrice != nil {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Maksimalna cena: \(Int(tempFilters.maxPrice ?? 0)) RSD")
+                            Text("Maximum price: \(Int(tempFilters.maxPrice ?? 0)) RSD")
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
                             
@@ -40,18 +40,18 @@ struct FilterSheet: View {
                         }
                     }
                 } header: {
-                    Text("Cena")
+                    Text("Price")
                 }
                 
                 // Rating Section
                 Section {
-                    Toggle("Postavi minimalnu ocenu", isOn: Binding(
+                    Toggle("Set minimum rating", isOn: Binding(
                         get: { tempFilters.minRating != nil },
                         set: { if !$0 { tempFilters.minRating = nil } else { tempFilters.minRating = 4 } }
                     ))
                     
                     if tempFilters.minRating != nil {
-                        Picker("Minimalna ocena", selection: Binding(
+                        Picker("Minimum rating", selection: Binding(
                             get: { tempFilters.minRating ?? 4 },
                             set: { tempFilters.minRating = $0 }
                         )) {
@@ -67,51 +67,51 @@ struct FilterSheet: View {
                         .pickerStyle(.segmented)
                     }
                 } header: {
-                    Text("Ocena vozača")
+                    Text("Driver rating")
                 }
                 
                 // Preferences Section
                 Section {
-                    Toggle("Samo automatski prihvat", isOn: $tempFilters.autoAcceptOnly)
-                    Toggle("Dozvoljeno pušenje", isOn: $tempFilters.allowSmoking)
-                    Toggle("Dozvoljeni ljubimci", isOn: $tempFilters.allowPets)
+                    Toggle("Only automatic accept", isOn: $tempFilters.autoAcceptOnly)
+                    Toggle("Allow smoking", isOn: $tempFilters.allowSmoking)
+                    Toggle("Allow pets", isOn: $tempFilters.allowPets)
                 } header: {
-                    Text("Preferencije")
+                    Text("Preferences")
                 }
                 
                 // Luggage Section
                 Section {
-                    Toggle("Filtriraj po prtljagu", isOn: Binding(
+                    Toggle("Filter by luggage", isOn: Binding(
                         get: { tempFilters.luggageSize != nil },
                         set: { if !$0 { tempFilters.luggageSize = nil } else { tempFilters.luggageSize = "Srednji" } }
                     ))
                     
                     if tempFilters.luggageSize != nil {
-                        Picker("Veličina prtljaga", selection: Binding(
-                            get: { tempFilters.luggageSize ?? "Srednji" },
+                        Picker("Luggage size", selection: Binding(
+                            get: { tempFilters.luggageSize ?? "Medium" },
                             set: { tempFilters.luggageSize = $0 }
                         )) {
-                            Text("Mali").tag("Mali")
-                            Text("Srednji").tag("Srednji")
-                            Text("Veliki").tag("Veliki")
+                            Text("Small").tag("Small")
+                            Text("Medium").tag("Medium")
+                            Text("Large").tag("Large")
                         }
                         .pickerStyle(.segmented)
                     }
                 } header: {
-                    Text("Prtljag")
+                    Text("Luggage")
                 }
             }
-            .navigationTitle("Filteri")
+            .navigationTitle("Filters")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Resetuj") {
+                    Button("Reset") {
                         tempFilters = SearchFilters()
                     }
                     .foregroundColor(.red)
@@ -122,7 +122,7 @@ struct FilterSheet: View {
                     Divider()
                     
                     CustomButton(
-                        title: "Primeni filtere",
+                        title: "Apply filters",
                         action: {
                             filters = tempFilters
                             onApply()

@@ -51,7 +51,7 @@ struct DriverProfileView: View {
                                 Text(driver.formattedRating)
                                     .fontWeight(.bold)
                             }
-                            Text("Ocena")
+                            Text("Rating")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }
@@ -62,7 +62,7 @@ struct DriverProfileView: View {
                         VStack {
                             Text("\(driver.totalRatings)")
                                 .fontWeight(.bold)
-                            Text("Recenzije")
+                            Text("Reviews")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }
@@ -74,7 +74,7 @@ struct DriverProfileView: View {
                             VStack {
                                 Text("\(totalRides)")
                                     .fontWeight(.bold)
-                                Text("Vožnje")
+                                Text("Rides")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }
@@ -82,7 +82,7 @@ struct DriverProfileView: View {
                     }
                     
                     // Note
-                    Text("Više informacija o vozaču dostupno nakon rezervacije")
+                    Text("More information about the driver will be available after the reservation")
                         .font(.caption)
                         .foregroundColor(.gray)
                         .multilineTextAlignment(.center)
@@ -90,11 +90,11 @@ struct DriverProfileView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Profil vozača")
+            .navigationTitle("Driver profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Zatvori") {
+                    Button("Close") {
                         dismiss()
                     }
                 }

@@ -21,16 +21,16 @@ struct RideBookingsListView: View {
                 
                 // Tabs for different booking statuses
                 Picker("Status", selection: $viewModel.selectedStatus) {
-                    Text("Na čekanju (\(viewModel.pendingCount))").tag(BookingStatus.pending)
-                    Text("Prihvaćene (\(viewModel.acceptedCount))").tag(BookingStatus.accepted)
-                    Text("Sve (\(viewModel.allBookingsCount))").tag(BookingStatus.all)
+                    Text("Pending (\(viewModel.pendingCount))").tag(BookingStatus.pending)
+                    Text("Accepted (\(viewModel.acceptedCount))").tag(BookingStatus.accepted)
+                    Text("All (\(viewModel.allBookingsCount))").tag(BookingStatus.all)
                 }
                 .pickerStyle(.segmented)
                 .padding()
                 
                 // Content
                 if viewModel.isLoading {
-                    LoadingView(message: "Učitavam rezervacije...")
+                    LoadingView(message: "Loading bookings...")
                 } else if let error = viewModel.errorMessage {
                     ErrorView(
                         message: error,
@@ -43,18 +43,18 @@ struct RideBookingsListView: View {
                 } else if viewModel.filteredBookings.isEmpty {
                     EmptyStateView(
                         icon: "person.crop.circle.badge.xmark",
-                        title: "Nema rezervacija",
+                        title: "No bookings",
                         description: emptyDescription
                     )
                 } else {
                     bookingsList
                 }
             }
-            .navigationTitle("Rezervacije")
+            .navigationTitle("Bookings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Zatvori") {
+                    Button("Close") {
                         dismiss()
                     }
                 }
@@ -103,7 +103,7 @@ struct RideBookingsListView: View {
             }
             
             HStack {
-                Label("\(ride.remainingSeats) mesta", systemImage: "person.fill")
+                Label("\(ride.remainingSeats) seats", systemImage: "person.fill")
                     .font(.caption)
                     .foregroundColor(.gray)
                 
@@ -149,11 +149,11 @@ struct RideBookingsListView: View {
     private var emptyDescription: String {
         switch viewModel.selectedStatus {
         case .pending:
-            return "Trenutno nema rezervacija na čekanju"
+            return "No bookings on hold"
         case .accepted:
-            return "Trenutno nema prihvaćenih rezervacija"
+            return "No accepted bookings"
         default:
-            return "Još nema rezervacija za ovu vožnju"
+            return "No bookings for this ride"
         }
     }
 }
@@ -218,7 +218,7 @@ struct BookingRowCard: View {
             if booking.status == .pending {
                 HStack(spacing: 12) {
                     Button(action: onReject) {
-                        Text("Odbij")
+                        Text("Reject")
                             .fontWeight(.semibold)
                             .foregroundColor(.red)
                             .frame(maxWidth: .infinity)
@@ -228,7 +228,7 @@ struct BookingRowCard: View {
                     }
                     
                     Button(action: onAccept) {
-                        Text("Prihvati")
+                        Text("Accept")
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -241,7 +241,7 @@ struct BookingRowCard: View {
                 Button(action: onRatePassenger) {
                     HStack {
                         Image(systemName: "star.fill")
-                        Text("Oceni putnika")
+                        Text("Rate passenger")
                     }
                     .fontWeight(.semibold)
                     .foregroundColor(.orange)

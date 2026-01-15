@@ -8,11 +8,11 @@ struct NotificationsView: View {
     @State private var showDeleteAlert = false
     
     enum NotificationFilter: String, CaseIterable {
-        case all = "Sve"
-        case unread = "Nepročitane"
-        case bookings = "Rezervacije"
-        case rides = "Vožnje"
-        case ratings = "Ocene"
+        case all = "All"
+        case unread = "Unread"
+        case bookings = "Bookings"
+        case rides = "Rides"
+        case ratings = "Ratings"
         
         var icon: String {
             switch self {
@@ -34,7 +34,7 @@ struct NotificationsView: View {
             
             // Content
             if viewModel.isLoading {
-                LoadingView(message: "Učitavanje notifikacija...")
+                LoadingView(message: "Loading notifications...")
             } else if let error = viewModel.errorMessage {
                 ErrorView(
                     message: error,
@@ -48,7 +48,7 @@ struct NotificationsView: View {
                 notificationsList
             }
         }
-        .navigationTitle("Notifikacije")
+        .navigationTitle("Notifications")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -58,7 +58,7 @@ struct NotificationsView: View {
                             await viewModel.markAllAsRead()
                         }
                     }) {
-                        Label("Označi sve kao pročitano", systemImage: "envelope.open.fill")
+                        Label("Mark all as read", systemImage: "envelope.open.fill")
                     }
                     .disabled(viewModel.unreadNotifications.isEmpty)
                     
@@ -79,11 +79,11 @@ struct NotificationsView: View {
                 }
             }
         }
-        .alert("Brisanje notifikacije", isPresented: $showDeleteAlert) {
-            Button("Otkaži", role: .cancel) {
+        .alert("Delete notification", isPresented: $showDeleteAlert) {
+            Button("Cancel", role: .cancel) {
                 notificationToDelete = nil
             }
-            Button("Obriši", role: .destructive) {
+            Button("Delete", role: .destructive) {
                 if let notification = notificationToDelete {
                     Task {
                         await viewModel.deleteNotification(id: notification.id)
@@ -92,7 +92,7 @@ struct NotificationsView: View {
                 notificationToDelete = nil
             }
         } message: {
-            Text("Da li ste sigurni da želite da obrišete ovu notifikaciju?")
+            Text("Are you sure you want to delete this notification?")
         }
         .task {
             await viewModel.loadNotifications()
@@ -200,21 +200,21 @@ struct NotificationsView: View {
     
     private var emptyTitle: String {
         switch selectedFilter {
-        case .all: return "Nema notifikacija"
-        case .unread: return "Nema nepročitanih"
-        case .bookings: return "Nema notifikacija o rezervacijama"
-        case .rides: return "Nema notifikacija o vožnjama"
-        case .ratings: return "Nema notifikacija o ocenama"
+        case .all: return "No notifications"
+        case .unread: return "No unread notifications"
+        case .bookings: return "No booking notifications"
+        case .rides: return "No ride notifications"
+        case .ratings: return "No rating notifications"
         }
     }
     
     private var emptyDescription: String {
         switch selectedFilter {
-        case .all: return "Biće prikazane ovde kada ih dobijete"
-        case .unread: return "Sve notifikacije su pročitane"
-        case .bookings: return "Notifikacije o rezervacijama će se pojaviti ovde"
-        case .rides: return "Notifikacije o vožnjama će se pojaviti ovde"
-        case .ratings: return "Notifikacije o ocenama će se pojaviti ovde"
+        case .all: return "No notifications available"
+        case .unread: return "All notifications are read"
+        case .bookings: return "Booking notifications will appear here"
+        case .rides: return "Ride notifications will appear here"
+        case .ratings: return "Rating notifications will appear here"
         }
     }
     

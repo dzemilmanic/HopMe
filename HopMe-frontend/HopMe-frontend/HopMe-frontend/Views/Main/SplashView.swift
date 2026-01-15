@@ -38,7 +38,7 @@ struct SplashView: View {
                         .font(.system(size: 48, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
                     
-                    Text("Deli vožnju, uštedi novac")
+                    Text("Share a ride, save money")
                         .font(.subheadline)
                         .foregroundColor(.white.opacity(0.9))
                 }

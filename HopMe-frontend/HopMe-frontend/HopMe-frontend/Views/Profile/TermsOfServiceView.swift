@@ -25,11 +25,11 @@ struct TermsOfServiceView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Uslovi korišćenja")
+            .navigationTitle("Terms of service")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Gotovo") {
+                    Button("Done") {
                         dismiss()
                     }
                 }
@@ -44,11 +44,11 @@ struct TermsOfServiceView: View {
                 .font(.system(size: 60))
                 .foregroundColor(.blue)
             
-            Text("Uslovi korišćenja")
+            Text("Terms of service")
                 .font(.title3)
                 .fontWeight(.semibold)
             
-            Text("Pročitajte naše uslove i politike")
+            Text("Read our terms and policies")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
@@ -65,7 +65,7 @@ struct TermsOfServiceView: View {
             Image(systemName: "clock.fill")
                 .foregroundColor(.gray)
             
-            Text("Poslednje ažurirano: 30. decembar 2025.")
+            Text("Last updated: 30. decembar 2025.")
                 .font(.caption)
                 .foregroundColor(.gray)
             
@@ -79,11 +79,11 @@ struct TermsOfServiceView: View {
     // MARK: - Quick Links
     private var quickLinksSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Brzi linkovi")
+            Text("Quick links")
                 .font(.headline)
             
             HStack(spacing: 12) {
-                QuickLinkButton(icon: "shield.fill", title: "Privatnost", color: .blue) {
+                QuickLinkButton(icon: "shield.fill", title: "Privacy", color: .blue) {
                     // TODO: Navigate to privacy policy
                 }
                 
@@ -101,7 +101,7 @@ struct TermsOfServiceView: View {
     // MARK: - Terms Sections
     private var termsSectionsView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Sadržaj")
+            Text("Content")
                 .font(.headline)
             
             VStack(spacing: 12) {
@@ -121,7 +121,7 @@ struct TermsOfServiceView: View {
                 .font(.title)
                 .foregroundColor(.green)
             
-            Text("Korišćenjem HopMe aplikacije, prihvatate ove uslove korišćenja.")
+            Text("By using the HopMe application, you accept these terms of service.")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
@@ -135,18 +135,18 @@ struct TermsOfServiceView: View {
 // MARK: - Supporting Models
 
 enum TermsSection: String, CaseIterable, Identifiable {
-    case introduction = "Uvod"
-    case accountTerms = "Uslovi naloga"
-    case serviceUsage = "Korišćenje usluga"
-    case payments = "Plaćanja i naknade"
-    case userResponsibilities = "Odgovornosti korisnika"
-    case driverResponsibilities = "Odgovornosti vozača"
-    case intellectualProperty = "Intelektualna svojina"
-    case privacy = "Privatnost podataka"
-    case liability = "Ograničenje odgovornosti"
-    case termination = "Otkaz i prekid usluge"
-    case disputeResolution = "Rešavanje sporova"
-    case changes = "Izmene uslova"
+    case introduction = "Introduction"
+    case accountTerms = "Account terms"
+    case serviceUsage = "Service usage"
+    case payments = "Payments and charges"
+    case userResponsibilities = "User responsibilities"
+    case driverResponsibilities = "Driver responsibilities"
+    case intellectualProperty = "Intellectual property"
+    case privacy = "Privacy"
+    case liability = "Limitation of liability"
+    case termination = "Termination"
+    case disputeResolution = "Dispute resolution"
+    case changes = "Changes to terms"
     
     var id: String { rawValue }
     
@@ -188,135 +188,133 @@ enum TermsSection: String, CaseIterable, Identifiable {
         switch self {
         case .introduction:
             return """
-            Dobrodošli u HopMe, platformu za deljenje vožnji. Ovi Uslovi korišćenja ("Uslovi") regulišu vaš pristup i korišćenje HopMe aplikacije i usluga.
+            Welcome to HopMe, a platform for sharing rides. These Terms of Service ("Terms") govern your access to and use of the HopMe application and services.
             
-            Korišćenjem naših usluga, slažete se sa ovim uslovima. Ako se ne slažete sa bilo kojim delom uslova, nemojte koristiti našu aplikaciju.
+            By using our services, you agree to these terms. If you do not agree to any part of these terms, do not use our application.
             
-            HopMe platformu čine mobilna aplikacija, veb stranica i sve povezane usluge koje omogućavaju korisnicima da rezervišu vožnje i vozačima da nude usluge prevoza.
+            The HopMe platform consists of mobile applications, websites, and all related services that allow users to book rides and drivers to offer transportation services.
             """
         case .accountTerms:
             return """
-            Da biste koristili HopMe, morate kreirati nalog i pružiti tačne, potpune i ažurne informacije. Vi ste odgovorni za održavanje sigurnosti vašeg naloga i lozinke.
+            To use HopMe, you must create an account and provide accurate, complete, and up-to-date information. You are responsible for maintaining the security of your account and password.
             
-            Morate imati najmanje 18 godina da biste kreirali nalog. Garantujete da su sve informacije koje pružite tačne i da ćete ih redovno ažurirati.
+            You must be at least 18 years old to create an account. You guarantee that all information you provide is true and that you will update it regularly.
             
-            Niste dozvoljeni da:
-            • Delite svoj nalog sa drugima
-            • Koristite tuđi nalog
-            • Kreirate lažni nalog
-            • Koristite automatizovane sisteme za pristup
+            You are not allowed to:
+            • Share your account with others
+            • Use someone else's account
+            • Create a fake account
+            • Use automated systems to access
             """
         case .serviceUsage:
             return """
-            HopMe platforma povezuje putnike sa vozačima. Kao korisnik, slažete se da ćete koristiti usluge samo u legitimne svrhe i u skladu sa svim primenjivim zakonima i propisima.
+            The HopMe platform connects passengers with drivers. As a user, you agree to use the services only for legitimate purposes and in compliance with all applicable laws and regulations.
             
-            Kao putnik, možete:
-            • Rezervisati vožnje kroz aplikaciju
-            • Ocenjivati vozače
-            • Kontaktirati podršku za pomoć
+            As a passenger, you can:
+            • Reserve rides through the application
+            • Rate drivers
+            • Contact support for assistance
             
-            HopMe zadržava pravo da suspenduje ili prekine pristup korisnicima koji krše ove uslove.
+            HopMe reserves the right to suspend or terminate access to users who violate these terms.
             """
         case .payments:
             return """
-            Sve transakcije plaćanja obrađuju se kroz našu sigurnu platformu. Prihvatamo različite metode plaćanja uključujući kreditne/debitne kartice i keš.
+            All payment transactions are processed through our secure platform. We accept various payment methods including credit/debit cards and cash.
             
-            Cene se određuju na osnovu distance, vremena i drugih faktora. Konačna cena biće prikazana pre potvrde rezervacije.
+            Prices are determined based on distance, time, and other factors. The final price will be displayed before confirming the reservation.
             
-            Otkazivanja mogu biti naplaćena u skladu sa našom politikom otkazivanja. Povraćaj novca se obrađuje u roku od 5-7 radnih dana.
+            Cancellations may be charged in accordance with our cancellation policy. Refund processing takes place within 5-7 business days.
             """
         case .userResponsibilities:
             return """
-            Kao korisnik HopMe platforme, odgovorni ste za:
+            As a user of the HopMe platform, you are responsible for:
             
-            • Poštovanje vozača i drugih korisnika
-            • Tačno prijavljivanje na dogovorenom mestu i vremenu
-            • Poštovanje vozila i vozačeve imovine
-            • Pridržavanje bezbednosnih propisa (korišćenje sigurnosnog pojasa)
-            • Neometanje vozača tokom vožnje
+            • Respecting drivers and other users
+            • Accurate arrival at the agreed location and time
+            • Maintaining the vehicle and driver's property
+            • Adhering to safety regulations (using a safety belt)
+            • Not disturbing the driver during the ride
             
-            Neprikladno ponašanje može rezultirati suspenzijom naloga.
+            Unprofessional behavior may result in account suspension.
             """
         case .driverResponsibilities:
             return """
-            Vozači na HopMe platformi su nezavisni ugovarači i odgovorni su za:
+            Drivers on the HopMe platform are independent contractors and are responsible for:
             
-            • Posedovanje važeće vozačke dozvole i registracije vozila
-            • Održavanje vozila u bezbednom radnom stanju
-            • Pružanje profesionalnih i bezbednih usluga prevoza
-            • Poštovanje putnika i njihove privatnosti
-            • Pridržavanje svih saobraćajnih zakona i propisa
+            • Possession of a valid driver's license and vehicle registration
+            • Maintaining the vehicle in a safe working condition
+            • Providing professional and safe transportation services
+            • Respecting passengers and their privacy
+            • Adhering to all traffic laws and regulations
             
-            HopMe zadržava pravo da verifikuje vozače i njihova vozila.
+            HopMe reserves the right to verify drivers and their vehicles.
             """
         case .intellectualProperty:
             return """
-            Sav sadržaj HopMe aplikacije, uključujući tekst, slike, logotipe, dizajn i kod, zaštićen je autorskim pravima i pripadaju HopMe ili našim licencodavcima.
+            The content of the HopMe application, including text, images, logos, design, and code, is protected by copyright and belongs to HopMe or our licensors.
             
-            Ne smete:
-            • Kopirati ili reprodukovati sadržaj aplikacije
-            • Modifikovati ili kreirati izvedene radove
-            • Koristiti naše zaštitne znakove bez dozvole
-            • Reverse engineering aplikacije
+            You are not allowed to:
+            • Copy or reproduce the application content
+            • Modify or create derivative works
+            • Use our trademarks without permission
+            • Reverse engineering the application
             
-            Sve prava koja nisu izričito dodeljena ovim uslovima, zadržava HopMe.
+            All rights not expressly granted by these terms are reserved by HopMe.
             """
         case .privacy:
             return """
-            Vaša privatnost je važna za nas. Prikupljamo, koristimo i štitimo vaše lične podatke u skladu sa našom Politikom privatnosti.
+            Privacy is important to us. We collect, use, and protect your personal data in accordance with our Privacy Policy.
             
-            Prikupljeni podaci uključuju:
-            • Lične informacije (ime, email, telefon)
-            • Lokacijske podatke
-            • Istoriju transakcija
-            • Podatke o korišćenju aplikacije
+            Collected data includes:
+            • Personal information (name, email, phone)
+            • Location data
+            • Transaction history
+            • Application usage data
             
-            Za potpune detalje, pogledajte našu Politiku privatnosti.
+            For complete details, please review our Privacy Policy.
             """
         case .liability:
             return """
-            HopMe platforma služi kao posrednik između putnika i vozača. Ne garantujemo dostupnost, kvalitet ili bezbednost usluga prevoza.
+            The HopMe platform serves as an intermediary between passengers and drivers. We do not guarantee availability, quality, or safety of transportation services.
             
-            U meri dozvoljenom zakonom, HopMe nije odgovoran za:
-            • Direktne, indirektne ili slučajne štete
-            • Gubitak dobiti ili podataka
-            • Povrede ili štete nastale tokom vožnje
-            • Radnje nezavisnih vozača
+            In accordance with applicable law, HopMe is not liable for:
+            • Direct, indirect, or incidental damages
+            • Loss of income or data
+            • Injuries or damages incurred during the ride
+            • Actions of independent drivers
             
-            Vaša ukupna naknada ograničena je na iznos plaćen za konkretnu uslugu.
+            Your total liability is limited to the amount paid for the specific service.
             """
         case .termination:
             return """
-            Možete zatvoriti svoj nalog u bilo kom trenutku kroz podešavanja aplikacije ili kontaktiranjem podrške.
+            You can close your account at any time through the application settings or by contacting support.
             
-            HopMe zadržava pravo da suspenduje ili prekine vaš nalog ako:
-            • Kršite ove uslove korišćenja
-            • Učestvujete u prevarnim aktivnostima
-            • Pružate lažne informacije
-            • Ne plaćate dugovanja
+            HopMe reserves the right to suspend or terminate your account if:
+            • You violate these terms of service
+            • You engage in fraudulent activities
+            • You provide false information
+            • You fail to pay your obligations
             
-            Nakon prekida, izgubit ćete pristup aplikaciji i svim povezanim uslugama.
+            After termination, you will lose access to the application and all related services.
             """
         case .disputeResolution:
             return """
-            U slučaju spora koji proizilazi iz korišćenja HopMe usluga, prvo pokušajte da kontaktirate našu podršku za rešavanje.
+            In the event of a dispute arising from the use of HopMe services, we first recommend that you contact our support to resolve the issue.
             
-            Ako spor ne može biti rešen, slažete se na:
-            • Dobrovoljnu medijaciju
-            • Arbitražu ako je potrebno
-            • Primenu zakona Republike Srbije
+            If the dispute cannot be resolved, we agree to:
+            • Voluntary mediation
+            • Arbitration if necessary
+            • Application of Serbian law
             
-            Bilo koji pravni postupak mora biti pokrenut u roku od jedne godine od nastanka spora.
+            Any legal proceedings must be initiated within one year of the dispute arising.
             """
         case .changes:
             return """
-            HopMe zadržava pravo da izmeni ove uslove korišćenja u bilo kom trenutku. Izmene će stupiti na snagu odmah po objavljivanju u aplikaciji.
+            HopMe reserves the right to modify these terms of service at any time. Changes will take effect immediately upon publication in the application.
             
-            Vaše nastavno korišćenje aplikacije nakon izmena predstavlja prihvatanje novih uslova.
+            Your continued use of the application after changes constitutes acceptance of the new terms.
             
-            Preporučujemo da redovno proveravate ove uslove za bilo kakve ažuriranja.
-            
-            Za značajne izmene, obavestićemo vas putem email-a ili obaveštenja u aplikaciji.
+            We recommend that you regularly check these terms for any updates.
             """
         }
     }
@@ -409,9 +407,9 @@ struct TermsSectionDetailView: View {
                             .foregroundColor(.orange)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Važno")
+                            Text("Important")
                                 .font(.headline)
-                            Text("Pažljivo pročitajte ovaj odeljak jer sadrži važne pravne informacije.")
+                            Text("Please carefully read this section as it contains important legal information.")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }

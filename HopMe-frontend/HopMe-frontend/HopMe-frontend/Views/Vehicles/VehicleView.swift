@@ -12,7 +12,7 @@ struct VehiclesView: View {
         NavigationStack {
             VStack {
                 if viewModel.isLoading {
-                    LoadingView(message: "Učitavanje vozila...")
+                    LoadingView(message: "Loading vehicles...")
                 } else if let error = viewModel.errorMessage {
                     ErrorView(
                         message: error,
@@ -25,20 +25,20 @@ struct VehiclesView: View {
                 } else if viewModel.vehicles.isEmpty {
                     EmptyStateView(
                         icon: "car.fill",
-                        title: "Nemate vozila",
-                        description: "Dodajte vozilo kako biste mogli da kreirate vožnje",
-                        actionTitle: "Dodaj vozilo",
+                        title: "You don't have any vehicles",
+                        description: "Add a vehicle to create a ride",
+                        actionTitle: "Add vehicle",
                         action: { showAddVehicle = true }
                     )
                 } else {
                     vehiclesList
                 }
             }
-            .navigationTitle("Moja vozila")
+            .navigationTitle("My vehicles")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Zatvori") {
+                    Button("Close") {
                         dismiss()
                     }
                 }
@@ -56,11 +56,11 @@ struct VehiclesView: View {
                     }
                 }
             }
-            .alert("Brisanje vozila", isPresented: $showDeleteAlert) {
-                Button("Otkaži", role: .cancel) {
+            .alert("Deleting vehicle", isPresented: $showDeleteAlert) {
+                Button("Cancel", role: .cancel) {
                     vehicleToDelete = nil
                 }
-                Button("Obriši", role: .destructive) {
+                Button("Delete", role: .destructive) {
                     if let vehicle = vehicleToDelete {
                         Task {
                             await viewModel.deleteVehicle(id: vehicle.id)
@@ -69,7 +69,7 @@ struct VehiclesView: View {
                     vehicleToDelete = nil
                 }
             } message: {
-                Text("Da li ste sigurni da želite da obrišete ovo vozilo?")
+                Text("Are you sure you want to delete this vehicle?")
             }
             .task {
                 await viewModel.loadVehicles()

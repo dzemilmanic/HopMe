@@ -17,8 +17,8 @@ struct EditVehicleView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Tip vozila *") {
-                    Picker("Tip vozila", selection: $viewModel.vehicleType) {
+                Section("Vehicle type *") {
+                    Picker("Vehicle type", selection: $viewModel.vehicleType) {
                         ForEach(viewModel.vehicleTypes, id: \.self) { type in
                             Text(type).tag(type)
                         }
@@ -26,30 +26,30 @@ struct EditVehicleView: View {
                     .pickerStyle(.menu)
                 }
                 
-                Section("Detalji vozila") {
-                    TextField("Marka (opciono)", text: $viewModel.brand)
-                    TextField("Model (opciono)", text: $viewModel.model)
-                    TextField("Godina (opciono)", text: $viewModel.year)
+                Section("Vehicle details") {
+                    TextField("Brand (optional)", text: $viewModel.brand)
+                    TextField("Model (optional)", text: $viewModel.model)
+                    TextField("Year (optional)", text: $viewModel.year)
                         .keyboardType(.numberPad)
-                    TextField("Boja (opciono)", text: $viewModel.color)
-                    TextField("Registarska tablica (opciono)", text: $viewModel.licensePlate)
+                    TextField("Color (optional)", text: $viewModel.color)
+                    TextField("License plate (optional)", text: $viewModel.licensePlate)
                         .textInputAutocapitalization(.characters)
                 }
                 
-                Section("Slike vozila *") {
+                Section("Vehicle images *") {
                     if viewModel.existingImages.isEmpty && viewModel.newImages.isEmpty {
                         Button(action: { showImagePicker = true }) {
                             HStack {
                                 Image(systemName: "photo.on.rectangle.angled")
                                     .foregroundColor(.blue)
-                                Text("Dodaj slike")
+                                Text("Add images")
                                     .foregroundColor(.blue)
                             }
                         }
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
-                                // Prikaz postojećih slika
+                                // Show existing images
                                 ForEach(Array(viewModel.existingImages.enumerated()), id: \.element.id) { index, image in
                                     ZStack(alignment: .topTrailing) {
                                         AsyncImage(url: URL(string: image.imageUrl)) { img in
@@ -74,7 +74,7 @@ struct EditVehicleView: View {
                                     }
                                 }
                                 
-                                // Prikaz novih slika
+                                // Show new images
                                 ForEach(Array(viewModel.newImages.enumerated()), id: \.offset) { index, image in
                                     ZStack(alignment: .topTrailing) {
                                         Image(uiImage: image)
@@ -131,7 +131,7 @@ struct EditVehicleView: View {
                                 Spacer()
                             }
                         } else {
-                            Text("Sačuvaj izmene")
+                            Text("Save changes")
                                 .frame(maxWidth: .infinity)
                                 .foregroundColor(.white)
                         }
@@ -140,11 +140,11 @@ struct EditVehicleView: View {
                     .disabled(!viewModel.isFormValid || viewModel.isLoading)
                 }
             }
-            .navigationTitle("Izmeni vozilo")
+            .navigationTitle("Edit vehicle")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
@@ -152,13 +152,13 @@ struct EditVehicleView: View {
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(images: $viewModel.newImages, maxImages: 5 - viewModel.existingImages.count)
             }
-            .alert("Vozilo ažurirano!", isPresented: $showSuccess) {
+            .alert("Vehicle updated!", isPresented: $showSuccess) {
                 Button("OK") {
                     onComplete()
                     dismiss()
                 }
             } message: {
-                Text("Izmene su uspešno sačuvane.")
+                Text("Changes successfully saved.")
             }
             .errorAlert(errorMessage: $viewModel.errorMessage)
         }

@@ -75,7 +75,7 @@ struct RatingSheet: View {
                     
                     // Comment
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Komentar (opciono)")
+                        Text("Comment (optional)")
                             .font(.subheadline)
                             .fontWeight(.medium)
                         
@@ -110,7 +110,7 @@ struct RatingSheet: View {
                                 ProgressView()
                                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
                             } else {
-                                Text("Oceni")
+                                Text("Rate")
                                     .fontWeight(.semibold)
                             }
                         }
@@ -129,7 +129,7 @@ struct RatingSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
@@ -169,20 +169,20 @@ struct RatingSheet: View {
     }
     
     private func getNavigationTitle() -> String {
-        return isDriverRatingPassenger ? "Oceni putnika" : "Oceni vožnju"
+        return isDriverRatingPassenger ? "Rate passenger" : "Rate ride"
     }
     
     private func getQuestionText() -> String {
-        return isDriverRatingPassenger ? "Kako biste ocenili putnika?" : "Kako biste ocenili vožnju?"
+        return isDriverRatingPassenger ? "How would you rate the passenger?" : "How would you rate the ride?"
     }
     
     private func getRatingText() -> String {
         switch rating {
-        case 1: return "Loše"
-        case 2: return "Nije dobro"
-        case 3: return "Okej"
-        case 4: return "Dobro"
-        case 5: return "Odlično"
+        case 1: return "Bad"
+        case 2: return "Not good"
+        case 3: return "OK"
+        case 4: return "Good"
+        case 5: return "Excellent"
         default: return ""
         }
     }
@@ -210,7 +210,7 @@ struct RatingSheet: View {
             } catch {
                 await MainActor.run {
                     isLoading = false
-                    errorMessage = "Greška pri ocenjivanju. Pokušajte ponovo."
+                    errorMessage = "Error rating. Please try again."
                 }
             }
         }

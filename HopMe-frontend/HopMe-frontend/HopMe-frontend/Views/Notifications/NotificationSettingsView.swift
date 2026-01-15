@@ -17,33 +17,33 @@ struct NotificationSettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Tip notifikacija") {
-                    Toggle("Nova rezervacija", isOn: $newBooking)
-                    Toggle("Rezervacija prihvaćena", isOn: $bookingAccepted)
-                    Toggle("Rezervacija odbijena", isOn: $bookingRejected)
-                    Toggle("Rezervacija otkazana", isOn: $bookingCancelled)
-                    Toggle("Vožnja otkazana", isOn: $rideCancelled)
-                    Toggle("Vožnja završena", isOn: $rideCompleted)
-                    Toggle("Nova ocena", isOn: $newRating)
+                Section("Notification types") {
+                    Toggle("New booking", isOn: $newBooking)
+                    Toggle("Booking accepted", isOn: $bookingAccepted)
+                    Toggle("Booking rejected", isOn: $bookingRejected)
+                    Toggle("Booking cancelled", isOn: $bookingCancelled)
+                    Toggle("Ride cancelled", isOn: $rideCancelled)
+                    Toggle("Ride completed", isOn: $rideCompleted)
+                    Toggle("New rating", isOn: $newRating)
                 }
                 
-                Section("Zvuk i vibracija") {
-                    Toggle("Zvuk", isOn: $soundEnabled)
-                    Toggle("Vibracija", isOn: $vibrationEnabled)
+                Section("Sound and vibration") {
+                    Toggle("Sound", isOn: $soundEnabled)
+                    Toggle("Vibration", isOn: $vibrationEnabled)
                 }
                 
                 Section {
-                    Button("Obriši sve notifikacije") {
+                    Button("Clear all notifications") {
                         // TODO: Clear all notifications
                     }
                     .foregroundColor(.red)
                 }
             }
-            .navigationTitle("Podešavanja notifikacija")
+            .navigationTitle("Notification settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Gotovo") {
+                    Button("Done") {
                         dismiss()
 
                     }

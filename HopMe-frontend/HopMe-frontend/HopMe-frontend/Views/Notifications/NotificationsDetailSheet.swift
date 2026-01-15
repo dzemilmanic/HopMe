@@ -67,7 +67,7 @@ struct NotificationDetailSheet: View {
                     // Additional Data (if any)
                     if let data = notification.data, !data.isEmpty {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Dodatne informacije")
+                            Text("Additional information")
                                 .font(.headline)
                             
                             ForEach(Array(data.keys.sorted()), id: \.self) { key in
@@ -97,7 +97,7 @@ struct NotificationDetailSheet: View {
                             // TODO: Navigate to ride
                             dismiss()
                         }) {
-                            Text("Prikaži vožnju")
+                            Text("Show ride")
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
@@ -112,7 +112,7 @@ struct NotificationDetailSheet: View {
                             // TODO: Navigate to booking
                             dismiss()
                         }) {
-                            Text("Prikaži rezervaciju")
+                            Text("Show booking")
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
@@ -124,11 +124,11 @@ struct NotificationDetailSheet: View {
                 }
                 .padding()
             }
-            .navigationTitle("Detalji")
+            .navigationTitle("Details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Zatvori") {
+                    Button("Close") {
                         dismiss()
                     }
                 }

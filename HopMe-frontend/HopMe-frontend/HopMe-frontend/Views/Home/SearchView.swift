@@ -27,7 +27,7 @@ struct SearchView: View {
             
             // Content
             if viewModel.isLoading {
-                LoadingView(message: "Pretražujem vožnje...")
+                LoadingView(message: "Searching for rides...")
             } else if let error = viewModel.errorMessage {
                 ErrorView(
                     message: error,
@@ -40,18 +40,18 @@ struct SearchView: View {
             } else if viewModel.searchResults.isEmpty {
                 EmptyStateView(
                     icon: "car.fill",
-                    title: "Nema dostupnih vožnji",
-                    description: viewModel.canSearch ? "Pokušajte sa različitim kriterijumima pretrage" : "Trenutno nema aktivnih vožnji"
+                    title: "No available rides",
+                    description: viewModel.canSearch ? "Try with different search criteria" : "No active rides at the moment"
                 )
             } else {
                 searchResults
             }
         }
-        .navigationTitle("Pretraga")
+        .navigationTitle("Search")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("Zatvori") {
+                Button("Close") {
                     dismiss()
                 }
             }
@@ -81,7 +81,7 @@ struct SearchView: View {
                 Image(systemName: "location.circle.fill")
                     .foregroundColor(.blue)
                 
-                TextField("Polazište", text: $viewModel.searchFrom)
+                TextField("From", text: $viewModel.searchFrom)
                     .textFieldStyle(.plain)
                 
                 if !viewModel.searchFrom.isEmpty {
@@ -99,7 +99,7 @@ struct SearchView: View {
                 Image(systemName: "location.fill")
                     .foregroundColor(.green)
                 
-                TextField("Destinacija", text: $viewModel.searchTo)
+                TextField("To", text: $viewModel.searchTo)
                     .textFieldStyle(.plain)
                 
                 if !viewModel.searchTo.isEmpty {
@@ -114,14 +114,14 @@ struct SearchView: View {
             .cornerRadius(10)
             
             HStack {
-                DatePicker("Datum", selection: $viewModel.selectedDate, displayedComponents: .date)
+                DatePicker("Date", selection: $viewModel.selectedDate, displayedComponents: .date)
                     .labelsHidden()
                 
                 Spacer()
                 
-                Picker("Putnika", selection: $viewModel.passengers) {
+                Picker("Passengers", selection: $viewModel.passengers) {
                     ForEach(1...8, id: \.self) { count in
-                        Text("\(count) putnik\(count > 1 ? "a" : "")").tag(count)
+                        Text("\(count) passenger\(count > 1 ? "s" : "")").tag(count)
                     }
                 }
                 .pickerStyle(.menu)
@@ -137,7 +137,7 @@ struct SearchView: View {
             }) {
                 HStack {
                     Image(systemName: "magnifyingglass")
-                    Text("Pretraži")
+                    Text("Search")
                         .fontWeight(.semibold)
                 }
                 .frame(maxWidth: .infinity)
@@ -159,7 +159,7 @@ struct SearchView: View {
                 Button(action: { showFilters = true }) {
                     HStack {
                         Image(systemName: "slider.horizontal.3")
-                        Text("Filteri")
+                        Text("Filters")
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
@@ -200,7 +200,7 @@ struct SearchView: View {
 
                 if viewModel.filters.autoAcceptOnly {
                     FilterChip(
-                        title: "Auto prihvat",
+                        title: "Auto accept",
                         icon: "checkmark.circle.fill",  
                         isSelected: true,
                         action: {

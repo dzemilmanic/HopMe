@@ -29,22 +29,22 @@ struct PrivacySecurityView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Privatnost i bezbednost")
+            .navigationTitle("Privacy and Security")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Gotovo") {
+                    Button("Done") {
                         dismiss()
                     }
                 }
             }
-            .alert("Brisanje podataka", isPresented: $showDeleteDataAlert) {
-                Button("Otkaži", role: .cancel) { }
-                Button("Obriši", role: .destructive) {
+            .alert("Delete Data", isPresented: $showDeleteDataAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
                     // TODO: Delete user data
                 }
             } message: {
-                Text("Da li ste sigurni da želite da obrišete sve svoje podatke? Ova radnja se ne može poništiti.")
+                Text("Are you sure you want to delete all your data? This action cannot be undone.")
             }
         }
     }
@@ -56,11 +56,11 @@ struct PrivacySecurityView: View {
                 .font(.system(size: 60))
                 .foregroundColor(.blue)
             
-            Text("Vaša privatnost je važna")
+            Text("Your privacy is important")
                 .font(.title3)
                 .fontWeight(.semibold)
             
-            Text("Kontrolišite svoje podatke i kako ih delite sa drugima")
+            Text("Control your data and how you share it with others")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
@@ -74,14 +74,14 @@ struct PrivacySecurityView: View {
     // MARK: - Privacy Settings
     private var privacySettingsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Podešavanja privatnosti")
+            Text("Privacy Settings")
                 .font(.headline)
             
             VStack(spacing: 0) {
                 SettingToggleRow(
                     icon: "location.fill",
-                    title: "Deljenje lokacije",
-                    description: "Dozvoli deljenje lokacije sa vozačima",
+                    title: "Share location",
+                    description: "Allow sharing location with drivers",
                     isOn: $locationSharing,
                     color: .blue
                 )
@@ -91,8 +91,8 @@ struct PrivacySecurityView: View {
                 
                 SettingToggleRow(
                     icon: "person.fill",
-                    title: "Vidljivost profila",
-                    description: "Učini profil vidljivim drugim korisnicima",
+                    title: "Profile visibility",
+                    description: "Make profile visible to other users",
                     isOn: $profileVisibility,
                     color: .green
                 )
@@ -102,8 +102,8 @@ struct PrivacySecurityView: View {
                 
                 SettingToggleRow(
                     icon: "phone.fill",
-                    title: "Prikaži broj telefona",
-                    description: "Drugi korisnici mogu videti vaš broj",
+                    title: "Show phone number",
+                    description: "Other users can see your phone number",
                     isOn: $phoneVisibility,
                     color: .orange
                 )
@@ -118,14 +118,14 @@ struct PrivacySecurityView: View {
     // MARK: - Security Settings
     private var securitySettingsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Podešavanja bezbednosti")
+            Text("Security Settings")
                 .font(.headline)
             
             VStack(spacing: 0) {
                 SettingToggleRow(
                     icon: "faceid",
-                    title: "Biometrijska autentifikacija",
-                    description: "Koristi Face ID/Touch ID za prijavu",
+                    title: "Biometric authentication",
+                    description: "Use Face ID/Touch ID for login",
                     isOn: $biometricAuth,
                     color: .purple
                 )
@@ -140,10 +140,10 @@ struct PrivacySecurityView: View {
                             .frame(width: 24)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Promena lozinke")
+                            Text("Change password")
                                 .foregroundColor(.primary)
                             
-                            Text("Ažuriraj svoju lozinku")
+                            Text("Update your password")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }
@@ -167,10 +167,10 @@ struct PrivacySecurityView: View {
                             .frame(width: 24)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Aktivne sesije")
+                            Text("Active sessions")
                                 .foregroundColor(.primary)
                             
-                            Text("Upravljaj prijavama na uređajima")
+                            Text("Manage logins on devices")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }
@@ -193,7 +193,7 @@ struct PrivacySecurityView: View {
     // MARK: - Data Management
     private var dataManagementSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Upravljanje podacima")
+            Text("Data Management")
                 .font(.headline)
             
             VStack(spacing: 0) {
@@ -206,10 +206,10 @@ struct PrivacySecurityView: View {
                             .frame(width: 24)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Preuzmi svoje podatke")
+                            Text("Export data")
                                 .foregroundColor(.primary)
                             
-                            Text("Preuzmi kopiju svojih podataka")
+                            Text("Download a copy of your data")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }
@@ -235,10 +235,10 @@ struct PrivacySecurityView: View {
                             .frame(width: 24)
                         
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Obriši sve podatke")
+                            Text("Delete all data")
                                 .foregroundColor(.red)
                             
-                            Text("Trajno obriši sve svoje podatke")
+                            Text("Permanently delete all your data")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }
@@ -264,11 +264,11 @@ struct PrivacySecurityView: View {
             HStack(spacing: 8) {
                 Image(systemName: "info.circle.fill")
                     .foregroundColor(.blue)
-                Text("Informacije")
+                Text("Information")
                     .font(.headline)
             }
             
-            Text("HopMe prikuplja i koristi vaše podatke samo u svrhu pružanja usluga. Možete kontrolisati koje podatke delite i kako ih koristimo. Za više informacija, pogledajte našu Politiku privatnosti.")
+            Text("HopMe collects and uses your data only for the purpose of providing services. You can control which data you share and how we use it. For more information, please read our Privacy Policy.")
                 .font(.caption)
                 .foregroundColor(.gray)
                 .padding(.top, 4)
@@ -325,31 +325,31 @@ struct ChangePasswordView: View {
     
     var body: some View {
         Form {
-            Section("Trenutna lozinka") {
-                SecureField("Unesite trenutnu lozinku", text: $currentPassword)
+            Section("Current password") {
+                SecureField("Enter current password", text: $currentPassword)
                     .textContentType(.password)
                     .autocapitalization(.none)
             }
             
-            Section("Nova lozinka") {
-                SecureField("Unesite novu lozinku", text: $newPassword)
+            Section("New password") {
+                SecureField("Enter new password", text: $newPassword)
                     .textContentType(.newPassword)
                     .autocapitalization(.none)
                 
-                SecureField("Potvrdite novu lozinku", text: $confirmPassword)
+                SecureField("Confirm new password", text: $confirmPassword)
                     .textContentType(.newPassword)
                     .autocapitalization(.none)
                 
                 if !newPassword.isEmpty {
                     if newPassword.count < 6 {
-                        Text("Lozinka mora imati najmanje 6 karaktera")
+                        Text("Password must have at least 6 characters")
                             .font(.caption)
                             .foregroundColor(.red)
                     }
                 }
                 
                 if !confirmPassword.isEmpty && newPassword != confirmPassword {
-                    Text("Lozinke se ne podudaraju")
+                    Text("Passwords do not match")
                         .font(.caption)
                         .foregroundColor(.red)
                 }
@@ -376,7 +376,7 @@ struct ChangePasswordView: View {
                             Spacer()
                         }
                     } else {
-                        Text("Sačuvaj")
+                        Text("Save")
                             .frame(maxWidth: .infinity)
                             .foregroundColor(.blue)
                     }
@@ -384,14 +384,14 @@ struct ChangePasswordView: View {
                 .disabled(!isValid || isLoading)
             }
         }
-        .navigationTitle("Promena lozinke")
+        .navigationTitle("Change password")
         .navigationBarTitleDisplayMode(.inline)
-        .alert("Uspeh", isPresented: $showSuccessAlert) {
+        .alert("Success", isPresented: $showSuccessAlert) {
             Button("OK") {
                 dismiss()
             }
         } message: {
-            Text("Lozinka je uspešno promenjena")
+            Text("Password changed successfully")
         }
     }
     
@@ -419,15 +419,15 @@ struct ChangePasswordView: View {
             isLoading = false
             switch error {
             case .unauthorized:
-                errorMessage = "Trenutna lozinka nije tačna"
+                errorMessage = "Current password is incorrect"
             case . badRequest:
-                errorMessage = "Nevalidni podaci. Proverite unos."
+                errorMessage = "Invalid data. Please check your input."
             default:
-                errorMessage = "Greška pri promeni lozinke. Pokušajte ponovo."
+                errorMessage = "Error changing password. Please try again."
             }
         } catch {
             isLoading = false
-            errorMessage = "Greška pri promeni lozinke. Pokušajte ponovo."
+            errorMessage = "Error changing password. Please try again."
         }
     }
 }
@@ -435,7 +435,7 @@ struct ChangePasswordView: View {
 struct ActiveSessionsView: View {
     var body: some View {
         List {
-            Section("Trenutna sesija") {
+            Section("Current session") {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("iPhone 15 Pro")
@@ -447,18 +447,18 @@ struct ActiveSessionsView: View {
                     
                     Spacer()
                     
-                    Text("Sada")
+                    Text("Now")
                         .font(.caption)
                         .foregroundColor(.green)
                 }
             }
             
-            Section("Ostale sesije") {
-                Text("Nema drugih aktivnih sesija")
+            Section("Other sessions") {
+                Text("No other active sessions")
                     .foregroundColor(.gray)
             }
         }
-        .navigationTitle("Aktivne sesije")
+        .navigationTitle("Active sessions")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

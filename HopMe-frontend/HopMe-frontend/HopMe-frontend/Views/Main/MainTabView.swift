@@ -12,7 +12,7 @@ struct MainTabView: View {
                 HomeView()
             }
             .tabItem {
-                Label("Početna", systemImage: "house.fill")
+                Label("Home", systemImage: "house.fill")
             }
             .tag(0)
             
@@ -26,7 +26,7 @@ struct MainTabView: View {
             }
             .tabItem {
                 Label(
-                    authViewModel.currentUser?.isDriver == true ? "Moje vožnje" : "Pretraži",
+                    authViewModel.currentUser?.isDriver == true ? "My rides" : "Search",
                     systemImage: authViewModel.currentUser?.isDriver == true ? "car.fill" : "magnifyingglass"
                 )
             }
@@ -37,7 +37,7 @@ struct MainTabView: View {
                 MyBookingsView()
             }
             .tabItem {
-                Label("Rezervacije", systemImage: "list.bullet")
+                Label("Bookings", systemImage: "list.bullet")
             }
             .tag(2)
             
@@ -46,7 +46,7 @@ struct MainTabView: View {
                 NotificationsView()
             }
             .tabItem {
-                Label("Poruke", systemImage: "bell.fill")
+                Label("Notifications", systemImage: "bell.fill")
             }
             .badge(notificationViewModel.unreadCount > 0 ? "\(notificationViewModel.unreadCount)" : "")            .tag(3)
             
@@ -55,7 +55,7 @@ struct MainTabView: View {
                 ProfileView()
             }
             .tabItem {
-                Label("Profil", systemImage: "person.fill")
+                Label("Profile", systemImage: "person.fill")
             }
             .tag(4)
         }

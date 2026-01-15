@@ -11,16 +11,16 @@ struct MyRidesView: View {
         VStack(spacing: 0) {
             // Segment Control
             Picker("", selection: $selectedSegment) {
-                Text("Nadolazeće (\(viewModel.upcomingRides.count))").tag(0)
-                Text("Aktivne (\(viewModel.activeRides.count))").tag(1)
-                Text("Prošle (\(viewModel.pastRides.count))").tag(2)
+                Text("Upcoming (\(viewModel.upcomingRides.count))").tag(0)
+                Text("Active (\(viewModel.activeRides.count))").tag(1)
+                Text("Past (\(viewModel.pastRides.count))").tag(2)
             }
             .pickerStyle(.segmented)
             .padding()
             
             // Content
             if viewModel.isLoading {
-                LoadingView(message: "Učitavanje vožnji...")
+                LoadingView(message: "Loading rides...")
             } else if let error = viewModel.errorMessage {
                 ErrorView(
                     message: error,
@@ -34,7 +34,7 @@ struct MyRidesView: View {
                 ridesListView
             }
         }
-        .navigationTitle("Moje vožnje")
+        .navigationTitle("My rides")
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -70,7 +70,7 @@ struct MyRidesView: View {
                     icon: "car.fill",
                     title: emptyTitle,
                     description: emptyDescription,
-                    actionTitle: selectedSegment == 0 ? "Kreiraj vožnju" : nil,
+                    actionTitle: selectedSegment == 0 ? "Create ride" : nil,
                     action: selectedSegment == 0 ? { showCreateRide = true } : nil
                 )
                 .frame(height: 400)
@@ -107,18 +107,18 @@ struct MyRidesView: View {
     
     private var emptyTitle: String {
         switch selectedSegment {
-        case 0: return "Nemate nadolazećih vožnji"
-        case 1: return "Nemate aktivnih vožnji"
-        case 2: return "Nemate prošlih vožnji"
-        default: return "Nema vožnji"
+        case 0: return "You don't have any upcoming rides"
+        case 1: return "You don't have any active rides"
+        case 2: return "You don't have any past rides"
+        default: return "No rides"
         }
     }
     
     private var emptyDescription: String {
         switch selectedSegment {
-        case 0: return "Kreirajte novu vožnju i počnite da zarađujete"
-        case 1: return "Vožnje koje ste započeli će se pojaviti ovde"
-        case 2: return "Završene i otkazane vožnje će se pojaviti ovde"
+        case 0: return "Create a new ride and start earning"
+        case 1: return "Rides you have started will appear here"
+        case 2: return "Completed and cancelled rides will appear here"
         default: return ""
         }
     }

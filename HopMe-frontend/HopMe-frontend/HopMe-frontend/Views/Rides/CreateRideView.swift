@@ -36,11 +36,11 @@ struct CreateRideView: View {
                 // Navigation Buttons
                 navigationButtons
             }
-            .navigationTitle("Nova vožnja")
+            .navigationTitle("New ride")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
@@ -49,12 +49,12 @@ struct CreateRideView: View {
                 await vehicleViewModel.loadVehicles()
             }
             .errorAlert(errorMessage: $viewModel.errorMessage)
-            .alert("Vožnja kreirana!", isPresented: $showSuccess) {
+            .alert("Ride created!", isPresented: $showSuccess) {
                 Button("OK") {
                     dismiss()
                 }
             } message: {
-                Text("Vaša vožnja je uspešno objavljena.")
+                Text("Your ride has been successfully published.")
             }
         }
     }
@@ -62,13 +62,13 @@ struct CreateRideView: View {
     // MARK: - Step 1: Basic Info
     private var basicInfoStep: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Osnovne informacije")
+            Text("Basic information")
                 .font(.title2)
                 .fontWeight(.bold)
             
             // Vehicle Selection
             VStack(alignment: .leading, spacing: 8) {
-                Text("Vozilo *")
+                Text("Vehicle *")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
@@ -79,7 +79,7 @@ struct CreateRideView: View {
                         HStack {
                             Image(systemName: "plus.circle.fill")
                                 .foregroundColor(.blue)
-                            Text("Dodajte vozilo")
+                            Text("Add vehicle")
                                 .foregroundColor(.blue)
                         }
                         .frame(maxWidth: .infinity)
@@ -110,7 +110,7 @@ struct CreateRideView: View {
                                let vehicle = vehicleViewModel.vehicles.first(where: { $0.id == selectedId }) {
                                 Text(vehicle.displayName)
                             } else {
-                                Text("Izaberite vozilo")
+                                Text("Select vehicle")
                                     .foregroundColor(.gray)
                             }
                             
@@ -131,20 +131,20 @@ struct CreateRideView: View {
             // Departure Location
             CustomTextField(
                 icon: "location.circle.fill",
-                placeholder: "Polazište *",
+                placeholder: "Departure *",
                 text: $viewModel.departureLocation
             )
             
             // Arrival Location
             CustomTextField(
                 icon: "location.fill",
-                placeholder: "Destinacija *",
+                placeholder: "Arrival *",
                 text: $viewModel.arrivalLocation
             )
             
             // Available Seats
             VStack(alignment: .leading, spacing: 8) {
-                Text("Broj slobodnih mesta *")
+                Text("Available seats *")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
@@ -171,7 +171,7 @@ struct CreateRideView: View {
             
             // Price
             VStack(alignment: .leading, spacing: 8) {
-                Text("Cena po mestu *")
+                Text("Price per seat *")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
@@ -179,7 +179,7 @@ struct CreateRideView: View {
                     Image(systemName: "creditcard.fill")
                         .foregroundColor(.green)
                     
-                    TextField("Cena", text: $viewModel.pricePerSeat)
+                    TextField("Price", text: $viewModel.pricePerSeat)
                         .keyboardType(.numberPad)
                     
                     Text("RSD")
@@ -196,17 +196,17 @@ struct CreateRideView: View {
     // MARK: - Step 2: Date & Time
     private var dateTimeStep: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Datum i vreme")
+            Text("Date and time")
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("Kada planirate da krenete?")
+            Text("When do you plan to start?")
                 .font(.subheadline)
                 .foregroundColor(.gray)
             
             // Date Picker
             VStack(alignment: .leading, spacing: 8) {
-                Text("Datum *")
+                Text("Date *")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
@@ -225,7 +225,7 @@ struct CreateRideView: View {
             
             // Time Picker
             VStack(alignment: .leading, spacing: 8) {
-                Text("Vreme polaska *")
+                Text("Departure time *")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
@@ -244,11 +244,11 @@ struct CreateRideView: View {
             
             // Estimated Arrival Time (Optional)
             VStack(alignment: .leading, spacing: 8) {
-                Text("Procenjeno vreme dolaska (opciono)")
+                Text("Estimated arrival time (optional)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                Toggle("Dodaj procenjeno vreme dolaska", isOn: Binding(
+                Toggle("Add estimated arrival time", isOn: Binding(
                     get: { viewModel.arrivalTime != nil },
                     set: { if !$0 { viewModel.arrivalTime = nil } else {
                         viewModel.arrivalTime = viewModel.departureTime.addingTimeInterval(3600)
@@ -282,11 +282,11 @@ struct CreateRideView: View {
     // MARK: - Step 3: Preferences
     private var preferencesStep: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Preferencije")
+            Text("Preferences")
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("Dodatne informacije o vožnji")
+            Text("Additional ride information")
                 .font(.subheadline)
                 .foregroundColor(.gray)
             
@@ -294,8 +294,8 @@ struct CreateRideView: View {
                 // Auto Accept
                 PreferenceToggle(
                     icon: "checkmark.circle.fill",
-                    title: "Automatski prihvataj rezervacije",
-                    description: "Rezervacije će biti automatski prihvaćene",
+                    title: "Automatically accept reservations",
+                    description: "Reservations will be automatically accepted",
                     isOn: $viewModel.autoAccept,
                     activeColor: .green
                 )
@@ -303,8 +303,8 @@ struct CreateRideView: View {
                 // Smoking
                 PreferenceToggle(
                     icon: "smoke.fill",
-                    title: "Dozvoljeno pušenje",
-                    description: "Putnici mogu pušiti u vozilu",
+                    title: "Allow smoking",
+                    description: "Passengers can smoke in the car",
                     isOn: $viewModel.allowSmoking,
                     activeColor: .orange
                 )
@@ -312,8 +312,8 @@ struct CreateRideView: View {
                 // Pets
                 PreferenceToggle(
                     icon: "pawprint.fill",
-                    title: "Dozvoljeni kućni ljubimci",
-                    description: "Putnici mogu voditi kućne ljubimce",
+                    title: "Allow pets",
+                    description: "Passengers can bring pets",
                     isOn: $viewModel.allowPets,
                     activeColor: .brown
                 )
@@ -321,8 +321,8 @@ struct CreateRideView: View {
                 // Max Two in Back
                 PreferenceToggle(
                     icon: "person.2.fill",
-                    title: "Maksimalno dvoje pozadi",
-                    description: "Najviše dva putnika na zadnjem sedištu",
+                    title: "Max two in back",
+                    description: "Passengers can bring pets",
                     isOn: $viewModel.maxTwoInBack,
                     activeColor: .blue
                 )
@@ -330,21 +330,21 @@ struct CreateRideView: View {
             
             // Luggage Size
             VStack(alignment: .leading, spacing: 8) {
-                Text("Veličina prtljaga")
+                Text("Luggage size")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                Picker("Veličina prtljaga", selection: $viewModel.selectedLuggage) {
-                    Text("Mali").tag("Mali")
-                    Text("Srednji").tag("Srednji")
-                    Text("Veliki").tag("Veliki")
+                Picker("Luggage size", selection: $viewModel.selectedLuggage) {
+                    Text("Small").tag("Small")
+                    Text("Medium").tag("Medium")
+                    Text("Large").tag("Large")
                 }
                 .pickerStyle(.segmented)
             }
             
             // Description
             VStack(alignment: .leading, spacing: 8) {
-                Text("Opis (opciono)")
+                Text("Description (optional)")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
@@ -358,7 +358,7 @@ struct CreateRideView: View {
                             .stroke(Color(.systemGray4), lineWidth: 1)
                     )
                 
-                Text("Dodatne informacije za putnike")
+                Text("Additional information for passengers")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
@@ -368,11 +368,11 @@ struct CreateRideView: View {
     // MARK: - Step 4: Waypoints
     private var waypointsStep: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Usputne stanice")
+            Text("Waypoints")
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("Dodajte mesta gde možete pokupiti ili ostaviti putnike")
+            Text("Add places where you can pick up or drop off passengers")
                 .font(.subheadline)
                 .foregroundColor(.gray)
             
@@ -382,7 +382,7 @@ struct CreateRideView: View {
                 }) {
                     HStack {
                         Image(systemName: "plus.circle.fill")
-                        Text("Dodaj usputnu stanicu")
+                        Text("Add waypoint")
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -416,7 +416,7 @@ struct CreateRideView: View {
                     }) {
                         HStack {
                             Image(systemName: "plus.circle")
-                            Text("Dodaj još")
+                            Text("Add more")
                         }
                         .font(.subheadline)
                         .foregroundColor(.blue)
@@ -424,7 +424,7 @@ struct CreateRideView: View {
                 }
             }
             
-            Text("Možete dodati do 5 usputnih stanica")
+            Text("You can add up to 5 waypoints")
                 .font(.caption)
                 .foregroundColor(.gray)
         }
@@ -438,7 +438,7 @@ struct CreateRideView: View {
             VStack(spacing: 12) {
                 // Next / Submit Button
                 CustomButton(
-                    title: currentStep == 4 ? "Objavi vožnju" : "Nastavi",
+                    title: currentStep == 4 ? "Publish ride" : "Next",
                     action: {
                         if currentStep == 4 {
                             Task {
@@ -465,7 +465,7 @@ struct CreateRideView: View {
                             currentStep -= 1
                         }
                     }) {
-                        Text("Nazad")
+                        Text("Back")
                             .fontWeight(.semibold)
                             .foregroundColor(.blue)
                             .frame(maxWidth: .infinity)

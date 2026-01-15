@@ -3,14 +3,14 @@ import SwiftUI
 struct RideListView: View {
     let rides: [Ride]
     let title: String
-    var emptyMessage: String = "Nema dostupnih vožnji"
+    var emptyMessage: String = "No available rides"
     
     var body: some View {
         ScrollView {
             if rides.isEmpty {
                 EmptyStateView(
                     icon: "car.fill",
-                    title: "Nema vožnji",
+                    title: "No rides",
                     description: emptyMessage
                 )
                 .frame(height: 400)
@@ -35,7 +35,7 @@ struct RideListView: View {
     NavigationView {
         RideListView(
             rides: [],
-            title: "Rezultati pretrage"
+            title: "Search results"
         )
     }
 }

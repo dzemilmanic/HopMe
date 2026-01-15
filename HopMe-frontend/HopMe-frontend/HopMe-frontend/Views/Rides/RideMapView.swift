@@ -35,11 +35,11 @@ struct RideMapView: View {
                         .padding()
                 }
             }
-            .navigationTitle("Ruta")
+            .navigationTitle("Route")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Zatvori") {
+                    Button("Close") {
                         dismiss()
                     }
                 }
@@ -99,7 +99,7 @@ struct RideMapView: View {
                 Divider()
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Usputne stanice:")
+                    Text("Waypoints:")
                         .font(.caption)
                         .fontWeight(.semibold)
                         .foregroundColor(.gray)

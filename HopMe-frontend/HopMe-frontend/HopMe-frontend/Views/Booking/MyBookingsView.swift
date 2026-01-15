@@ -11,15 +11,15 @@ struct MyBookingsView: View {
         VStack(spacing: 0) {
             // Segment Control
             Picker("", selection: $selectedSegment) {
-                Text("Nadolazeće (\(viewModel.upcomingBookings.count))").tag(0)
-                Text("Prošle (\(viewModel.pastBookings.count))").tag(1)
+                Text("Upcoming (\(viewModel.upcomingBookings.count))").tag(0)
+                Text("Past (\(viewModel.pastBookings.count))").tag(1)
             }
             .pickerStyle(.segmented)
             .padding()
             
             // Content
             if viewModel.isLoading {
-                LoadingView(message: "Učitavanje rezervacija...")
+                LoadingView(message: "Loading bookings...")
             } else if let error = viewModel.errorMessage {
                 ErrorView(
                     message: error,
@@ -33,7 +33,7 @@ struct MyBookingsView: View {
                 bookingsListView
             }
         }
-        .navigationTitle("Moje rezervacije")
+        .navigationTitle("My bookings")
         .navigationBarTitleDisplayMode(.large)
         .sheet(item: $selectedBooking) { booking in
             BookingDetailSheet(booking: booking) {
@@ -67,7 +67,7 @@ struct MyBookingsView: View {
                     icon: "list.bullet",
                     title: emptyTitle,
                     description: emptyDescription,
-                    actionTitle: selectedSegment == 0 ? "Pronađi vožnju" : nil,
+                    actionTitle: selectedSegment == 0 ? "Find a ride" : nil,
                     action: selectedSegment == 0 ? {
                         // TODO: Navigate to search
                     } : nil
@@ -98,11 +98,11 @@ struct MyBookingsView: View {
     }
     
     private var emptyTitle: String {
-        selectedSegment == 0 ? "Nemate nadolazećih rezervacija" : "Nemate prošlih rezervacija"
+        selectedSegment == 0 ? "You have no upcoming bookings" : "You have no past bookings"
     }
     
     private var emptyDescription: String {
-        selectedSegment == 0 ? "Pretražite vožnje i rezervišite mesto" : "Završene rezervacije će se pojaviti ovde"
+        selectedSegment == 0 ? "Search for rides and book a seat" : "Past bookings will appear here"
     }
 }
 #Preview("My Bookings View") {

@@ -15,28 +15,28 @@ struct EditProfileView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Lični podaci") {
+                Section("Personal data") {
                     HStack {
                         Image(systemName: "person.fill")
                             .foregroundColor(.blue)
                             .frame(width: 24)
-                        TextField("Ime", text: $viewModel.firstName)
+                        TextField("First name", text: $viewModel.firstName)
                     }
                     
                     HStack {
                         Image(systemName: "person.fill")
                             .foregroundColor(.blue)
                             .frame(width: 24)
-                        TextField("Prezime", text: $viewModel.lastName)
+                        TextField("Last name", text: $viewModel.lastName)
                     }
                 }
                 
-                Section("Kontakt") {
+                Section("Contact") {
                     HStack {
                         Image(systemName: "phone.fill")
                             .foregroundColor(.blue)
                             .frame(width: 24)
-                        TextField("Telefon", text: $viewModel.phone)
+                        TextField("Phone", text: $viewModel.phone)
                             .keyboardType(.phonePad)
                     }
                 }
@@ -57,7 +57,7 @@ struct EditProfileView: View {
                                 Spacer()
                             }
                         } else {
-                            Text("Sačuvaj izmene")
+                            Text("Save changes")
                                 .frame(maxWidth: .infinity)
                                 .foregroundColor(.white)
                         }
@@ -66,22 +66,22 @@ struct EditProfileView: View {
                     .disabled(!viewModel.isFormValid || viewModel.isLoading)
                 }
             }
-            .navigationTitle("Izmeni profil")
+            .navigationTitle("Edit profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
             }
-            .alert("Profil ažuriran!", isPresented: $showSuccess) {
+            .alert("Profile updated!", isPresented: $showSuccess) {
                 Button("OK") {
                     onUpdate()
                     dismiss()
                 }
             } message: {
-                Text("Vaš profil je uspešno ažuriran.")
+                Text("Your profile has been successfully updated.")
             }
             .errorAlert(errorMessage: $viewModel.errorMessage)
         }

@@ -33,26 +33,26 @@ struct BookingView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Rezervacija")
+            .navigationTitle("Booking")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
             }
             .loading(viewModel.isLoading)
             .errorAlert(errorMessage: $viewModel.errorMessage)
-            .alert("Uspešno rezervisano!", isPresented: $showSuccess) {
+            .alert("Booking successful!", isPresented: $showSuccess) {
                 Button("OK") {
                     dismiss()
                 }
             } message: {
                 if viewModel.ride.autoAcceptBookings {
-                    Text("Vaša rezervacija je automatski prihvaćena. Srećan put!")
+                    Text("Your booking has been automatically accepted. Have a safe trip!")
                 } else {
-                    Text("Vaša rezervacija je poslata. Vozač će je uskoro razmotriti.")
+                    Text("Your booking has been sent. The driver will review it soon.")
                 }
             }
         }
@@ -149,7 +149,7 @@ struct BookingView: View {
     // MARK: - Seats Section
     private var seatsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Broj mesta")
+            Text("Number of seats")
                 .font(.headline)
             
             HStack {
@@ -173,7 +173,7 @@ struct BookingView: View {
                 }
             }
             
-            Text("\(viewModel.ride.remainingSeats) mesta dostupno")
+            Text("\(viewModel.ride.remainingSeats) seats available")
                 .font(.caption)
                 .foregroundColor(.gray)
         }
@@ -182,18 +182,18 @@ struct BookingView: View {
     // MARK: - Locations Section
     private var locationsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Dodatne informacije (opciono)")
+            Text("Additional information (optional)")
                 .font(.headline)
             
             CustomTextField(
                 icon: "mappin.circle.fill",
-                placeholder: "Tačno mesto polaska",
+                placeholder: "Exact pickup location",
                 text: $viewModel.pickupLocation
             )
             
             CustomTextField(
                 icon: "mappin.and.ellipse",
-                placeholder: "Tačno mesto dolaska",
+                placeholder: "Exact dropoff location",
                 text: $viewModel.dropoffLocation
             )
         }
@@ -202,7 +202,7 @@ struct BookingView: View {
     // MARK: - Message Section
     private var messageSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Poruka vozaču (opciono)")
+            Text("Message to driver (optional)")
                 .font(.headline)
             
             TextEditor(text: $viewModel.message)
@@ -235,7 +235,7 @@ struct BookingView: View {
             }
             
             HStack {
-                Text("Ukupno")
+                Text("Total")
                     .font(.title3)
                     .fontWeight(.bold)
                 
@@ -255,7 +255,7 @@ struct BookingView: View {
     // MARK: - Booking Button
     private var bookingButton: some View {
         CustomButton(
-            title: "Potvrdi rezervaciju",
+            title: "Confirm booking",
             action: {
                 Task {
                     let success = await viewModel.createBooking()
