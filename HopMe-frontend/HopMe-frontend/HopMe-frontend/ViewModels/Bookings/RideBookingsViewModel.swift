@@ -62,7 +62,7 @@ class RideBookingsViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju"
+            errorMessage = "Error loading bookings"
         }
         
         isLoading = false
@@ -75,7 +75,7 @@ class RideBookingsViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška"
+            errorMessage = "Error accepting booking"
         }
     }
     
@@ -86,7 +86,7 @@ class RideBookingsViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška"
+            errorMessage = "Error rejecting booking"
         }
     }
 }

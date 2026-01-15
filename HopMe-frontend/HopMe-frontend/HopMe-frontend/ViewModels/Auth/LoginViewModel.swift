@@ -17,7 +17,7 @@ class LoginViewModel: ObservableObject {
     
     func login() async -> Bool {
         guard isFormValid else {
-            errorMessage = "Unesite validne podatke"
+            errorMessage = "Invalid data"
             return false
         }
         
@@ -33,7 +33,7 @@ class LoginViewModel: ObservableObject {
             isLoading = false
             return false
         } catch {
-            errorMessage = "Greška pri prijavi"
+            errorMessage = "Error logging in"
             isLoading = false
             return false
         }

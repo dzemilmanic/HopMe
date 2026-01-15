@@ -37,22 +37,22 @@ struct RegisterView: View {
                 }
                 .padding(.vertical)
             }
-            .navigationTitle("Registracija")
+            .navigationTitle("Register")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Otkaži") {
+                    Button("Cancel") {
                         dismiss()
                     }
                 }
             }
             .errorAlert(errorMessage: $viewModel.errorMessage)
-            .alert("Uspešna registracija!", isPresented: $showSuccess) {
+            .alert("Registration succesfull!", isPresented: $showSuccess) {
                 Button("OK") {
                     dismiss()
                 }
             } message: {
-                Text("Proverite Vaš email za verifikaciju naloga.")
+                Text("Check your email for verification.")
             }
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(images: $viewModel.vehicleImages, maxImages: 5)
@@ -63,11 +63,11 @@ struct RegisterView: View {
     // MARK: - Step 1: Account Type
     private var accountTypeStep: some View {
         VStack(spacing: 20) {
-            Text("Izaberite tip naloga")
+            Text("Choose account type")
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("Možete dodati ulogu vozača kasnije")
+            Text("You can add driver role later")
                 .font(.subheadline)
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
@@ -75,16 +75,16 @@ struct RegisterView: View {
             VStack(spacing: 16) {
                 AccountTypeCard(
                     icon: "person.fill",
-                    title: "Putnik",
-                    description: "Pronađite vožnje i putujte jeftinije",
+                    title: "Passenger",
+                    description: "Find rides and travel cheaper",
                     isSelected: !viewModel.isDriver,
                     action: { viewModel.isDriver = false }
                 )
                 
                 AccountTypeCard(
                     icon: "car.fill",
-                    title: "Vozač",
-                    description: "Delite vožnje i zaradite novac",
+                    title: "Driver",
+                    description: "Share rides and earn money",
                     isSelected: viewModel.isDriver,
                     action: { viewModel.isDriver = true }
                 )
@@ -96,7 +96,7 @@ struct RegisterView: View {
     // MARK: - Step 2: Personal Info
     private var personalInfoStep: some View {
         VStack(spacing: 20) {
-            Text("Lični podaci")
+            Text("Personal information")
                 .font(.title2)
                 .fontWeight(.bold)
             
@@ -104,41 +104,41 @@ struct RegisterView: View {
                 HStack(spacing: 12) {
                     CustomTextField(
                         icon: "person.fill",
-                        placeholder: "Ime",
+                        placeholder: "First name",
                         text: $viewModel.firstName
                     )
                     
                     CustomTextField(
                         icon: "person.fill",
-                        placeholder: "Prezime",
+                        placeholder: "Last name",
                         text: $viewModel.lastName
                     )
                 }
                 
                 CustomTextField(
                     icon: "envelope.fill",
-                    placeholder: "Email adresa",
+                    placeholder: "Email address",
                     text: $viewModel.email,
                     keyboardType: .emailAddress
                 )
                 
                 CustomTextField(
                     icon: "phone.fill",
-                    placeholder: "Broj telefona",
+                    placeholder: "Phone number",
                     text: $viewModel.phone,
                     keyboardType: .phonePad
                 )
                 
                 CustomTextField(
                     icon: "lock.fill",
-                    placeholder: "Lozinka (min. 6 karaktera)",
+                    placeholder: "Password (min. 6 characters)",
                     text: $viewModel.password,
                     isSecure: true
                 )
                 
                 CustomTextField(
                     icon: "lock.fill",
-                    placeholder: "Potvrdite lozinku",
+                    placeholder: "Confirm password",
                     text: $viewModel.confirmPassword,
                     isSecure: true
                 )
@@ -147,7 +147,7 @@ struct RegisterView: View {
                     HStack {
                         Image(systemName: viewModel.passwordsMatch ? "checkmark.circle.fill" : "xmark.circle.fill")
                             .foregroundColor(viewModel.passwordsMatch ? .green : .red)
-                        Text(viewModel.passwordsMatch ? "Lozinke se poklapaju" : "Lozinke se ne poklapaju")
+                        Text(viewModel.passwordsMatch ? "Password match" : "Passwords do not match")
                             .font(.caption)
                             .foregroundColor(viewModel.passwordsMatch ? .green : .red)
                         Spacer()
@@ -162,19 +162,19 @@ struct RegisterView: View {
     // MARK: - Step 3: Vehicle Info (Driver only)
     private var vehicleInfoStep: some View {
         VStack(spacing: 20) {
-            Text("Podaci o vozilu")
+            Text("Vehicle information")
                 .font(.title2)
                 .fontWeight(.bold)
             
             VStack(spacing: 16) {
                 // Vehicle Type Picker
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Tip vozila *")
+                    Text("Vehicle type *")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                     
-                    Picker("Tip vozila", selection: $viewModel.vehicleType) {
-                        ForEach(["Sedan", "SUV", "Hečbek", "Karavan", "Kombi", "Minivan"], id: \.self) { type in
+                    Picker("Vehicle type", selection: $viewModel.vehicleType) {
+                        ForEach(["Sedan", "SUV", "Hatchback", "Wagon", "Coupe", "Minivan"], id: \.self) { type in
                             Text(type).tag(type)
                         }
                     }
@@ -189,13 +189,13 @@ struct RegisterView: View {
                 HStack(spacing: 12) {
                     CustomTextField(
                         icon: "car.fill",
-                        placeholder: "Marka (opciono)",
+                        placeholder: "Brand (optional)",
                         text: $viewModel.brand
                     )
                     
                     CustomTextField(
                         icon: "car.fill",
-                        placeholder: "Model (opciono)",
+                        placeholder: "Model (optional)",
                         text: $viewModel.model
                     )
                 }
@@ -203,7 +203,7 @@ struct RegisterView: View {
                 // Vehicle Images
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Text("Slike vozila *")
+                        Text("Vehicle images *")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                         
@@ -221,11 +221,11 @@ struct RegisterView: View {
                                     .font(.system(size: 40))
                                     .foregroundColor(.blue)
                                 
-                                Text("Dodajte slike vozila")
+                                Text("Add vehicle images")
                                     .font(.subheadline)
                                     .foregroundColor(.blue)
                                 
-                                Text("Minimum 1 slika, maksimum 5")
+                                Text("Minimum 1 image, maximum 5")
                                     .font(.caption)
                                     .foregroundColor(.gray)
                             }
@@ -282,7 +282,7 @@ struct RegisterView: View {
         VStack(spacing: 12) {
             // Next / Submit Button
             CustomButton(
-                title: isLastStep ? "Registruj se" : "Nastavi",
+                title: isLastStep ? "Register" : "Next",
                 action: {
                     if isLastStep {
                         Task {
@@ -309,7 +309,7 @@ struct RegisterView: View {
                         currentStep -= 1
                     }
                 }) {
-                    Text("Nazad")
+                    Text("Back")
                         .fontWeight(.semibold)
                         .foregroundColor(.blue)
                         .frame(maxWidth: .infinity)

@@ -26,7 +26,7 @@ class BookingDetailViewModel: ObservableObject {
             isLoading = false
             return false
         } catch {
-            errorMessage = "Greška"
+            errorMessage = "Error canceling booking"
             isLoading = false
             return false
         }

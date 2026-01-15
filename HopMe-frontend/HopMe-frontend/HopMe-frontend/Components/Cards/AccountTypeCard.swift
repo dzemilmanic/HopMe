@@ -58,16 +58,16 @@ struct AccountTypeCard: View {
     VStack(spacing: 16) {
         AccountTypeCard(
             icon: "person.fill",
-            title: "Putnik",
-            description: "Pronađite vožnje i putujte jeftinije",
+            title: "Passenger",
+            description: "Find rides and travel cheaper",
             isSelected: true,
             action: {}
         )
         
         AccountTypeCard(
             icon: "car.fill",
-            title: "Vozač",
-            description: "Delite vožnje i zaradite novac",
+            title: "Driver",
+            description: "Share rides and earn money",
             isSelected: false,
             action: {}
         )

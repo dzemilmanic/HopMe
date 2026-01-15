@@ -3,11 +3,11 @@ import Foundation
 struct ValidationHelper {
     static func validateEmail(_ email: String) -> ValidationResult {
         guard !email.isEmpty else {
-            return .failure("Email je obavezan")
+            return .failure("Email is required")
         }
         
         guard email.isValidEmail else {
-            return .failure("Unesite validnu email adresu")
+            return .failure("Invalid email address")
         }
         
         return .success
@@ -15,11 +15,11 @@ struct ValidationHelper {
     
     static func validatePassword(_ password: String) -> ValidationResult {
         guard !password.isEmpty else {
-            return .failure("Lozinka je obavezna")
+            return .failure("Password is required")
         }
         
         guard password.count >= 6 else {
-            return .failure("Lozinka mora imati minimum 6 karaktera")
+            return .failure("Password must have at least 6 characters")
         }
         
         return .success
@@ -27,11 +27,11 @@ struct ValidationHelper {
     
     static func validatePhone(_ phone: String) -> ValidationResult {
         guard !phone.isEmpty else {
-            return .failure("Telefon je obavezan")
+            return .failure("Phone number is required")
         }
         
         guard phone.isValidPhone else {
-            return .failure("Unesite validan broj telefona")
+            return .failure("Invalid phone number")
         }
         
         return .success
@@ -39,11 +39,11 @@ struct ValidationHelper {
     
     static func validateName(_ name: String, field: String) -> ValidationResult {
         guard !name.isEmpty else {
-            return .failure("\(field) je obavezan")
+            return .failure("\(field) is required")
         }
         
         guard name.count >= 2 else {
-            return .failure("\(field) mora imati minimum 2 karaktera")
+            return .failure("\(field) must have at least 2 characters")
         }
         
         return .success

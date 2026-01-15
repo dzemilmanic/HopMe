@@ -43,7 +43,7 @@ class RegisterViewModel: ObservableObject {
     
     func register() async -> Bool {
         guard isFormValid else {
-            errorMessage = "Popunite sva obavezna polja"
+            errorMessage = "Populate all required fields"
             return false
         }
         
@@ -84,14 +84,14 @@ class RegisterViewModel: ObservableObject {
                 print("✅ Passenger registration successful: \(response.message)")
             }
             
-            successMessage = "Registracija uspešna! Proverite email."
+            successMessage = "Registration successful! Check your email."
             isLoading = false
             return true
             
         } catch let error as APIError {
             print("❌ APIError occurred: \(error)")
             print("❌ Error description: \(error.errorDescription ?? "No description")")
-            errorMessage = error.errorDescription ?? "Greška pri registraciji"
+            errorMessage = error.errorDescription ?? "Error registering"
             isLoading = false
             return false
             
@@ -99,7 +99,7 @@ class RegisterViewModel: ObservableObject {
             print("❌ Unknown error occurred: \(error)")
             print("❌ Error type: \(type(of: error))")
             print("❌ Error localized: \(error.localizedDescription)")
-            errorMessage = "Greška pri registraciji: \(error.localizedDescription)"
+            errorMessage = "Error registering: \(error.localizedDescription)"
             isLoading = false
             return false
         }

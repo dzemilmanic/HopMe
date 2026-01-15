@@ -60,7 +60,7 @@ struct VehicleCard: View {
                             Circle()
                                 .fill(Color.green)
                                 .frame(width: 8, height: 8)
-                            Text("Aktivno")
+                            Text("Active")
                                 .font(.caption)
                                 .foregroundColor(.green)
                         }
@@ -93,7 +93,7 @@ struct VehicleCard: View {
                     Image(systemName: "person.fill")
                         .foregroundColor(.blue)
                         .font(.caption)
-                    Text("\(vehicle.seats ?? 4) sedišta")
+                    Text("\(vehicle.seats ?? 4) seats")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
@@ -106,7 +106,7 @@ struct VehicleCard: View {
                 }) {
                     HStack {
                         Image(systemName: "pencil")
-                        Text("Izmeni")
+                        Text("Edit")
                     }
                     .font(.subheadline)
                     .frame(maxWidth: .infinity)
@@ -119,7 +119,7 @@ struct VehicleCard: View {
                 Button(action: onDelete) {
                     HStack {
                         Image(systemName: "trash")
-                        Text("Obriši")
+                        Text("Delete")
                     }
                     .font(.subheadline)
                     .frame(maxWidth: .infinity)

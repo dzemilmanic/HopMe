@@ -6,10 +6,10 @@ enum AccountStatus: String, Codable {
     
     var displayName: String {
         switch self {
-        case .pending: return "Na čekanju"
-        case .approved: return "Odobren"
-        case .rejected: return "Odbijen"
-        case .suspended: return "Suspendovan"
+        case .pending: return "Pending"
+        case .approved: return "Approved"
+        case .rejected: return "Rejected"
+        case .suspended: return "Suspended"
         }
     }
     

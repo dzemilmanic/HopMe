@@ -19,7 +19,7 @@ class VehicleListViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju"
+            errorMessage = "Error loading vehicles"
         }
         
         isLoading = false
@@ -32,7 +32,7 @@ class VehicleListViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri brisanju"
+            errorMessage = "Error deleting vehicle"
         }
     }
 }

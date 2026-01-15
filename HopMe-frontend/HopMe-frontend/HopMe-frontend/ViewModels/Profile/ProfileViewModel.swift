@@ -31,7 +31,7 @@ class ProfileViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju profila"
+            errorMessage = "Error loading profile"
         }
         
         isLoading = false

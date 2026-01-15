@@ -11,7 +11,7 @@ struct WaypointInput: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Stanica \(index)")
+                Text("Stop \(index)")
                     .font(.subheadline)
                     .fontWeight(.semibold)
                 
@@ -25,11 +25,11 @@ struct WaypointInput: View {
             
             CustomTextField(
                 icon: "mappin.circle.fill",
-                placeholder: "Lokacija",
+                placeholder: "Location",
                 text: $location
             )
             
-            Toggle("Dodaj procenjeno vreme", isOn: Binding(
+            Toggle("Add estimated time", isOn: Binding(
                 get: { estimatedTime != nil },
                 set: { if !$0 { estimatedTime = nil } else {
                     estimatedTime = Date().addingTimeInterval(1800)
@@ -40,7 +40,7 @@ struct WaypointInput: View {
             
             if estimatedTime != nil {
                 DatePicker(
-                    "Vreme",
+                    "Estimated time",
                     selection: Binding(
                         get: { estimatedTime ?? Date() },
                         set: { estimatedTime = $0 }

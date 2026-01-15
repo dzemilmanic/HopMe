@@ -114,7 +114,7 @@ struct PassengerBookingCard: View {
                             .fontWeight(.bold)
                             .foregroundColor(.blue)
                         
-                        Text("\(booking.seatsBooked) mesto\(booking.seatsBooked > 1 ? "a" : "")")
+                        Text("\(booking.seatsBooked) seat\(booking.seatsBooked > 1 ? "s" : "")")
                             .font(.caption)
                             .foregroundColor(.gray)
                     }
@@ -127,7 +127,7 @@ struct PassengerBookingCard: View {
                             Button(action: onRate) {
                                 HStack {
                                     Image(systemName: "star.fill")
-                                    Text("Oceni")
+                                    Text("Rate")
                                 }
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
@@ -143,7 +143,7 @@ struct PassengerBookingCard: View {
                             Button(action: { showCancelAlert = true }) {
                                 HStack {
                                     Image(systemName: "xmark.circle")
-                                    Text("Otkaži")
+                                    Text("Cancel")
                                 }
                                 .font(.subheadline)
                                 .fontWeight(.semibold)
@@ -163,11 +163,11 @@ struct PassengerBookingCard: View {
             .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
         }
         .buttonStyle(PlainButtonStyle())
-        .alert("Otkazivanje rezervacije", isPresented: $showCancelAlert) {
-            Button("Otkaži", role: .cancel) { }
-            Button("Potvrdi", role: .destructive, action: onCancel)
+        .alert("Cancel booking", isPresented: $showCancelAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Confirm", role: .destructive, action: onCancel)
         } message: {
-            Text("Da li ste sigurni da želite da otkažete ovu rezervaciju?")
+            Text("Are you sure you want to cancel this booking?")
         }
     }
 }

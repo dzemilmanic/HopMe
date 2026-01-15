@@ -6,10 +6,10 @@ enum RideStatus: String, Codable {
     
     var displayName: String {
         switch self {
-        case .scheduled: return "Planirana"
-        case .inProgress: return "U toku"
-        case .completed: return "Završena"
-        case .cancelled: return "Otkazana"
+        case .scheduled: return "Scheduled"
+        case .inProgress: return "In Progress"
+        case .completed: return "Completed"
+        case .cancelled: return "Cancelled"
         }
     }
     

@@ -8,12 +8,12 @@ enum BookingStatus: String, Codable {
     
     var displayName: String {
         switch self {
-        case .pending: return "Na čekanju"
-        case .accepted: return "Prihvaćeno"
-        case .rejected: return "Odbijeno"
-        case .cancelled: return "Otkazano"
-        case .completed: return "Završeno"
-        case .all: return "Sve"
+        case .pending: return "Pending"
+        case .accepted: return "Accepted"
+        case .rejected: return "Rejected"
+        case .cancelled: return "Cancelled"
+        case .completed: return "Completed"
+        case .all: return "All"
         }
     }
     

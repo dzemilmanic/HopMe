@@ -9,9 +9,9 @@ enum AppearanceMode: String, CaseIterable, Identifiable {
     
     var displayName: String {
         switch self {
-        case .light: return "Svetla"
-        case .dark: return "Tamna"
-        case .system: return "Automatski"
+        case .light: return "Light"
+        case .dark: return "Dark"
+        case .system: return "System"
         }
     }
     
@@ -33,9 +33,9 @@ enum AppearanceMode: String, CaseIterable, Identifiable {
     
     var description: String {
         switch self {
-        case .light: return "Uvek koristi svetlu temu"
-        case .dark: return "Uvek koristi tamnu temu"
-        case .system: return "Prati sistemska podešavanja uređaja"
+        case .light: return "Always use light mode"
+        case .dark: return "Always use dark mode"
+        case .system: return "Follow system settings"
         }
     }
     

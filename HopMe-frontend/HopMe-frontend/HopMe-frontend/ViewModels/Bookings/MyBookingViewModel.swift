@@ -35,7 +35,7 @@ class MyBookingsViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju"
+            errorMessage = "Error loading bookings"
         }
         
         isLoading = false
@@ -48,7 +48,7 @@ class MyBookingsViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri otkazivanju"
+            errorMessage = "Error canceling booking"
         }
     }
     

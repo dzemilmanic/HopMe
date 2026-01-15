@@ -62,7 +62,7 @@ struct NotificationCard: View {
         .buttonStyle(PlainButtonStyle())
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive, action: onDelete) {
-                Label("Obriši", systemImage: "trash")
+                Label("Delete", systemImage: "trash")
             }
         }
         .swipeActions(edge: .leading) {
@@ -71,7 +71,7 @@ struct NotificationCard: View {
                     // Mark as read
                     onTap()
                 }) {
-                    Label("Pročitano", systemImage: "envelope.open.fill")
+                    Label("Read", systemImage: "envelope.open.fill")
                 }
                 .tint(.blue)
             }
@@ -92,8 +92,8 @@ struct NotificationCard: View {
             id: 1,
             userId: 1,
             type: .newBooking,
-            title: "Nova rezervacija",
-            message: "Imate novu rezervaciju",
+            title: "New booking",
+            message: "You have a new booking",
             data: nil,
             isRead: false,
             createdAt: Date()

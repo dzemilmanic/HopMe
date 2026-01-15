@@ -24,7 +24,7 @@ class NotificationViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju"
+            errorMessage = "Error loading notifications"
         }
         
         isLoading = false
@@ -47,7 +47,7 @@ class NotificationViewModel: ObservableObject {
             }
             unreadCount = max(0, unreadCount - 1)
         } catch {
-            errorMessage = "Greška"
+            errorMessage = "Error marking as read"
         }
     }
     
@@ -68,7 +68,7 @@ class NotificationViewModel: ObservableObject {
             }
             unreadCount = 0
         } catch {
-            errorMessage = "Greška"
+            errorMessage = "Error marking all as read"
         }
     }
     
@@ -77,7 +77,7 @@ class NotificationViewModel: ObservableObject {
             try await notificationService.deleteNotification(id: id)
             notifications.removeAll { $0.id == id }
         } catch {
-            errorMessage = "Greška pri brisanju"
+            errorMessage = "Error deleting notification"
         }
     }
 }

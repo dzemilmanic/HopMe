@@ -77,7 +77,7 @@ struct DriverRideCard: View {
                 Button(action: onViewBookings) {
                     HStack {
                         Image(systemName: "list.bullet")
-                        Text("Rezervacije")
+                        Text("Bookings")
                     }
                     .font(.subheadline)
                     .frame(maxWidth: .infinity)
@@ -91,13 +91,13 @@ struct DriverRideCard: View {
                 if ride.status == .scheduled {
                     Menu {
                         Button(action: onStart) {
-                            Label("Započni vožnju", systemImage: "play.fill")
+                            Label("Start ride", systemImage: "play.fill")
                         }
                         
                         Button(role: .destructive, action: {
                             showCancelAlert = true
                         }) {
-                            Label("Otkaži vožnju", systemImage: "xmark.circle")
+                            Label("Cancel ride", systemImage: "xmark.circle")
                         }
                     } label: {
                         Image(systemName: "ellipsis.circle")
@@ -112,7 +112,7 @@ struct DriverRideCard: View {
                     Button(action: onComplete) {
                         HStack {
                             Image(systemName: "checkmark.circle.fill")
-                            Text("Završi")
+                            Text("Finish")
                         }
                         .font(.subheadline)
                         .foregroundColor(.white)
@@ -128,11 +128,11 @@ struct DriverRideCard: View {
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
-        .alert("Otkazivanje vožnje", isPresented: $showCancelAlert) {
-            Button("Otkaži", role: .cancel) { }
-            Button("Potvrdi", role: .destructive, action: onCancel)
+        .alert("Cancel ride", isPresented: $showCancelAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Confirm", role: .destructive, action: onCancel)
         } message: {
-            Text("Da li ste sigurni da želite da otkažete ovu vožnju? Svi putnici će biti obavešteni.")
+            Text("Are you sure you want to cancel this ride? All passengers will be notified.")
         }
     }
 }

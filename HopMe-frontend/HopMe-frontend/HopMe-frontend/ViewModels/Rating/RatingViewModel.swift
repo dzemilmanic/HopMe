@@ -13,7 +13,7 @@ class RatingViewModel: ObservableObject {
     
     func submitRating(bookingId: Int, rideId: Int) async -> Bool {
         guard rating >= 1 && rating <= 5 else {
-            errorMessage = "Ocena mora biti između 1 i 5"
+            errorMessage = "Rating must be between 1 and 5"
             return false
         }
         
@@ -23,8 +23,8 @@ class RatingViewModel: ObservableObject {
         let request = RatingRequest(
             bookingId: bookingId,
             rideId: rideId,
-            rating: self.rating,        // ← Koristi self.rating iz @Published
-            comment: self.comment.isEmpty ? nil : self.comment  // ← Koristi self.comment
+            rating: self.rating,
+            comment: self.comment.isEmpty ? nil : self.comment
         )
         
         do {
@@ -36,7 +36,7 @@ class RatingViewModel: ObservableObject {
             isLoading = false
             return false
         } catch {
-            errorMessage = "Greška pri ocenjivanju"
+            errorMessage = "Error rating"
             isLoading = false
             return false
         }

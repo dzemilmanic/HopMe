@@ -29,7 +29,7 @@ class BookingViewModel: ObservableObject {
     
     func createBooking() async -> Bool {
         guard canBook else {
-            errorMessage = "Nevažeći broj mesta"
+            errorMessage = "Invalid number of seats"
             return false
         }
         
@@ -53,7 +53,7 @@ class BookingViewModel: ObservableObject {
             isLoading = false
             return false
         } catch {
-            errorMessage = "Greška pri rezervaciji"
+            errorMessage = "Error booking"
             isLoading = false
             return false
         }

@@ -24,7 +24,7 @@ struct PopularRouteCard: View {
                 }
                 
                 HStack {
-                    Text("od \(price) RSD")
+                    Text("for \(price) RSD")
                         .font(.caption)
                         .foregroundColor(.blue)
                         .fontWeight(.semibold)

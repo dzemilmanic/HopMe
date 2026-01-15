@@ -13,13 +13,13 @@ function question(query) {
 
 async function createAdmin() {
   try {
-    console.log('🔐 Kreiranje prvog admin naloga\n');
+    console.log('🔐 Creating first admin account\n');
 
     const email = await question('Email: ');
-    const password = await question('Lozinka: ');
-    const firstName = await question('Ime: ');
-    const lastName = await question('Prezime: ');
-    const phone = await question('Telefon: ');
+    const password = await question('Password: ');
+    const firstName = await question('First name: ');
+    const lastName = await question('Last name: ');
+    const phone = await question('Phone: ');
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -32,15 +32,15 @@ async function createAdmin() {
       [email, hashedPassword, firstName, lastName, phone]
     );
 
-    console.log('\n✅ Admin nalog kreiran!');
+    console.log('\n✅ Admin account created!');
     console.log('📧 Email:', result.rows[0].email);
-    console.log('👤 Ime:', result.rows[0].first_name, result.rows[0].last_name);
+    console.log('👤 First name:', result.rows[0].first_name, result.rows[0].last_name);
     
     rl.close();
     await pool.end();
     process.exit(0);
   } catch (error) {
-    console.error('❌ Greška:', error.message);
+    console.error('❌ Error:', error.message);
     rl.close();
     await pool.end();
     process.exit(1);

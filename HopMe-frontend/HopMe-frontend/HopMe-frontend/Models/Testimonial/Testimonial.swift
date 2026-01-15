@@ -6,18 +6,18 @@ struct Testimonial: Codable, Identifiable {
     let rating: Int
     let text: String
     let isApproved: Bool
-    let createdAt: String? // Backend šalje string timestamp - made optional
-    let updatedAt: String? // Možda backend šalje i updated_at
+    let createdAt: String? // Backend sends string timestamp - made optional
+    let updatedAt: String? // Maybe backend sends updated_at
     let firstName: String?
     let lastName: String?
     let userProfileImage: String?
     
-    // Za prikaz
+    // For display
     var userName: String {
         if let first = firstName, let last = lastName {
             return "\(first) \(last.prefix(1))."
         }
-        return "Korisnik"
+        return "User"
     }
     
     var formattedDate: String {
@@ -38,7 +38,7 @@ struct Testimonial: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case id
-        case userId // Backend vraća camelCase zbog responseTransformer middleware
+        case userId // Backend sends camelCase due to responseTransformer middleware
         case rating
         case text
         case isApproved
@@ -46,7 +46,7 @@ struct Testimonial: Codable, Identifiable {
         case updatedAt
         case firstName
         case lastName
-        case userProfileImage = "profileImageUrl" // Backend vraća kao profileImageUrl
+        case userProfileImage = "profileImageUrl" // Backend sends as profileImageUrl
     }
 }
 

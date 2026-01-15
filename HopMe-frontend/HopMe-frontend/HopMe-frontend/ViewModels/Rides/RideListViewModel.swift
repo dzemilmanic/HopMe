@@ -24,7 +24,7 @@ class RideListViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju"
+            errorMessage = "Error loading rides"
         }
         
         isLoading = false

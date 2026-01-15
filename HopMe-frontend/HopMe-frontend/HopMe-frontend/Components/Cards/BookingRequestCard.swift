@@ -23,13 +23,13 @@ struct BookingRequestCard: View {
                     )
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Putnik ID: \(booking.passengerId)")
+                    Text("Passenger ID: \(booking.passengerId)")
                         .font(.headline)
                     
                     HStack(spacing: 4) {
                         Image(systemName: "person.fill")
                             .font(.caption)
-                        Text("\(booking.seatsBooked) mesto\(booking.seatsBooked > 1 ? "a" : "")")
+                        Text("\(booking.seatsBooked) place\(booking.seatsBooked > 1 ? "s" : "")")
                             .font(.caption)
                         
                         Text("•")
@@ -52,7 +52,7 @@ struct BookingRequestCard: View {
             
             if let message = booking.message, !message.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Poruka:")
+                    Text("Message:")
                         .font(.caption)
                         .foregroundColor(.gray)
                     
@@ -93,7 +93,7 @@ struct BookingRequestCard: View {
             if booking.status == .pending {
                 HStack(spacing: 12) {
                     Button(action: { showRejectDialog = true }) {
-                        Text("Odbij")
+                        Text("Reject")
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
@@ -103,7 +103,7 @@ struct BookingRequestCard: View {
                     }
                     
                     Button(action: { showAcceptDialog = true }) {
-                        Text("Prihvati")
+                        Text("Accept")
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 10)
@@ -118,29 +118,29 @@ struct BookingRequestCard: View {
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
-        .alert("Prihvati rezervaciju", isPresented: $showAcceptDialog) {
-            TextField("Poruka (opciono)", text: $response)
-            Button("Otkaži", role: .cancel) {
+        .alert("Accept booking", isPresented: $showAcceptDialog) {
+            TextField("Message (optional)", text: $response)
+            Button("Cancel", role: .cancel) {
                 response = ""
             }
-            Button("Prihvati") {
+            Button("Accept") {
                 onAccept(response.isEmpty ? nil : response)
                 response = ""
             }
         } message: {
-            Text("Možete poslati poruku putniku")
+            Text("You can send a message to the passenger")
         }
-        .alert("Odbij rezervaciju", isPresented: $showRejectDialog) {
-            TextField("Razlog (opciono)", text: $response)
-            Button("Otkaži", role: .cancel) {
+        .alert("Reject booking", isPresented: $showRejectDialog) {
+            TextField("Reason (optional)", text: $response)
+            Button("Cancel", role: .cancel) {
                 response = ""
             }
-            Button("Odbij", role: .destructive) {
+            Button("Reject", role: .destructive) {
                 onReject(response.isEmpty ? nil : response)
                 response = ""
             }
         } message: {
-            Text("Možete objasniti razlog odbijanja")
+            Text("You can explain the reason for rejection")
         }
     }
 }

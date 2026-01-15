@@ -48,7 +48,7 @@ class SearchViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju vožnji"
+            errorMessage = "Error loading rides"
         }
         
         isLoading = false
@@ -81,7 +81,7 @@ class SearchViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri pretrazi"
+            errorMessage = "Error searching"
         }
         
         isLoading = false
@@ -122,8 +122,8 @@ struct SearchFilters {
     var maxPrice: Int?
     var minRating: Int?
     var autoAcceptOnly = false
-    var allowSmoking = false     // Koristi ovo
-    var allowPets = false         // Koristi ovo
+    var allowSmoking = false     // Use this
+    var allowPets = false         // Use this
     var luggageSize: String?
     var vehicleTypes: Set<String> = []
 }

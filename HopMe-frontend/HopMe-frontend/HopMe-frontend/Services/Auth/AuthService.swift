@@ -69,7 +69,7 @@ class AuthService {
             "model": model ?? ""
         ]
         
-        // Dodaj return statement:
+        // Add return statement:
         return try await api.uploadImage(
             endpoint: .registerDriver,
             images: vehicleImages,

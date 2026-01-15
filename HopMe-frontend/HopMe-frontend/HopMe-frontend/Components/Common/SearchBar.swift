@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SearchBar: View {
     @Binding var text: String
-    var placeholder: String = "Pretraži..."
+    var placeholder: String = "Search..."
     var onCommit: (() -> Void)?
     
     var body: some View {

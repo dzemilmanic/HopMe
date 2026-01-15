@@ -19,7 +19,7 @@ class CreateRideViewModel: ObservableObject {
     @Published var allowSmoking = false
     @Published var allowPets = false
     @Published var maxTwoInBack = false
-    @Published var selectedLuggage = "Srednji"
+    @Published var selectedLuggage = "Medium"
     
     // Waypoints
     @Published var waypoints: [WaypointData] = []
@@ -39,13 +39,13 @@ class CreateRideViewModel: ObservableObject {
     
     func createRide() async -> Bool {
         guard isFormValid else {
-            errorMessage = "Popunite sva obavezna polja"
+            errorMessage = "Fill all required fields"
             return false
         }
         
         guard let price = Double(pricePerSeat),
               let vehicleId = selectedVehicleId else {
-            errorMessage = "Nevažeći podaci"
+            errorMessage = "Invalid data"
             return false
         }
         
@@ -60,7 +60,7 @@ class CreateRideViewModel: ObservableObject {
         dateComponents.minute = timeComponents.minute
         
         guard let combinedDateTime = calendar.date(from: dateComponents) else {
-            errorMessage = "Nevažeći datum"
+            errorMessage = "Invalid date"
             isLoading = false
             return false
         }
@@ -102,7 +102,7 @@ class CreateRideViewModel: ObservableObject {
             isLoading = false
             return false
         } catch {
-            errorMessage = "Greška pri kreiranju vožnje"
+            errorMessage = "Error creating ride"
             isLoading = false
             return false
         }

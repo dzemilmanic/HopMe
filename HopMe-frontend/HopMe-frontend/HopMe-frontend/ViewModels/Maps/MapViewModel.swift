@@ -30,7 +30,7 @@ class MapViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri rutiranju"
+            errorMessage = "Error routing"
         }
         
         isLoading = false

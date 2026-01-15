@@ -1,9 +1,9 @@
 enum VehicleType: String, CaseIterable {
     case sedan = "Sedan"
     case suv = "SUV"
-    case hatchback = "Hečbek"
-    case wagon = "Karavan"
-    case van = "Kombi"
+    case hatchback = "Hatchback"
+    case wagon = "Wagon"
+    case van = "Van"
     case minivan = "Minivan"
     
     var icon: String {

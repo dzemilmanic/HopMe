@@ -88,9 +88,9 @@ class APIService {
             // Check for specific 403 messages
             if let errorResponse = try? JSONDecoder().decode(ErrorResponse.self, from: data) {
                 let message = errorResponse.message.lowercased()
-                if message.contains("email") && message.contains("verifikovan") {
+                if message.contains("email") && message.contains("verified") {
                     throw APIError.emailNotVerified
-                } else if message.contains("odobrenje") || message.contains("čeka") {
+                } else if message.contains("approval") || message.contains("pending") {
                     throw APIError.accountPending
                 }
                 throw APIError.clientError(errorResponse.message)
@@ -218,31 +218,31 @@ enum APIError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidURL:
-            return "Nevažeći URL"
+            return "Invalid URL"
         case .invalidResponse:
-            return "Nevažeći odgovor servera"
+            return "Invalid server response"
         case .unauthorized:
-            return "Niste autorizovani. Prijavite se ponovo."
+            return "You are not authorized. Please log in again."
         case .badRequest:
-            return "Nevažeći zahtev"
+            return "Invalid request"
         case .clientError(let message):
             return message
         case .serverError:
             return "Greška na serveru. Pokušajte ponovo."
         case .uploadFailed:
-            return "Upload nije uspeo"
+            return "Upload failed"
         case .decodingError:
-            return "Greška pri parsiranju podataka"
+            return "Error decoding data"
         case .timeout:
-            return "Zahtev je istekao. Proverite internet konekciju."
+            return "Request timed out. Please check your internet connection."
         case .networkError:
-            return "Greška mreže. Proverite internet konekciju."
+            return "Network error. Please check your internet connection."
         case .emailNotVerified:
-            return "Email nije verifikovan. Proverite vaš inbox."
+            return "Email not verified. Please check your inbox."
         case .accountPending:
-            return "Vaš nalog čeka odobrenje administratora."
+            return "Your account is pending approval."
         case .unknown:
-            return "Nepoznata greška"
+            return "Unknown error"
         }
     }
 }

@@ -24,7 +24,7 @@ class MyRatingsViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju ocena"
+            errorMessage = "Error loading ratings"
         }
         
         isLoading = false

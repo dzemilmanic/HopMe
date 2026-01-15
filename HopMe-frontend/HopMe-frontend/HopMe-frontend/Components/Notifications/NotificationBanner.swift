@@ -58,8 +58,8 @@ struct NotificationBanner: View {
                 id: 1,
                 userId: 1,
                 type: .bookingAccepted,
-                title: "Rezervacija prihvaćena",
-                message: "Vaša rezervacija za vožnju Beograd → Niš je prihvaćena",
+                title: "Booking accepted",
+                message: "Your booking for the trip Beograd → Niš has been accepted",
                 data: nil,
                 isRead: false,
                 createdAt: Date()

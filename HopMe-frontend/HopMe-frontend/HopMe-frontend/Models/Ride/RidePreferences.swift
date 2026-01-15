@@ -6,9 +6,9 @@ struct RidePreferences: Codable {
     var autoAcceptBookings: Bool
     
     enum LuggageSize: String, Codable, CaseIterable {
-        case small = "Mali"
-        case medium = "Srednji"
-        case large = "Veliki"
+        case small = "Small"
+        case medium = "Medium"
+        case large = "Large"
         
         var icon: String {
             switch self {

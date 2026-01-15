@@ -10,7 +10,7 @@ struct ErrorView: View {
                 .font(.system(size: 60))
                 .foregroundColor(.orange)
             
-            Text("Došlo je do greške")
+            Text("An error occurred")
                 .font(.title3)
                 .fontWeight(.semibold)
             
@@ -22,7 +22,7 @@ struct ErrorView: View {
             
             if let retry = retryAction {
                 Button(action: retry) {
-                    Text("Pokušaj ponovo")
+                    Text("Retry")
                         .fontWeight(.semibold)
                         .foregroundColor(.white)
                         .padding(.horizontal, 30)

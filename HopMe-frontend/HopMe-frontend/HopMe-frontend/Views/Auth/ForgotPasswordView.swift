@@ -25,11 +25,11 @@ struct ForgotPasswordView: View {
                     
                     // Header
                     VStack(spacing: 8) {
-                        Text("Zaboravili ste lozinku?")
+                        Text("Forgot your password?")
                             .font(.title2)
                             .fontWeight(.bold)
                         
-                        Text("Unesite svoj email i poslaćemo Vam link za resetovanje lozinke")
+                        Text("Enter your email and we'll send you a link to reset your password")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
@@ -39,7 +39,7 @@ struct ForgotPasswordView: View {
                     // Email Field
                     CustomTextField(
                         icon: "envelope.fill",
-                        placeholder: "Email adresa",
+                        placeholder: "Email address",
                         text: $email,
                         keyboardType: .emailAddress
                     )
@@ -48,7 +48,7 @@ struct ForgotPasswordView: View {
                     
                     // Submit Button
                     CustomButton(
-                        title: "Pošalji link",
+                        title: "Send link",
                         action: {
                             Task {
                                 await sendResetLink()
@@ -63,22 +63,22 @@ struct ForgotPasswordView: View {
                     Spacer()
                 }
             }
-            .navigationTitle("Resetovanje lozinke")
+            .navigationTitle("Reset password")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Zatvori") {
+                    Button("Close") {
                         dismiss()
                     }
                 }
             }
             .errorAlert(errorMessage: $errorMessage)
-            .alert("Email poslat!", isPresented: $showSuccess) {
+            .alert("Email sent!", isPresented: $showSuccess) {
                 Button("OK") {
                     dismiss()
                 }
             } message: {
-                Text("Proverite svoj email za daljna uputstva.")
+                Text("Check your email for further instructions.")
             }
         }
     }

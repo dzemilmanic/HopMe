@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LoadingView: View {
-    var message: String = "Učitavanje..."
+    var message: String = "Loading..."
     
     var body: some View {
         VStack(spacing: 16) {

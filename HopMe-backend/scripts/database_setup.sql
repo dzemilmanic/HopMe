@@ -2,7 +2,7 @@
 -- HOPME DATABASE SETUP
 -- ============================================
 
--- Brisanje postojećih enum tipova i tabela (ako postoje)
+-- Deleting existing enum types and tables (if they exist)
 DROP TABLE IF EXISTS testimonials CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS ratings CASCADE;
@@ -19,13 +19,13 @@ DROP TYPE IF EXISTS account_status CASCADE;
 DROP TYPE IF EXISTS booking_status CASCADE;
 DROP TYPE IF EXISTS ride_status CASCADE;
 
--- Kreiranje enum tipova
+-- Creating enum types
 CREATE TYPE user_role AS ENUM ('putnik', 'vozac', 'admin');
 CREATE TYPE account_status AS ENUM ('pending', 'approved', 'rejected', 'suspended');
 CREATE TYPE booking_status AS ENUM ('pending', 'accepted', 'rejected', 'cancelled', 'completed');
 CREATE TYPE ride_status AS ENUM ('scheduled', 'in_progress', 'completed', 'cancelled');
 
--- Tabela korisnika
+-- Creating users table
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela vozila
+-- Creating vehicles table
 CREATE TABLE vehicles (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -62,7 +62,7 @@ CREATE TABLE vehicles (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela slika vozila
+-- Creating vehicle images table
 CREATE TABLE vehicle_images (
     id SERIAL PRIMARY KEY,
     vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE CASCADE,
@@ -72,7 +72,7 @@ CREATE TABLE vehicle_images (
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela za email verifikacione tokene
+-- Creating verification tokens table
 CREATE TABLE verification_tokens (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -82,7 +82,7 @@ CREATE TABLE verification_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela vožnji
+-- Creating rides table
 CREATE TABLE rides (
     id SERIAL PRIMARY KEY,
     driver_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -109,7 +109,7 @@ CREATE TABLE rides (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela međupostaje
+-- Creating waypoints table
 CREATE TABLE waypoints (
     id SERIAL PRIMARY KEY,
     ride_id INTEGER REFERENCES rides(id) ON DELETE CASCADE,
@@ -120,7 +120,7 @@ CREATE TABLE waypoints (
     estimated_time TIMESTAMP
 );
 
--- Tabela rezervacija
+-- Creating bookings table
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
     ride_id INTEGER REFERENCES rides(id) ON DELETE CASCADE,
@@ -139,7 +139,7 @@ CREATE TABLE bookings (
     completed_at TIMESTAMP
 );
 
--- Tabela ocena
+-- Creating ratings table
 CREATE TABLE ratings (
     id SERIAL PRIMARY KEY,
     booking_id INTEGER REFERENCES bookings(id) ON DELETE CASCADE,
@@ -152,7 +152,7 @@ CREATE TABLE ratings (
     UNIQUE(booking_id, rater_id)
 );
 
--- Tabela notifikacija
+-- Creating notifications table
 CREATE TABLE notifications (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -164,7 +164,7 @@ CREATE TABLE notifications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela recenzija platforme
+-- Creating testimonials table
 CREATE TABLE testimonials (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -176,7 +176,7 @@ CREATE TABLE testimonials (
     UNIQUE(user_id)  -- One testimonial per user
 );
 
--- View za prosečne ocene korisnika
+-- Creating user ratings view
 CREATE VIEW user_ratings AS
 SELECT 
     rated_id as user_id,
@@ -190,7 +190,7 @@ SELECT
 FROM ratings
 GROUP BY rated_id;
 
--- View za statistiku vozača
+-- Creating driver stats view
 CREATE VIEW driver_stats AS
 SELECT 
     u.id as driver_id,
@@ -205,7 +205,7 @@ LEFT JOIN user_ratings ur ON u.id = ur.user_id
 WHERE 'vozac' = ANY(u.roles)
 GROUP BY u.id, ur.average_rating, ur.total_ratings;
 
--- Indeksi za performanse
+-- Creating indexes for performance
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_status ON users(account_status);
 CREATE INDEX idx_vehicles_user ON vehicles(user_id);
@@ -222,7 +222,7 @@ CREATE INDEX idx_testimonials_user ON testimonials(user_id);
 CREATE INDEX idx_testimonials_approved ON testimonials(is_approved);
 CREATE INDEX idx_testimonials_created ON testimonials(created_at);
 
--- Trigger za ažuriranje updated_at
+-- Trigger for updating updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -246,8 +246,8 @@ CREATE TRIGGER update_bookings_updated_at BEFORE UPDATE ON bookings
 CREATE TRIGGER update_testimonials_updated_at BEFORE UPDATE ON testimonials
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Za kreiranje prvog admin korisnika, pokrenite:
+-- For creating first admin user, run:
 -- npm run create-admin
 
--- Završeno!
+-- Completed!
 SELECT 'Database setup completed successfully!' as message;

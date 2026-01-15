@@ -26,7 +26,7 @@ class EditVehicleViewModel: ObservableObject {
     
     private let vehicleService = VehicleService.shared
     
-    let vehicleTypes = ["Sedan", "SUV", "Hečbek", "Karavan", "Kombi", "Minivan"]
+    let vehicleTypes = ["Sedan", "SUV", "Hatchbak", "Pickup", "Minivan"]
     
     var isFormValid: Bool {
         !vehicleType.isEmpty && (existingImages.count + newImages.count) > 0
@@ -45,7 +45,7 @@ class EditVehicleViewModel: ObservableObject {
     
     func saveChanges() async -> Bool {
         guard isFormValid else {
-            errorMessage = "Vozilo mora imati tip i bar jednu sliku"
+            errorMessage = "Vehicle must have a type and at least one image"
             return false
         }
         
@@ -53,7 +53,7 @@ class EditVehicleViewModel: ObservableObject {
         errorMessage = nil
         
         do {
-            // 1. Ažuriraj tekstualne podatke
+            // 1. Update vehicle data
             _ = try await vehicleService.updateVehicle(
                 id: vehicleId,
                 vehicleType: vehicleType,
@@ -64,12 +64,12 @@ class EditVehicleViewModel: ObservableObject {
                 licensePlate: licensePlate.isEmpty ? nil : licensePlate
             )
             
-            // 2. Obriši slike koje su uklonjene
+            // 2. Delete deleted images
             for imageId in imagesToDelete {
                 try await vehicleService.deleteVehicleImage(vehicleId: vehicleId, imageId: imageId)
             }
             
-            // 3. Dodaj nove slike
+            // 3. Add new images
             if !newImages.isEmpty {
                 let imageData = newImages.compactMap { $0.jpegData(compressionQuality: 0.7) }
                 if !imageData.isEmpty {
@@ -85,7 +85,7 @@ class EditVehicleViewModel: ObservableObject {
             isLoading = false
             return false
         } catch {
-            errorMessage = "Greška pri ažuriranju vozila"
+            errorMessage = "Error updating vehicle"
             isLoading = false
             return false
         }

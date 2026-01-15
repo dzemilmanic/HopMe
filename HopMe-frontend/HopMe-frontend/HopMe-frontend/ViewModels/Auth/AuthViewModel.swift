@@ -33,7 +33,7 @@ class AuthViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri prijavi. Pokušajte ponovo."
+            errorMessage = "Error logging in. Please try again."
         }
         
         isLoading = false

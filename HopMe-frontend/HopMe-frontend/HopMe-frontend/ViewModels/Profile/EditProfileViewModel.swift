@@ -24,7 +24,7 @@ class EditProfileViewModel: ObservableObject {
     
     func saveProfile() async -> Bool {
         guard isFormValid else {
-            errorMessage = "Popunite sva polja"
+            errorMessage = "Fill all fields"
             return false
         }
         
@@ -44,7 +44,7 @@ class EditProfileViewModel: ObservableObject {
             isLoading = false
             return false
         } catch {
-            errorMessage = "Greška pri čuvanju"
+            errorMessage = "Error saving profile"
             isLoading = false
             return false
         }

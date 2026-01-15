@@ -18,7 +18,7 @@ class AddVehicleViewModel: ObservableObject {
     
     private let vehicleService = VehicleService.shared
     
-    let vehicleTypes = ["Sedan", "SUV", "Hečbek", "Karavan", "Kombi", "Minivan"]
+    let vehicleTypes = ["Sedan", "SUV", "Hatchbak", "Pickup", "Minivan"]
     
     var isFormValid: Bool {
         !vehicleType.isEmpty && images.count > 0
@@ -26,7 +26,7 @@ class AddVehicleViewModel: ObservableObject {
     
     func addVehicle() async -> Bool {
         guard isFormValid else {
-            errorMessage = "Izaberite tip vozila i dodajte slike"
+            errorMessage = "Select vehicle type and add images"
             return false
         }
         
@@ -52,7 +52,7 @@ class AddVehicleViewModel: ObservableObject {
             isLoading = false
             return false
         } catch {
-            errorMessage = "Greška pri dodavanju vozila"
+            errorMessage = "Error adding vehicle"
             isLoading = false
             return false
         }

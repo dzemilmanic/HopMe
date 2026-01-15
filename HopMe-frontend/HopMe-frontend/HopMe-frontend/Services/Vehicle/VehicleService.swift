@@ -32,7 +32,7 @@ class VehicleService {
             "licensePlate": licensePlate ?? ""
         ]
         
-        // Eksplicitno specifikuj tip koji očekuješ
+        // Explicitly specify the type you expect
         let response: VehicleResponse = try await api.uploadImage(
             endpoint: .vehicles,
             images: images,

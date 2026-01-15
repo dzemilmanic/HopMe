@@ -27,7 +27,7 @@ extension View {
     
     // MARK: - Error Alert
     func errorAlert(errorMessage: Binding<String?>) -> some View {
-        self.alert("Greška", isPresented: .constant(errorMessage.wrappedValue != nil)) {
+        self.alert("Error", isPresented: .constant(errorMessage.wrappedValue != nil)) {
             Button("OK") {
                 errorMessage.wrappedValue = nil
             }

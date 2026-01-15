@@ -32,7 +32,7 @@ class DriverRidesViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri učitavanju"
+            errorMessage = "Error loading rides"
         }
         
         isLoading = false
@@ -45,7 +45,7 @@ class DriverRidesViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška pri otkazivanju"
+            errorMessage = "Error canceling ride"
         }
     }
     
@@ -56,7 +56,7 @@ class DriverRidesViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška"
+            errorMessage = "Error starting ride"
         }
     }
     
@@ -67,7 +67,7 @@ class DriverRidesViewModel: ObservableObject {
         } catch let error as APIError {
             errorMessage = error.errorDescription
         } catch {
-            errorMessage = "Greška"
+            errorMessage = "Error completing ride"
         }
     }
 }

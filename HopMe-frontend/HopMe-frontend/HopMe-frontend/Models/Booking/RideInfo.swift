@@ -29,7 +29,6 @@ struct DriverInfo: Codable {
         "\(firstName) \(lastName)"
     }
     
-    // Dodaj ovo:
     var initials: String {
         let first = String(firstName.prefix(1))
         let last = String(lastName.prefix(1))

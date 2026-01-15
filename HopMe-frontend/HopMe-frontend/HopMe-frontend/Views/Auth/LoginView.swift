@@ -16,10 +16,10 @@ struct LoginView: View {
                         .foregroundColor(.blue)
                         .padding(.top, 60)
                     
-                    Text("Dobrodošli u HopMe")
+                    Text("Welcome to HopMe")
                         .font(.system(size: 32, weight: .bold))
                     
-                    Text("Prijavite se na svoj nalog")
+                    Text("Login to your account")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
@@ -29,14 +29,14 @@ struct LoginView: View {
                 VStack(spacing: 16) {
                     CustomTextField(
                         icon: "envelope.fill",
-                        placeholder: "Email adresa",
+                        placeholder: "Email address",
                         text: $viewModel.email,
                         keyboardType: .emailAddress
                     )
                     
                     CustomTextField(
                         icon: "lock.fill",
-                        placeholder: "Lozinka",
+                        placeholder: "Password",
                         text: $viewModel.password,
                         isSecure: true
                     )
@@ -45,7 +45,7 @@ struct LoginView: View {
                     HStack {
                         Spacer()
                         Button(action: { showForgotPassword = true }) {
-                            Text("Zaboravili ste lozinku?")
+                            Text("Forgot your password?")
                                 .font(.subheadline)
                                 .foregroundColor(.blue)
                         }
@@ -56,7 +56,7 @@ struct LoginView: View {
                 
                 // Login Button
                 CustomButton(
-                    title: "Prijavi se",
+                    title: "Login",
                     action: {
                         Task {
                             let success = await viewModel.login()
@@ -78,7 +78,7 @@ struct LoginView: View {
                         .fill(Color.gray.opacity(0.3))
                         .frame(height: 1)
                     
-                    Text("ili")
+                    Text("or")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                         .padding(.horizontal, 12)
@@ -93,9 +93,9 @@ struct LoginView: View {
                 // Register Button
                 Button(action: { showRegister = true }) {
                     HStack {
-                        Text("Nemate nalog?")
+                        Text("Don't have an account?")
                             .foregroundColor(.gray)
-                        Text("Registrujte se")
+                        Text("Register")
                             .foregroundColor(.blue)
                             .fontWeight(.semibold)
                     }
