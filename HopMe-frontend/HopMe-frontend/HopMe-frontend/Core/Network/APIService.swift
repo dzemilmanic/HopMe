@@ -228,7 +228,7 @@ enum APIError: LocalizedError {
         case .clientError(let message):
             return message
         case .serverError:
-            return "Greška na serveru. Pokušajte ponovo."
+            return "Server error. Please try again."
         case .uploadFailed:
             return "Upload failed"
         case .decodingError:
