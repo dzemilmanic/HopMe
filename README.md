@@ -1,20 +1,5 @@
 # 🚗 HopMe - Ride Sharing Platform
 
-<div align="center">
-
-![Platform](https://img.shields.io/badge/Platform-iOS-blue?style=for-the-badge&logo=apple)
-![Backend](https://img.shields.io/badge/Backend-Node.js-green?style=for-the-badge&logo=node.js)
-![Database](https://img.shields.io/badge/Database-PostgreSQL-blue?style=for-the-badge&logo=postgresql)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
-
-**A modern ride-sharing platform connecting drivers with passengers traveling the same route**
-
-[Features](#-features) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [API Documentation](#-api-documentation) • [Architecture](#-architecture)
-
-</div>
-
----
-
 ## 📖 About
 
 HopMe is a comprehensive ride-sharing solution designed to make carpooling easy and efficient. Whether you're a driver with empty seats or a passenger looking for a ride, HopMe connects you with people traveling the same route. Built with modern technologies and best practices, HopMe offers a seamless experience across iOS devices with a powerful backend infrastructure.
