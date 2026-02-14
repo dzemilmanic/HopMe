@@ -264,24 +264,6 @@ Model (Data Structures)
 
 ---
 
-## 🧪 Testing
-
-### Backend Testing
-```bash
-# Run tests
-npm test
-
-# Run with coverage
-npm run test:coverage
-```
-
-### iOS Testing
-- Open Xcode
-- Press `⌘ + U` to run all tests
-- UI tests and unit tests available
-
----
-
 ## 🚀 Deployment
 
 ### Backend Deployment (Railway/Heroku)
